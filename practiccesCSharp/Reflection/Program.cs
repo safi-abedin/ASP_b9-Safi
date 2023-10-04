@@ -34,7 +34,7 @@ foreach(var c in assembly.GetTypes())
 
 // trying to get a generic list by reflection
 
-Course course = new Course("Asp.net",30000,new List<Topic>{
+/*Course course = new Course("Asp.net",30000,new List<Topic>{
 
     new Topic{Title ="Github",Duration=2},
     new Topic{Title ="LINQ",Duration=6}
@@ -74,5 +74,15 @@ foreach (var property in properties)
     {
         Console.WriteLine($"{property.Name}: {property.GetValue(course)}");
     }
-}
+}*/
 
+
+//trying to get a method through reflection
+
+Type type = typeof(MyClass);
+
+object instance = Activator.CreateInstance(type);
+
+MethodInfo method = type.GetMethod("MyMethod");
+
+method.Invoke(instance , new object[] { "Hello guys !" });
