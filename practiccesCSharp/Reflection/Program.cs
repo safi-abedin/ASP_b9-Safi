@@ -79,10 +79,35 @@ foreach (var property in properties)
 
 //trying to get a method through reflection
 
-Type type = typeof(MyClass);
+/*Type type = typeof(MyClass);
 
 object instance = Activator.CreateInstance(type);
 
 MethodInfo method = type.GetMethod("MyMethod");
 
-method.Invoke(instance , new object[] { "Hello guys !" });
+method.Invoke(instance , new object[] { "Hello guys !" });*/
+
+
+
+// Trying to get all information Through User Input
+
+var className = Console.ReadLine();
+var  propertyName = Console.ReadLine();
+var propertyValue = Console.ReadLine();
+
+Assembly assembly = Assembly.GetExecutingAssembly();
+Type type = assembly.GetType(className);
+PropertyInfo propertyInfo = type.GetProperty(propertyName);
+object instance = Activator.CreateInstance(type);
+
+
+/*ConstructorInfo constructorInfo = type.GetConstructor(new Type[] {});
+
+object instance = constructorInfo.Invoke(new object[] { });*/
+
+propertyInfo.SetValue(instance,propertyValue);
+
+foreach(var p in type.GetProperties())
+{
+    Console.WriteLine(p.GetValue(instance));
+}
