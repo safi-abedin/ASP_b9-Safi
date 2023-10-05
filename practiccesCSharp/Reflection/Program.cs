@@ -34,10 +34,10 @@ foreach(var c in assembly.GetTypes())
 
 // trying to get a generic list by reflection
 
-/*Course course = new Course("Asp.net",30000,new List<Topic>{
+Course course = new Course("Asp.net", 30000, new List<Topic>{
 
     new Topic{Title ="Github",Duration=2},
-    new Topic{Title ="LINQ",Duration=6}
+    new Topic{Title ="LINQ",Duration=1}
 });
 
 
@@ -46,11 +46,12 @@ var properties = courseType.GetProperties(BindingFlags.Public | BindingFlags.Ins
 
 foreach (var property in properties)
 {
+    //if(property.PropertyType.GetInterfaces().Contains(typeof(IEnumerable))
     if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
     {
         var items = (IEnumerable)property.GetValue(course);
 
-        if(items.GetType() == typeof(string))
+        if (items.GetType() == typeof(string))
         {
             Console.WriteLine($"Items for property {property.Name}:");
             Console.WriteLine(items);
@@ -74,7 +75,7 @@ foreach (var property in properties)
     {
         Console.WriteLine($"{property.Name}: {property.GetValue(course)}");
     }
-}*/
+}
 
 
 //trying to get a method through reflection
@@ -91,7 +92,7 @@ method.Invoke(instance , new object[] { "Hello guys !" });*/
 
 // Trying to get all information Through User Input
 
-var className = Console.ReadLine();
+/*var className = Console.ReadLine();
 var  propertyName = Console.ReadLine();
 var propertyValue = Console.ReadLine();
 
@@ -101,9 +102,9 @@ PropertyInfo propertyInfo = type.GetProperty(propertyName);
 object instance = Activator.CreateInstance(type);
 
 
-/*ConstructorInfo constructorInfo = type.GetConstructor(new Type[] {});
+*//*ConstructorInfo constructorInfo = type.GetConstructor(new Type[] {});
 
-object instance = constructorInfo.Invoke(new object[] { });*/
+object instance = constructorInfo.Invoke(new object[] { });*//*
 
 propertyInfo.SetValue(instance,propertyValue);
 
@@ -111,3 +112,4 @@ foreach(var p in type.GetProperties())
 {
     Console.WriteLine(p.GetValue(instance));
 }
+*/

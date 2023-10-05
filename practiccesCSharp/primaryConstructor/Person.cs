@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace primaryConstructor
 {
-    public class Person(string firstName , string lastName)
+    public class Person
     {
 
         // old way
@@ -27,8 +27,8 @@ namespace primaryConstructor
 
         }*/
 
-        public string FirstName { get; } = firstName;
-        public string LastName { get;} = lastName;
+        //public string FirstName { get; } = firstName;
+        //public string LastName { get;} = lastName;
 
 
     }

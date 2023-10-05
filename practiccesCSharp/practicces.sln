@@ -5,7 +5,11 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "primaryConstructor", "primaryConstructor\primaryConstructor.csproj", "{1590E2EC-0182-4B88-9BEA-53E1A2EC3B39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection", "Reflection\Reflection.csproj", "{DAC5BB69-5007-4079-A7D2-6A917F6CD4CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reflection", "Reflection\Reflection.csproj", "{DAC5BB69-5007-4079-A7D2-6A917F6CD4CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionLib", "ReflectionLib\ReflectionLib.csproj", "{742395B8-C146-406F-9077-D0EBFE375078}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionTester", "ReflectionTester\ReflectionTester.csproj", "{5C48BEAD-C9E1-4957-87B0-AE8B144572B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{DAC5BB69-5007-4079-A7D2-6A917F6CD4CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC5BB69-5007-4079-A7D2-6A917F6CD4CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC5BB69-5007-4079-A7D2-6A917F6CD4CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{742395B8-C146-406F-9077-D0EBFE375078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{742395B8-C146-406F-9077-D0EBFE375078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{742395B8-C146-406F-9077-D0EBFE375078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{742395B8-C146-406F-9077-D0EBFE375078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C48BEAD-C9E1-4957-87B0-AE8B144572B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C48BEAD-C9E1-4957-87B0-AE8B144572B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C48BEAD-C9E1-4957-87B0-AE8B144572B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C48BEAD-C9E1-4957-87B0-AE8B144572B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
