@@ -29,9 +29,6 @@ namespace ExternalAssemblyDynamicLib
         {
             return a * b;
         }
-        public float Division(int a, int b)
-        {
-            return a / b;
-        }
+       
     }
 }
