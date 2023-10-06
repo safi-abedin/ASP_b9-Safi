@@ -15,14 +15,7 @@ namespace ExternalAssemblyDynamicLib
 
         public int  Subtract(int a,int b)
         {
-            if (a < b)
-            {
-                  return b- a;
-            }
-            else 
-            {
-                return a - b;
-            }  
+            return a - b;
         }
 
        public int  Multipilaction(int a,int b)
