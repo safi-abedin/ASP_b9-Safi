@@ -11,7 +11,7 @@ foreach (Type type in assemblyTypes)
 {
     if (type.Name == "MathOperations")
     {
-        MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public);
+        MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public|BindingFlags.DeclaredOnly);
         foreach (MethodInfo method in methods)
         {
             Console.WriteLine(method.Name);
@@ -28,7 +28,7 @@ foreach (var type in assemblyTypes)
     if (type.Name == "MathOperations")
     {
         object instance = Activator.CreateInstance(type);
-        MethodInfo[] methods = type.GetMethods(BindingFlags.Public|BindingFlags.Instance);
+        MethodInfo[] methods = type.GetMethods(BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
         foreach (MethodInfo method in methods)
         {
             if(input!=null && method.Name ==input) 
