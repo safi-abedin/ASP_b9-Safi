@@ -25,9 +25,14 @@ namespace ExternalAssemblyDynamicLib
             }  
         }
 
-        public int Multiplication(int a,int b)
+       public int  Multipilaction(int a,int b)
         {
             return a * b;
+        }
+
+        public float Division(int a , int b)
+        {
+            return a / b;
         }
        
     }
