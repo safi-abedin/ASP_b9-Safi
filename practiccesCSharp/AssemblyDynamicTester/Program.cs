@@ -20,7 +20,7 @@ foreach (Type type in assemblyTypes)
 }
 Console.WriteLine("Write the method Name you want to execute:");
 string input = Console.ReadLine();
-Console.WriteLine("Enter a and b");
+Console.WriteLine("Enter the value---->1 and value--->2: ");
 var digits = Console.ReadLine().Split().Select(x=>Int32.Parse(x)).ToArray();
 
 foreach (var type in assemblyTypes)
