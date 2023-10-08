@@ -8,8 +8,10 @@ namespace RefLectionListOfList
 {
     public class Topic
     {
-        public String Titles {  get; set; }
+        public string TpoicName {  get; set; }
 
         public string TopicInstructor { get; set; }
+
+        public Topic() { }
     }
 }

@@ -9,7 +9,7 @@ namespace RefLectionListOfList
     public class Course
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string CourseName { get; set; }
 
         public List<Topics> Topics { get; set; }
 
@@ -17,7 +17,7 @@ namespace RefLectionListOfList
         public Course(int id ,String name,List<Topics> topics) 
         {
             Id = id;
-            Name = name;
+            CourseName = name;
             Topics = topics;
         }
     }

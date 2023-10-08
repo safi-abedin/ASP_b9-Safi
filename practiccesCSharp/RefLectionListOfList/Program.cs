@@ -10,54 +10,50 @@ var topicsList = new List<Topics>
         {
             new Topics("Tool Installation", new List<Topic>
             {
-                new Topic { Titles = "Installing Visual Studio", TopicInstructor = "XMen" },
-                new Topic { Titles = "Installing Tracker Tool", TopicInstructor = "YMen" }
+                new Topic { TpoicName = "Installing Visual Studio", TopicInstructor = "XMen" },
+                new Topic { TpoicName = "Installing Tracker Tool", TopicInstructor = "YMen" }
             }),
 
             new Topics("Version Control", new List<Topic>
             {
-                new Topic { Titles = "Why we need version control", TopicInstructor = "XMen" },
-                new Topic { Titles = "One step vs Two step version control", TopicInstructor = "YMen" }
+                new Topic { TpoicName = "Why we need version control", TopicInstructor = "XMen" },
+                new Topic { TpoicName = "One step vs Two step version control", TopicInstructor = "YMen" }
             })
         };
 
 // Creating the course object
-Course course = new Course(1, "Asp.net", topicsList);
+Course course = new Course(1, "Full Stack Asp.net Core Mvc", topicsList);
 
 var courseType = course.GetType();
 var properties = courseType.GetProperties();
+Recursion(properties,course);
 
-foreach (var property in properties)
+
+
+void Recursion(PropertyInfo[] propertyInfo,object obj) 
 {
-    if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+    foreach (var property in propertyInfo)
     {
-        var items = (IEnumerable)property.GetValue(course);
-        if (items.GetType() == typeof(string))
+        if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
         {
-            Console.WriteLine($"{property.Name} :{items}");
-        }
-        foreach (var item in items)
-        {
-            var itemProperties =  item.GetType().GetProperties();
-            foreach(var itemproperty in itemProperties)
+            var items = (IEnumerable)property.GetValue(obj);
+            if (items != null && items.GetType()!=typeof(string))
             {
-                Console.WriteLine(itemproperty.Name);
+                foreach (var item in items)
+                {
+                    var itemProperties = item.GetType().GetProperties();
+                    Recursion(itemProperties, item);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"{property.Name} : {items}");
             }
         }
-    }
-    else
-    {
-        var propertyValue = property.GetValue(course);
-        Console.WriteLine($"{property.Name}: {propertyValue}");
+        else
+        {
+            var propertyValue = property.GetValue(obj);
+            Console.WriteLine($"{property.Name}: {propertyValue}");
+        }
     }
 }
-    
-
-
-
-
-
-
-
-
-
