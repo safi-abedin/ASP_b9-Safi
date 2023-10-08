@@ -32,9 +32,17 @@ foreach (var property in properties)
     if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
     {
         var items = (IEnumerable)property.GetValue(course);
-        foreach(var item in items)
+        if (items.GetType() == typeof(string))
         {
-            Console.WriteLine(item);
+            Console.WriteLine($"{property.Name} :{items}");
+        }
+        foreach (var item in items)
+        {
+            var itemProperties =  item.GetType().GetProperties();
+            foreach(var itemproperty in itemProperties)
+            {
+                Console.WriteLine(itemproperty.Name);
+            }
         }
     }
     else
