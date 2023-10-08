@@ -17,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalAssemblyDynamicLib"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyDynamicTester", "AssemblyDynamicTester\AssemblyDynamicTester.csproj", "{A3C23F95-9997-40C6-BFC3-CCD12D261847}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefLectionListOfList", "RefLectionListOfList\RefLectionListOfList.csproj", "{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefLectionListOfList", "RefLectionListOfList\RefLectionListOfList.csproj", "{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplesDelgate1", "SamplesDelgate1\SamplesDelgate1.csproj", "{A413DC9B-AAC4-4EE1-AF3C-4E7863BCB60E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncCalculator", "FuncCalculator\FuncCalculator.csproj", "{BD769C5D-90BE-46D4-8C19-6A85B295A834}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncMember", "FuncMember\FuncMember.csproj", "{70665F03-6167-4707-BE06-75FF69C0E149}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +63,18 @@ Global
 		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A413DC9B-AAC4-4EE1-AF3C-4E7863BCB60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A413DC9B-AAC4-4EE1-AF3C-4E7863BCB60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A413DC9B-AAC4-4EE1-AF3C-4E7863BCB60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A413DC9B-AAC4-4EE1-AF3C-4E7863BCB60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD769C5D-90BE-46D4-8C19-6A85B295A834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD769C5D-90BE-46D4-8C19-6A85B295A834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD769C5D-90BE-46D4-8C19-6A85B295A834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD769C5D-90BE-46D4-8C19-6A85B295A834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70665F03-6167-4707-BE06-75FF69C0E149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70665F03-6167-4707-BE06-75FF69C0E149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70665F03-6167-4707-BE06-75FF69C0E149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70665F03-6167-4707-BE06-75FF69C0E149}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
