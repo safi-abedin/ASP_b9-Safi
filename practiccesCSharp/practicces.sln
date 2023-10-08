@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionPet", "Reflection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalAssemblyDynamicLib", "ExternalAssemblyDynamicLib\ExternalAssemblyDynamicLib.csproj", "{9DC4845D-BE3B-4BD2-A5D7-BA7E4F44558A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyDynamicTester", "AssemblyDynamicTester\AssemblyDynamicTester.csproj", "{A3C23F95-9997-40C6-BFC3-CCD12D261847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyDynamicTester", "AssemblyDynamicTester\AssemblyDynamicTester.csproj", "{A3C23F95-9997-40C6-BFC3-CCD12D261847}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefLectionListOfList", "RefLectionListOfList\RefLectionListOfList.csproj", "{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{A3C23F95-9997-40C6-BFC3-CCD12D261847}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C23F95-9997-40C6-BFC3-CCD12D261847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C23F95-9997-40C6-BFC3-CCD12D261847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7AC28F3-F31C-47AB-9DED-CB5C169C444E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
