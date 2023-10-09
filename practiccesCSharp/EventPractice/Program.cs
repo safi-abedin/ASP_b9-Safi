@@ -6,8 +6,7 @@ ProccessBusinessLogic proccessBusinessLogic = new ProccessBusinessLogic();
 
 
 proccessBusinessLogic.ProccesCompleted += ProccessBusinessLogic_ProccesCompleted;
-proccessBusinessLogic.ProccesFailed += ProccessBusinessLogic_ProccesFailed;
-proccessBusinessLogic.StartProcces("Hello");
+proccessBusinessLogic.StartProcces();
 void ProccessBusinessLogic_ProccesCompleted()
 {
     Console.WriteLine("Procces Completed");
