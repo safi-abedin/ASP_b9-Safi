@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncCalculator", "FuncCalcu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncMember", "FuncMember\FuncMember.csproj", "{70665F03-6167-4707-BE06-75FF69C0E149}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPractice", "EventPractice\EventPractice.csproj", "{F3E5F29D-C31B-4CBC-9251-43C1CDF46AD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{70665F03-6167-4707-BE06-75FF69C0E149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70665F03-6167-4707-BE06-75FF69C0E149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70665F03-6167-4707-BE06-75FF69C0E149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E5F29D-C31B-4CBC-9251-43C1CDF46AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E5F29D-C31B-4CBC-9251-43C1CDF46AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E5F29D-C31B-4CBC-9251-43C1CDF46AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E5F29D-C31B-4CBC-9251-43C1CDF46AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
