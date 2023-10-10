@@ -2,9 +2,11 @@
 
 using SimpleMapperProject;
 
-SrcCourse src =  new SrcCourse(1,"Asp.net") ;
+SrcCourse src =  new SrcCourse() ;
+src.Name = "Asp.net";
+src.Id = 1 ;
 
-SrcCourse dst = new SrcCourse(0, "");
+SrcCourse dst = new SrcCourse();
 
 SimpleMapper simpleMapper = new SimpleMapper() ;
 

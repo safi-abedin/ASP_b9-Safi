@@ -17,22 +17,20 @@ namespace SimpleMapperProject
             //geeting the properties that only decleared to match the properties
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
             var destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            if (Equals(sourceType,destinationType))
+            if (Equals(sourceType,destinationType)&& Equals(sourceProperties, sourceProperties))
             {
                 foreach( var property in sourceProperties )
                 {
                     Console.WriteLine(property.Name);
                 }
-                foreach( var property in destinationProperties )
+                foreach( var property in destinationProperties)
                 {
                     Console.WriteLine(property.Name);
                 }
             }
             else
             {
-                Console.WriteLine("Type Doesnot match");
-                Console.WriteLine(sourceType);
-                Console.WriteLine(destinationType.Name);
+                Console.WriteLine("The destination object or property  is different from the Source Object");
             }
         }
     }
