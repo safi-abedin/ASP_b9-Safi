@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace SimpleMapperProject
 {
-    internal class SimpleMapper
+    public class SimpleMapper
     {
+        public int Integer { get; set; }
+
+        public SimpleMapper(int integer) 
+        {
+            Integer = integer;
+        }
+        
+        public void Copy(SimpleMapper copy, SimpleMapper destination)
+        {
+            var integerSrc = copy.Integer;
+
+        }
     }
 }
