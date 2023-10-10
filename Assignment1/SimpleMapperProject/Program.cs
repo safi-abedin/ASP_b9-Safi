@@ -2,8 +2,10 @@
 
 using SimpleMapperProject;
 
-SimpleMapper copy =  new SimpleMapper();
+SrcCourse src =  new SrcCourse(1,"Asp.net") ;
 
-SimpleMapper destination = new SimpleMapper();
+SrcCourse dst = new SrcCourse(0, "");
 
-copy.Copy(copy, destination);
+SimpleMapper simpleMapper = new SimpleMapper() ;
+
+simpleMapper.Copy(src, dst);

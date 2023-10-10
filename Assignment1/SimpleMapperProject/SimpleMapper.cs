@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,17 +9,31 @@ namespace SimpleMapperProject
 {
     public class SimpleMapper
     {
-        public int Integer { get; set; }
-
-        public SimpleMapper(int integer) 
+        public void Copy(object source, object destination)
         {
-            Integer = integer;
-        }
-        
-        public void Copy(SimpleMapper copy, SimpleMapper destination)
-        {
-            var integerSrc = copy.Integer;
-
+            //getting the type of objects
+            var sourceType = source.GetType();
+            var destinationType = destination.GetType();
+            //geeting the properties that only decleared to match the properties
+            var sourceProperties = sourceType.GetProperties(BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
+            var destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            if (Equals(sourceType,destinationType))
+            {
+                foreach( var property in sourceProperties )
+                {
+                    Console.WriteLine(property.Name);
+                }
+                foreach( var property in destinationProperties )
+                {
+                    Console.WriteLine(property.Name);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Type Doesnot match");
+                Console.WriteLine(sourceType);
+                Console.WriteLine(destinationType.Name);
+            }
         }
     }
 }
