@@ -2,19 +2,12 @@
 
 using SimpleMapperProject;
 
-/*SrcCourse src =  new SrcCourse() ;
-src.Name = "Asp.net";
-src.Id = 1 ;
-
-SrcCourse dst = new SrcCourse();
-
-SimpleMapper simpleMapper = new SimpleMapper() ;
-
-simpleMapper.Copy(src, dst);
-*/
 
 
-/*
+/// a object with simple types
+
+
+
 // Create a source object
 var sourcePerson = new Person
 {
@@ -46,7 +39,7 @@ PrintPerson(destinationPerson);
 
 
 // Copy values from source to destination using SimpleMapper
-Smapper.Copy(sourcePerson, destinationPerson);
+SimpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");
@@ -57,11 +50,13 @@ static void PrintPerson(Person person)
 {
     Console.WriteLine($"Name: {person.Name}, Age: {person.Age}");
     Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
-}*/
+}
 
 
+///objects with complex types
 
 
+/*
 // Create a source object with nested structures
 var sourcePerson = new Person
 {
@@ -137,4 +132,4 @@ PrintPerson(destinationPerson);
             Console.WriteLine($"  - {phoneNumber}");
         }
     }
-  }
+  }*/

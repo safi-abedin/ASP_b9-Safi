@@ -10,15 +10,27 @@ namespace SimpleMapperProject
 {
     public class SimpleMapper
     {
-        public void Copy(object source, object destination)
+        public static void Copy(object source, object destination)
         {
+            //checking  source or destination 
+            if(source == null || destination == null)
+            {
+                throw new ArgumentNullException("Source or destination can not be null");
+            }
+
+
             //getting the type of objects
             var sourceType = source.GetType();
             var destinationType = destination.GetType();
+            if(sourceType != destinationType)
+            {
+                throw new ArgumentException("Source and Destination Type are not same");
+            }
+
             //geeting the properties that only decleared to match the properties
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             var destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            if (Equals(sourceType, destinationType) && Equals(sourceProperties, sourceProperties))
+            if (sourceType == destinationType)
             {
                 foreach (var property in sourceProperties)
                 {
