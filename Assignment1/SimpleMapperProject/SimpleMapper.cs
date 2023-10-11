@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SimpleMapperProject
 {
     public class SimpleMapper
-    {
+    {   
         public static void Copy(object source, object destination)
         {
             //checking  source or destination 
@@ -22,7 +22,7 @@ namespace SimpleMapperProject
             //getting the type of objects And checks for the if both type are same
             var sourceType = source.GetType();
             var destinationType = destination.GetType();
-            if(sourceType != destinationType)
+            if(sourceType != destinationType )
             {
                 throw new Exception("Source and Destination Type are not same");
             }
@@ -47,11 +47,12 @@ namespace SimpleMapperProject
                         var items = (IEnumerable)property.GetValue(source);
                         if (items != null && items.GetType() != typeof(string))
                         {
-                            /*foreach (var item in items)
+                            foreach (var item in items)
                             {
-                                var itemProperties = item.GetType().GetProperties();
-                                Copy(itemProperties, item);
-                            }*/
+                                var destproperty = item.GetType().GetProperty(property.Name);
+                                Console.WriteLine(destproperty.Name);
+                                
+                            }
                         }
                         else
                         {

@@ -1,15 +1,11 @@
-﻿
-
-using SimpleMapperProject;
+﻿using SimpleMapperProject;
 
 
 
 /// a object with simple types
 
-
-
 // Create a source object
-var sourcePerson = new Person
+/*var sourcePerson = new Person
 {
     Name = "Elon Musk",
     Age = 30,
@@ -52,13 +48,16 @@ static void PrintPerson(Person person)
 {
     Console.WriteLine($"Name: {person.Name}, Age: {person.Age} , Height : {person.Height}");
     Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
-}
+}*/
+
+
+
+
 
 
 ///objects with complex types
+///
 
-
-/*
 // Create a source object with nested structures
 var sourcePerson = new Person
 {
@@ -75,12 +74,12 @@ var sourcePerson = new Person
                 new Contact
                 {
                     Name = "Bob",
-                    PhoneNumbers = new List<string> { "1234567890", "9876543210" }
+                    PhoneNumber =  "1234567890"
                 },
                 new Contact
                 {
                     Name = "Charlie",
-                    PhoneNumbers = new List<string> { "1112223333" }
+                    PhoneNumber = "1112223333" 
                 }
             }
 };
@@ -100,8 +99,8 @@ var destinationPerson = new Person
             {
                 new Contact
                 {
-                    Name = "Default Contact",
-                    PhoneNumbers = new List<string>(){}
+                    Name = "Default Contact Name",
+                    PhoneNumber = "0000000"
                 }
             }
 };
@@ -112,15 +111,15 @@ PrintPerson(destinationPerson);
 
 SimpleMapper simpleMapper = new();
 // Copy values from source to destination using SimpleMapper
-simpleMapper.Copy(sourcePerson,destinationPerson);
+SimpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");
 PrintPerson(destinationPerson);
-   
 
-   static void PrintPerson(Person person)
-  {
+
+static void PrintPerson(Person person)
+{
     Console.WriteLine($"Name: {person.Name}, Age: {person.Age}, Height: {person.Height}");
     Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
 
@@ -128,10 +127,7 @@ PrintPerson(destinationPerson);
     foreach (var contact in person.Contacts)
     {
         Console.WriteLine($"- {contact.Name}");
-        Console.WriteLine("  Phone Numbers:");
-        foreach (var phoneNumber in contact.PhoneNumbers)
-        {
-            Console.WriteLine($"  - {phoneNumber}");
-        }
+        Console.WriteLine("  Phone Number:");
+        Console.WriteLine($"  - {contact.PhoneNumber}");
     }
-  }*/
+}
