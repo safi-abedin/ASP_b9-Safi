@@ -24,26 +24,15 @@ namespace SimpleMapperProject
             var destinationType = destination.GetType();
             if(sourceType != destinationType)
             {
-                throw new ArgumentException("Source and Destination Type are not same");
+                throw new Exception("Source and Destination Type are not same");
             }
 
             //geeting the properties that only decleared to match the properties
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             var destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            if (sourceType == destinationType)
+            if (!destinationProperties.Equals(sourceProperties))
             {
-                foreach (var property in sourceProperties)
-                {
-                    Console.WriteLine(property.Name);
-                }
-                foreach (var property in destinationProperties)
-                {
-                    Console.WriteLine(property.Name);
-                }
-            }
-            else
-            {
-                Console.WriteLine("The destination object or property  is different from the Source Object");
+                throw new Exception($" not contain in the Destination object to copy");
             }
         }
 

@@ -27,8 +27,7 @@ var destinationPerson = new Person
     Age = 0,
     Address = new Address
     {
-        Street = "Default Street",
-        City = "Default City"
+        Street = "Default Street"
     }
 };
 
