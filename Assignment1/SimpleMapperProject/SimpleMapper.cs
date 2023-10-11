@@ -40,7 +40,6 @@ namespace SimpleMapperProject
                     if (property.PropertyType.IsPrimitive)
                     {
                         var srcvalue = property.GetValue(source);
-                        Console.WriteLine(srcvalue);
                         property.SetValue(destination, srcvalue);
                     }
                     else if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
@@ -57,14 +56,13 @@ namespace SimpleMapperProject
                         else
                         {
                             var Strvalue  = property.GetValue(source);
-                            Console.WriteLine(Strvalue);
                             property.SetValue(destination, Strvalue);
                         }
                     }
                     else
                     {
-                        /*var propertyValue = property.GetValue(obj);
-                        Console.WriteLine($"{property.Name}: {propertyValue}");*/
+                        var propertyValue = property.GetValue(source);
+                        property.SetValue(destination, propertyValue);
                     }
                 }
             }

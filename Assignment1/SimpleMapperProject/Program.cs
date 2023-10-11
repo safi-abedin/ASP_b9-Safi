@@ -11,7 +11,7 @@ using SimpleMapperProject;
 // Create a source object
 var sourcePerson = new Person
 {
-    Name = "John Doe",
+    Name = "Elon Musk",
     Age = 30,
     Height=5.3,
     Address = new Address
