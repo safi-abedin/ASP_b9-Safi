@@ -23,7 +23,7 @@ namespace SimpleMapperProject
             var sourceType = source.GetType();
             var destinationType = destination.GetType();
             if(sourceType != destinationType )
-            {
+            {  
                 throw new Exception("Source and Destination Type are not same");
             }
 
@@ -31,6 +31,8 @@ namespace SimpleMapperProject
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             foreach(var property in sourceProperties)
             {
+                if (!property.CanWrite || property == null) { continue; }
+                
                 if (sourceType.GetProperty(property.Name) != destinationType.GetProperty(property.Name))
                 {
                     continue;
@@ -49,9 +51,10 @@ namespace SimpleMapperProject
                         {
                             foreach (var item in items)
                             {
-                                var destproperty = item.GetType().GetProperty(property.Name);
-                                Console.WriteLine(destproperty.Name);
-                                
+                                var destProperty = destinationType.GetProperty(property.Name);
+                                var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
+                                Console.WriteLine(newItem);
+                                Copy(item, newItem);
                             }
                         }
                         else
