@@ -19,7 +19,7 @@ namespace SimpleMapperProject
             }
 
 
-            //getting the type of objects
+            //getting the type of objects And checks for the if both type are same
             var sourceType = source.GetType();
             var destinationType = destination.GetType();
             if(sourceType != destinationType)
@@ -27,13 +27,25 @@ namespace SimpleMapperProject
                 throw new Exception("Source and Destination Type are not same");
             }
 
-            //geeting the properties that only decleared to match the properties
+            //geeting the properties that only decleared to match the properties and checks if both contains same property 
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            var destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            if (!destinationProperties.Equals(sourceProperties))
+            foreach(var property in sourceProperties)
             {
-                throw new Exception($" not contain in the Destination object to copy");
+                if (sourceType.GetProperty(property.Name) != destinationType.GetProperty(property.Name))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (property.PropertyType.IsPrimitive)
+                    {
+                        var srcvalue = property.GetValue(source, null);
+                        Console.WriteLine(srcvalue);
+                        property.SetValue(destination, srcvalue, null);
+                    }
+                }
             }
+           
         }
 
        /* public void Recursion(PropertyInfo[] srcPropertyInfo, object srcObj, PropertyInfo[] dstPropertyInfo, object dstObj)

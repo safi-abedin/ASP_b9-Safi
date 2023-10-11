@@ -13,6 +13,7 @@ var sourcePerson = new Person
 {
     Name = "John Doe",
     Age = 30,
+    Height=5.3,
     Address = new Address
     {
         Street = "123 Main St",
@@ -27,7 +28,8 @@ var destinationPerson = new Person
     Age = 0,
     Address = new Address
     {
-        Street = "Default Street"
+        Street = "Default Street",
+        City = "Default Street"
     }
 };
 
