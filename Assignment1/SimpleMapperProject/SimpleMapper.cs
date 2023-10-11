@@ -41,8 +41,8 @@ namespace SimpleMapperProject
                 {
                     if (property.PropertyType.IsPrimitive)
                     {
-                        var srcvalue = property.GetValue(source);
-                        property.SetValue(destination, srcvalue);
+                        Setvalue(source,destination,property);
+                        
                     }
                     else if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                     {
@@ -50,37 +50,42 @@ namespace SimpleMapperProject
                         if (items != null && items.GetType() != typeof(string))
                         {
                             var destProperty = destinationType.GetProperty(property.Name);
-                            Console.WriteLine(destProperty);
                             var destCollection = (IList) Activator.CreateInstance(destProperty.PropertyType);
-                            Console.WriteLine(destCollection);
+                            var democollection = (IList)Activator.CreateInstance(destProperty.PropertyType);
                             foreach (var item in items)
                             {
-                                var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
-                                Copy(item, newItem);
-                                destCollection.Add(newItem);
+                                if (!(item is string))
+                                {
+                                    var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
+                                    Copy(item, newItem);
+                                    destCollection.Add(newItem);
+                                }
+                                else 
+                                {
+                                    var data = democollection.Add(string.Join(string.Empty, item));
+                                    Console.WriteLine(data.GetType().GetInterfaces().Contains(typeof(string)));
+                                }
                             }
                             destProperty.SetValue(destination, destCollection);
                         }
                         else
                         {
-                            var Strvalue  = property.GetValue(source);
-                            property.SetValue(destination, Strvalue);
+                            Setvalue(source, destination, property);
                         }
                     }
                     else
                     {
-                        var propertyValue = property.GetValue(source);
-                        property.SetValue(destination, propertyValue);
+                        Setvalue(source, destination, property);
                     }
                 }
             }
            
         }
+
+        private static void Setvalue(object source, object destination, PropertyInfo property)
+        {
+            var srcvalue = property.GetValue(source);
+            property.SetValue(destination, srcvalue);
+        }
     }
 }
-
-
-//PhoneNumber = new List<string>(){"",""}
-//new List<string>{ "1234567890", "1234567890" }
-//System.Collections.Generic.List`1[System.String] PhoneNumber
-//System.Collections.Generic.List`1[System.String]

@@ -74,12 +74,12 @@ var sourcePerson = new Person
                 new Contact
                 {
                     Name = "Bob",
-                    PhoneNumber =  "1234567890"
+                    PhoneNumber =  new List<string>{ "1234567890", "1234567890" }
                 },
                 new Contact
                 {
                     Name = "Charlie",
-                    PhoneNumber = "1112223333" 
+                    PhoneNumber = new List<string>{ "1234567890", "1234567890" }
                 }
             }
 };
@@ -100,7 +100,7 @@ var destinationPerson = new Person
                 new Contact
                 {
                     Name = "Default Contact Name",
-                    PhoneNumber = "0000000"
+                    PhoneNumber = new List<string>(){"",""}
                 }
             }
 };

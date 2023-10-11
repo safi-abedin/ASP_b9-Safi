@@ -9,6 +9,6 @@ namespace SimpleMapperProject
     public  class Contact
     {
         public string Name { get; set; }
-        public string PhoneNumber { get; set; }
+        public List<string> PhoneNumber { get; set; }
     }
 }
