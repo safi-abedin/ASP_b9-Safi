@@ -26,6 +26,7 @@ var destinationPerson = new Person
 {
     Name = "Default Name",
     Age = 0,
+    Height = 0,
     Address = new Address
     {
         Street = "Default Street",
@@ -49,7 +50,7 @@ PrintPerson(destinationPerson);
 
 static void PrintPerson(Person person)
 {
-    Console.WriteLine($"Name: {person.Name}, Age: {person.Age}");
+    Console.WriteLine($"Name: {person.Name}, Age: {person.Age} , Height : {person.Height}");
     Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
 }
 

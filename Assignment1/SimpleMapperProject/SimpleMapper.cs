@@ -39,41 +39,36 @@ namespace SimpleMapperProject
                 {
                     if (property.PropertyType.IsPrimitive)
                     {
-                        var srcvalue = property.GetValue(source, null);
+                        var srcvalue = property.GetValue(source);
                         Console.WriteLine(srcvalue);
-                        property.SetValue(destination, srcvalue, null);
+                        property.SetValue(destination, srcvalue);
+                    }
+                    else if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+                    {
+                        var items = (IEnumerable)property.GetValue(source);
+                        if (items != null && items.GetType() != typeof(string))
+                        {
+                            /*foreach (var item in items)
+                            {
+                                var itemProperties = item.GetType().GetProperties();
+                                Copy(itemProperties, item);
+                            }*/
+                        }
+                        else
+                        {
+                            var Strvalue  = property.GetValue(source);
+                            Console.WriteLine(Strvalue);
+                            property.SetValue(destination, Strvalue);
+                        }
+                    }
+                    else
+                    {
+                        /*var propertyValue = property.GetValue(obj);
+                        Console.WriteLine($"{property.Name}: {propertyValue}");*/
                     }
                 }
             }
            
         }
-
-       /* public void Recursion(PropertyInfo[] srcPropertyInfo, object srcObj, PropertyInfo[] dstPropertyInfo, object dstObj)
-        {
-            foreach (var property in srcPropertyInfo)
-            {
-                if (property.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
-                {
-                    var items = (IEnumerable)property.GetValue(srcObj);
-                    if (items != null && items.GetType() != typeof(string))
-                    {
-                        foreach (var item in items)
-                        {
-                            var itemProperties = item.GetType().GetProperties();
-                            Recursion(itemProperties, item);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{property.Name} : {items}");
-                    }
-                }
-                else
-                {
-                    var propertyValue = property.GetValue(obj);
-                    Console.WriteLine($"{property.Name}: {propertyValue}");
-                }
-            }
-        }*/
     }
 }
