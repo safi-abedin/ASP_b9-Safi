@@ -49,13 +49,17 @@ namespace SimpleMapperProject
                         var items = (IEnumerable)property.GetValue(source);
                         if (items != null && items.GetType() != typeof(string))
                         {
+                            var destProperty = destinationType.GetProperty(property.Name);
+                            Console.WriteLine(destProperty);
+                            var destCollection = (IList) Activator.CreateInstance(destProperty.PropertyType);
+                            Console.WriteLine(destCollection);
                             foreach (var item in items)
                             {
-                                var destProperty = destinationType.GetProperty(property.Name);
                                 var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
-                                Console.WriteLine(newItem);
                                 Copy(item, newItem);
+                                destCollection.Add(newItem);
                             }
+                            destProperty.SetValue(destination, destCollection);
                         }
                         else
                         {
@@ -74,3 +78,9 @@ namespace SimpleMapperProject
         }
     }
 }
+
+
+//PhoneNumber = new List<string>(){"",""}
+//new List<string>{ "1234567890", "1234567890" }
+//System.Collections.Generic.List`1[System.String] PhoneNumber
+//System.Collections.Generic.List`1[System.String]
