@@ -74,12 +74,12 @@ var sourcePerson = new Person
                 new Contact
                 {
                     Name = "Bob",
-                    PhoneNumber =  new List<string>{ "1234567890", "1234567890" }
+                    PhoneNumber =  new List<string>{ "84484848", "32323728937" }
                 },
                 new Contact
                 {
                     Name = "Charlie",
-                    PhoneNumber = new List<string>{ "1234567890", "1234567890" }
+                    PhoneNumber = new List<string>{ "1234567890","023823213" }
                 }
             }
 };
@@ -128,6 +128,10 @@ static void PrintPerson(Person person)
     {
         Console.WriteLine($"- {contact.Name}");
         Console.WriteLine("  Phone Number:");
-        Console.WriteLine($"  - {contact.PhoneNumber}");
+        foreach(var phoneNumber in contact.PhoneNumber)
+        {
+          Console.WriteLine($"  - {phoneNumber}");
+        }
+       
     }
 }
