@@ -142,3 +142,74 @@ static void PrintPerson(Person person)
 }*/
 
 
+//test case 3
+
+// Create source instances
+var sourceContact = new Contact
+{
+    Name = "John Doe",
+    PhoneNumbers = new List<int> { 123456789, 987654321 }
+};
+
+var sourceAddress = new Address
+{
+    Street = "123 Main St",
+    City = "SomeCity"
+};
+
+var sourceEmployee = new Employee
+{
+    Name = "Alice",
+    EmployeeId = 1,
+    EmployeeAddress = sourceAddress,
+    Contacts = new List<Contact> { sourceContact }
+};
+
+var sourceCompany = new Company
+{
+    Name = "XYZ Corp",
+    Employees = new List<Employee> { sourceEmployee }
+};
+
+// Create a destination instance with empty properties
+var destinationCompany = new Company();
+
+Console.WriteLine("Source Company:");
+DisplayCompanyDetails(sourceCompany);
+
+// Copy properties from sourceCompany to destinationCompany
+SimpleMapper.Copy(sourceCompany, destinationCompany);
+
+Console.WriteLine("\nDestination Company after Copy:");
+DisplayCompanyDetails(destinationCompany);
+
+
+static void DisplayCompanyDetails(Company company)
+{
+    Console.WriteLine("Company Name: " + company.Name);
+    Console.WriteLine("Employees:");
+    if (company.Employees != null)
+    {
+        foreach (var employee in company.Employees)
+        {
+            Console.WriteLine("  Employee Name: " + employee.Name);
+            Console.WriteLine("  Employee ID: " + employee.EmployeeId);
+            Console.WriteLine("  Employee Address:");
+            Console.WriteLine("    Street: " + employee.EmployeeAddress.Street);
+            Console.WriteLine("    City: " + employee.EmployeeAddress.City);
+
+            Console.WriteLine("  Employee Contacts:");
+            foreach (var contact in employee.Contacts)
+            {
+                Console.WriteLine("    Contact Name: " + contact.Name);
+                Console.WriteLine("    Phone Numbers:");
+                foreach (var phoneNumber in contact.PhoneNumbers)
+                {
+                    Console.WriteLine("      " + phoneNumber);
+                }
+            }
+        }
+    }
+}
+
+
