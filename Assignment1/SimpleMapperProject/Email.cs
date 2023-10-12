@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMapperProject
 {
-    public  class Contact
+    internal class Email
     {
-        public string Name { get; set; }
-        public List<int> PhoneNumbers { get; set; }
     }
 }

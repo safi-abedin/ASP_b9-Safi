@@ -49,7 +49,7 @@ namespace SimpleMapperProject
                     // Handle IEnumerable properties (e.g., lists)
                     var sourceList = srcValue as IEnumerable;
                     if (sourceList != null)
-                    {
+                    { 
                         var destList = (IList)Activator.CreateInstance(destProperty.PropertyType);
                         foreach (var item in sourceList)
                         {

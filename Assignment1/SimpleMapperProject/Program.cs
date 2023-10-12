@@ -1,15 +1,16 @@
 ﻿using SimpleMapperProject;
 
 
-
+//testc case 1
 /// a object with simple types
 
 // Create a source object
 /*var sourcePerson = new Person
 {
     Name = "Elon Musk",
+    Email ="Elonmusk@gmail.com",
     Age = 30,
-    Height=5.3,
+    Height = 5.3,
     Address = new Address
     {
         Street = "123 Main St",
@@ -23,12 +24,15 @@ var destinationPerson = new Person
     Name = "Default Name",
     Age = 0,
     Height = 0,
+    Email = "",
     Address = new Address
     {
         Street = "Default Street",
         City = "Default Street"
     }
 };
+
+
 
 // Print the initial state of the destination object
 Console.WriteLine("Destination object before copy:");
@@ -46,7 +50,8 @@ PrintPerson(destinationPerson);
 
 static void PrintPerson(Person person)
 {
-    Console.WriteLine($"Name: {person.Name}, Age: {person.Age} , Height : {person.Height}");
+    Console.WriteLine($"Name: {person.Name},Email :{person.Email} ");
+    Console.WriteLine($"Age: {person.Age} , Height : {person.Height}");
     Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
 }*/
 
@@ -54,12 +59,12 @@ static void PrintPerson(Person person)
 
 
 
-
+//test case 2
 ///objects with complex types
 ///
 
 // Create a source object with nested structures
-var sourcePerson = new Person
+/*var sourcePerson = new Person
 {
     Name = "Alice",
     Age = 35,
@@ -74,12 +79,12 @@ var sourcePerson = new Person
                 new Contact
                 {
                     Name = "Bob",
-                    PhoneNumber =  new List<string>{ "84484848", "32323728937" }
+                    PhoneNumbers =  new List<int>{ 422432432, 32323222 }
                 },
                 new Contact
                 {
                     Name = "Charlie",
-                    PhoneNumber = new List<string>{ "1234567890","023823213" }
+                    PhoneNumbers = new List<int>{ 1234567890,023823213 }
                 }
             }
 };
@@ -100,7 +105,7 @@ var destinationPerson = new Person
                 new Contact
                 {
                     Name = "Default Contact Name",
-                    PhoneNumber = new List<string>(){"",""}
+                    PhoneNumbers = new List<int>()
                 }
             }
 };
@@ -128,10 +133,12 @@ static void PrintPerson(Person person)
     {
         Console.WriteLine($"- {contact.Name}");
         Console.WriteLine("  Phone Number:");
-        foreach(var phoneNumber in contact.PhoneNumber)
+        foreach(var phoneNumber in contact.PhoneNumbers)
         {
           Console.WriteLine($"  - {phoneNumber}");
         }
        
     }
-}
+}*/
+
+
