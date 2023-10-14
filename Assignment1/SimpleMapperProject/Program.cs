@@ -1,8 +1,7 @@
-﻿using SimpleMapperProject;
-
+﻿
+using SimpleMapperProject;
 
 //testc case 1
-/// a object with simple types
 
 // Create a source object
 /*var sourcePerson = new Person
@@ -60,10 +59,12 @@ static void PrintPerson(Person person)
 
 
 //test case 2
-///objects with complex types
-///
 
 // Create a source object with nested structures
+
+/// a object with simple types
+///objects with complex types
+///
 var sourcePerson = new Person1
 {
     Name = "kamal",
