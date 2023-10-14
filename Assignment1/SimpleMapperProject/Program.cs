@@ -66,7 +66,7 @@ static void PrintPerson(Person person)
 // Create a source object with nested structures
 var sourcePerson = new Person1
 {
-    Name = "Alice",
+    Name = "kamal",
     Age = 35,
     Height = 5.8,
     Address = new Address
@@ -83,25 +83,17 @@ var sourcePerson = new Person1
                 },
                 new Contact
                 {
-                    Name = "Charlie",
+                    Name = "safi",
                     PhoneNumbers = new List<int>{ 1234567890,023823213 }
                 }
             }
 };
 
+//created a different object to  copy
 Person2 destinationPerson = new Person2();
 
-SimpleMapper simpleMapper = new SimpleMapper();
-// Create a destination object with default values
-
-
-// Print the initial state of the destination object
-Console.WriteLine("Destination object before copy:");
-//PrintPerson(destinationPerson);
-
-
 // Copy values from source to destination using SimpleMapper
-simpleMapper.Copy(sourcePerson, destinationPerson);
+SimpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");
@@ -111,12 +103,11 @@ PrintPerson(destinationPerson);
 static void PrintPerson(Person2 person)
 {
     Console.WriteLine($"Name: {person.Name}, Age: {person.Age}, Height: {person.Height}");
-    
 
     Console.WriteLine("Contacts:");
     foreach (var contact in person.Contacts)
     {
-        Console.WriteLine($"- {contact.Name}");
+        Console.WriteLine($"Name :{contact.Name}");
         Console.WriteLine("  Phone Number:");
         foreach (var phoneNumber in contact.PhoneNumbers)
         {
@@ -125,6 +116,7 @@ static void PrintPerson(Person2 person)
 
     }
 }
+
 
 
 //test case 3

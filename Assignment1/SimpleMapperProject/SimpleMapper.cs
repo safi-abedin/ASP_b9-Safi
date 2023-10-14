@@ -10,7 +10,7 @@ namespace SimpleMapperProject
 {
     public class SimpleMapper
     {
-        public void Copy(object source, object destination)
+        public static void Copy(object source, object destination)
         {
             // Checking source or destination
             if (source == null )
@@ -26,15 +26,22 @@ namespace SimpleMapperProject
 
             foreach (var property in sourceProperties)
             {
-                if (!property.CanWrite || property == null)
-                    continue;
-
                 var destProperty = destinationType.GetProperty(property.Name);
+                var srcValue = property.GetValue(source);
+
+                if (!property.CanWrite || property == null)
+                {
+
+                    continue;
+                }
 
                 if (destProperty == null)
                     continue;
 
-                var srcValue = property.GetValue(source);
+                if(srcValue is null)
+                {
+                    destProperty.SetValue(destination,"No value");
+                }
 
                 if (property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
                 {
