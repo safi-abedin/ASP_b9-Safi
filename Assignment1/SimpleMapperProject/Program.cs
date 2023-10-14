@@ -64,7 +64,7 @@ static void PrintPerson(Person person)
 ///
 
 // Create a source object with nested structures
-/*var sourcePerson = new Person
+var sourcePerson = new Person1
 {
     Name = "Alice",
     Age = 35,
@@ -89,63 +89,48 @@ static void PrintPerson(Person person)
             }
 };
 
+Person2 destinationPerson = new Person2();
+
+SimpleMapper simpleMapper = new SimpleMapper();
 // Create a destination object with default values
-var destinationPerson = new Person
-{
-    Name = "Default Name",
-    Age = 0,
-    Height = 0.0,
-    Address = new Address
-    {
-        Street = "Default Street",
-        City = "Default City"
-    },
-    Contacts = new List<Contact>
-            {
-                new Contact
-                {
-                    Name = "Default Contact Name",
-                    PhoneNumbers = new List<int>()
-                }
-            }
-};
+
 
 // Print the initial state of the destination object
 Console.WriteLine("Destination object before copy:");
-PrintPerson(destinationPerson);
+//PrintPerson(destinationPerson);
 
-SimpleMapper simpleMapper = new();
+
 // Copy values from source to destination using SimpleMapper
-SimpleMapper.Copy(sourcePerson, destinationPerson);
+simpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");
 PrintPerson(destinationPerson);
 
 
-static void PrintPerson(Person person)
+static void PrintPerson(Person2 person)
 {
     Console.WriteLine($"Name: {person.Name}, Age: {person.Age}, Height: {person.Height}");
-    Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
+    
 
     Console.WriteLine("Contacts:");
     foreach (var contact in person.Contacts)
     {
         Console.WriteLine($"- {contact.Name}");
         Console.WriteLine("  Phone Number:");
-        foreach(var phoneNumber in contact.PhoneNumbers)
+        foreach (var phoneNumber in contact.PhoneNumbers)
         {
-          Console.WriteLine($"  - {phoneNumber}");
+            Console.WriteLine($"  - {phoneNumber}");
         }
-       
+
     }
-}*/
+}
 
 
 //test case 3
 
 // Create source instances
-var sourceContact = new Contact
+/*var sourceContact = new Contact
 {
     Name = "John Doe",
     PhoneNumbers = new List<int> { 123456789, 987654321 }
@@ -211,5 +196,5 @@ static void DisplayCompanyDetails(Company company)
         }
     }
 }
-
+*/
 

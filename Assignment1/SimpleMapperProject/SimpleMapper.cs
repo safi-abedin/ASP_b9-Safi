@@ -10,21 +10,17 @@ namespace SimpleMapperProject
 {
     public class SimpleMapper
     {
-        public static void Copy(object source, object destination)
+        public void Copy(object source, object destination)
         {
             // Checking source or destination
-            if (source == null || destination == null)
+            if (source == null )
             {
-                throw new ArgumentNullException("Source or destination cannot be null");
+                throw new ArgumentNullException("Source cannot be null");
             }
 
             var sourceType = source.GetType();
             var destinationType = destination.GetType();
 
-            if (sourceType != destinationType)
-            {
-                throw new Exception("Source and Destination Type are not the same");
-            }
 
             var sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
