@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMapperProject", "Simp
 		{CFE965D8-BAA3-47C8-B032-8E8BF372DBE7} = {CFE965D8-BAA3-47C8-B032-8E8BF372DBE7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMapper.dll", "SampleMapper.dll\SimpleMapper.dll.csproj", "{CFE965D8-BAA3-47C8-B032-8E8BF372DBE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMapperLib", "SampleMapper.dll\SimpleMapperLib.csproj", "{CFE965D8-BAA3-47C8-B032-8E8BF372DBE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMapper.Tester", "SimpleMapper.Tester\SimpleMapper.Tester.csproj", "{3B5E5171-0244-40E8-8354-0D2F286727C6}"
 	ProjectSection(ProjectDependencies) = postProject

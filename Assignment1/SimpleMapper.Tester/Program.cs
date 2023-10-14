@@ -29,14 +29,32 @@ var sourcePerson = new Person1
 //created a different object to  copy
 Person2 destinationPerson = new Person2();
 
-Assembly assembly = Assembly.LoadFrom("F:\\ASP_b9-Safi\\Assignment1\\SampleMapper.dll\\bin\\Debug\\net7.0\\SimpleMapper.dll.dll");
-Type type = assembly.GetType("SimpleMapper");
+Assembly assembly = Assembly.LoadFile("F:\\ASP_b9-Safi\\Assignment1\\SampleMapper.dll\\bin\\Debug\\net7.0\\SimpleMapperLib.dll");
+Type[] types = assembly.GetTypes();
 
-object instance = Activator.CreateInstance(type);
+foreach (Type type in types)
+{
+    if (type.Name == "SimpleMapper")
+    {
 
-MethodInfo method = type.GetMethod("Copy",BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
-// Copy values from source to destination using SimpleMapper
-method.Invoke(instance,new object[] { sourcePerson, destinationPerson });
+        ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
+
+        if (constructorInfo == null)
+        {
+            Console.WriteLine("Constructor not found for type 'SimpleMapper'.");
+            return;
+        }
+        object instance = constructorInfo.Invoke(null);
+
+        MethodInfo method = type.GetMethod("Copy", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, new Type[] { typeof(object), typeof(object) });
+        // Copy values from source to destination using SimpleMapper
+        method.Invoke(instance, new object[] { sourcePerson, destinationPerson });
+    }
+}
+
+
+
+
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");

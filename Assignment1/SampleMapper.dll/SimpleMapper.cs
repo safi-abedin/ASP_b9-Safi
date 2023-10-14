@@ -10,7 +10,7 @@ namespace SimpleMapper.dll
 {
     public class SimpleMapper
     {
-        public static void Copy(object source, object destination)
+        public  void Copy(object source, object destination)
         {
             // Checking source or destination
             if (source == null)
