@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SimpleMapperTester2;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var source = new Company1
@@ -53,8 +54,6 @@ var source = new Company1
         }
 };
 var destination = new Company2();
-
 SimpleMapper.Copy(source, destination);
-
 Console.WriteLine("Destination Object After Copy :");
 Console.WriteLine(JsonConvert.SerializeObject(destination, Newtonsoft.Json.Formatting.Indented));
