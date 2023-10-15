@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMapperProject", "Simp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMapperTester2", "SimpleMapperTester2\SimpleMapperTester2.csproj", "{BCA99652-A141-4558-8F01-A1C3E3A70B8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMapperSir", "SimpleMapperSir\SimpleMapperSir.csproj", "{7A50793B-A6A9-4EE7-BBC7-1CDEE4A8FAA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BCA99652-A141-4558-8F01-A1C3E3A70B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA99652-A141-4558-8F01-A1C3E3A70B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA99652-A141-4558-8F01-A1C3E3A70B8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A50793B-A6A9-4EE7-BBC7-1CDEE4A8FAA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A50793B-A6A9-4EE7-BBC7-1CDEE4A8FAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A50793B-A6A9-4EE7-BBC7-1CDEE4A8FAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A50793B-A6A9-4EE7-BBC7-1CDEE4A8FAA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

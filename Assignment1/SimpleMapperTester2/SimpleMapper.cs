@@ -60,9 +60,10 @@ namespace SimpleMapperTester2
         {
             // loading the value as IEnumerable and further we will check if we have any nested object copy 
             var sourceList = srcValue as IEnumerable;
-            Type srcType = sourceList.GetType();
+            
             if (sourceList != null)
             {
+                Type srcType = sourceList.GetType();
                 if (srcType.IsArray)
                 {
                     // Handle array properties
