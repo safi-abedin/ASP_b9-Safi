@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMapperProject
+namespace SimpleMapper.Tester.Test1
 {
-    public class SrcCourse
+    public class Contact
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
-
-        
+        public List<int> PhoneNumbers { get; set; }
     }
 }

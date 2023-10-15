@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMapper.Tester
+namespace SimpleMapper.Tester.Test1
 {
     public class Address
     {

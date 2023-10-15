@@ -1,5 +1,7 @@
 ﻿
+using Newtonsoft.Json;
 using SimpleMapperProject;
+using System.Text.Json.Serialization;
 
 //testc case 1
 
@@ -70,6 +72,7 @@ var sourcePerson = new Person1
     Name = "kamal",
     Age = 35,
     Height = 5.8,
+    Expenses = new int[] {1,2,3},
     Address = new Address
     {
         Street = "456 Elm St",
@@ -79,7 +82,7 @@ var sourcePerson = new Person1
             {
                 new Contact
                 {
-                    Name = "Bob",
+                    Name = "jamal",
                     PhoneNumbers =  new List<int>{ 422432432, 32323222 }
                 },
                 new Contact
@@ -98,25 +101,7 @@ SimpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
 Console.WriteLine("\nDestination object after copy:");
-PrintPerson(destinationPerson);
-
-
-static void PrintPerson(Person2 person)
-{
-    Console.WriteLine($"Name: {person.Name}, Age: {person.Age}, Height: {person.Height}");
-
-    Console.WriteLine("Contacts:");
-    foreach (var contact in person.Contacts)
-    {
-        Console.WriteLine($"Name :{contact.Name}");
-        Console.WriteLine("  Phone Number:");
-        foreach (var phoneNumber in contact.PhoneNumbers)
-        {
-            Console.WriteLine($"  - {phoneNumber}");
-        }
-
-    }
-}
+Console.WriteLine(JsonConvert.SerializeObject(destinationPerson,Newtonsoft.Json.Formatting.Indented));
 
 
 

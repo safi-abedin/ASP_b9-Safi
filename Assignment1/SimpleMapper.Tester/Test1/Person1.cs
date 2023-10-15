@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMapper.Tester
+namespace SimpleMapper.Tester.Test1
 {
-    public class Person2
+    public class Person1
     {
         public string Name { get; set; }
 
@@ -15,5 +15,6 @@ namespace SimpleMapper.Tester
         public double Height { get; set; }
         public Address Address { get; set; }
         public List<Contact> Contacts { get; set; }
+
     }
 }

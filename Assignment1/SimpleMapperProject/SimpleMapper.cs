@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMapperProject
 {
-    public class SimpleMapper
+    public static class SimpleMapper
     {
         public static void Copy(object source, object destination)
         {
@@ -38,10 +38,6 @@ namespace SimpleMapperProject
                 if (destProperty == null)
                     continue;
 
-                if(srcValue is null)
-                {
-                    destProperty.SetValue(destination,"No value");
-                }
 
                 if (property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
                 {
@@ -51,25 +47,62 @@ namespace SimpleMapperProject
                 {
                     // Handle IEnumerable properties (e.g., lists)
                     var sourceList = srcValue as IEnumerable;
+                    Type srcType = sourceList.GetType();
                     if (sourceList != null)
                     { 
-                        var destList = (IList)Activator.CreateInstance(destProperty.PropertyType);
-                        foreach (var item in sourceList)
+                        if(srcType.IsArray)
                         {
-                            if (item.GetType().IsPrimitive || item is string)
+                            Console.WriteLine("Inside");
+                            Console.WriteLine(property.Name);
+                            /*if (property.GetValue(srcType, null) != null)
                             {
-                                // For primitive types or strings, simply add to the destination list
-                                destList.Add(item);
-                            }
-                            else
+                                Array values = property.GetValue(sourceList, null) as Array;
+                                var qtyItems = values.Length;
+                                foreach (var value in values)
+                                {
+                                    Console.WriteLine(value);
+                                }
+                            }*/
+                            // Handle array properties
+                            var sourceArray = (Array)sourceValue;
+                            var destinationArray = Array.CreateInstance(destinationProperty.PropertyType.GetElementType(), sourceArray.Length);
+
+                            for (int i = 0; i < sourceArray.Length; i++)
                             {
-                                // For complex types, recursively copy
-                                var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
-                                Copy(item, newItem);
-                                destList.Add(newItem);
+                                var sourceArrayElement = sourceArray.GetValue(i);
+                                var destinationArrayElement = Activator.CreateInstance(destinationProperty.PropertyType.GetElementType());
+
+                                CopyProperties(sourceArrayElement, destinationArrayElement);
+                                destinationArray.SetValue(destinationArrayElement, i);
                             }
+
+                            destinationProperty.SetValue(destination, destinationArray);
+                            var ins = Array.CreateInstance(property.PropertyType.GetElementType(), 4);
+                            Console.WriteLine(ins);
+                            /*ConstructorInfo constructorInfo = srcType.GetConstructor(new Type[] { });
+                            object instance = constructorInfo.Invoke(srcType, null);
+                            Console.WriteLine(instance.ToString);*/
                         }
-                        destProperty.SetValue(destination, destList);
+                        else   
+                        {
+                            var destList = (IList)Activator.CreateInstance(destProperty.PropertyType);
+                            foreach (var item in sourceList)
+                            {
+                                if (item.GetType().IsPrimitive || item is string)
+                                {
+                                    // For primitive types or strings, simply add to the destination list
+                                    destList.Add(item);
+                                }
+                                else
+                                {
+                                    // For complex types, recursively copy
+                                    var newItem = Activator.CreateInstance(destProperty.PropertyType.GenericTypeArguments[0]);
+                                    Copy(item, newItem);
+                                    destList.Add(newItem);
+                                }
+                            }
+                            destProperty.SetValue(destination, destList);
+                        }
                     }
                 }
                 else
