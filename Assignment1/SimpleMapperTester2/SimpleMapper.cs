@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMapper.dll
+namespace SimpleMapperTester2
 {
-    public class SimpleMapper
+    public static class SimpleMapper
     {
         public static void Copy(object source, object destination)
         {
@@ -47,9 +47,10 @@ namespace SimpleMapper.dll
                 {
                     // Handle IEnumerable properties (e.g., lists)
                     var sourceList = srcValue as IEnumerable;
-                    Type srcType = sourceList.GetType();
+
                     if (sourceList != null)
                     {
+                        Type srcType = sourceList.GetType();
                         if (srcType.IsArray)
                         {
                             // Handle array properties
@@ -91,3 +92,4 @@ namespace SimpleMapper.dll
         }
     }
 }
+

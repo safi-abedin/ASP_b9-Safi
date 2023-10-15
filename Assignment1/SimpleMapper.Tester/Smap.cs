@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMapper.dll
+namespace SimpleMapper.Tester
 {
-    public class SimpleMapper
+    public class Smap
     {
         public static void Copy(object source, object destination)
         {
@@ -91,3 +91,4 @@ namespace SimpleMapper.dll
         }
     }
 }
+

@@ -47,10 +47,11 @@ namespace SimpleMapperProject
                 {
                     // Handle IEnumerable properties (e.g., lists)
                     var sourceList = srcValue as IEnumerable;
-                    Type srcType = sourceList.GetType();
+                    
                     if (sourceList != null)
-                    { 
-                        if(srcType.IsArray)
+                    {
+                        Type srcType = sourceList.GetType();
+                        if (srcType.IsArray)
                         {
                             // Handle array properties
                             var srcListToArray = sourceList as Array;

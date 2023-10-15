@@ -14,7 +14,7 @@ namespace SimpleMapperProject
         public int Age { get; set; }
         public double Height { get; set; }
 
-        public int[]  Expenses { get; set; }
+        public string[]  Friends { get; set; }
         public Address Address { get; set; }
         public List<Contact> Contacts { get; set; }
 

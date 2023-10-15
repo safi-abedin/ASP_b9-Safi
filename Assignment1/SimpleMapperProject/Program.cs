@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 using SimpleMapperProject;
 using System.Text.Json.Serialization;
 
-//testc case 1
+//test case 1
 
 // Create a source object
-/*var sourcePerson = new Person
+var sourceP = new Person1
 {
     Name = "Elon Musk",
     Email ="Elonmusk@gmail.com",
@@ -20,41 +20,16 @@ using System.Text.Json.Serialization;
 };
 
 // Create a destination object with default values
-var destinationPerson = new Person
-{
-    Name = "Default Name",
-    Age = 0,
-    Height = 0,
-    Email = "",
-    Address = new Address
-    {
-        Street = "Default Street",
-        City = "Default Street"
-    }
-};
-
-
-
-// Print the initial state of the destination object
-Console.WriteLine("Destination object before copy:");
-PrintPerson(destinationPerson);
-
+Person2 DestinationP = new Person2();
 
 
 // Copy values from source to destination using SimpleMapper
-SimpleMapper.Copy(sourcePerson, destinationPerson);
+SimpleMapper.Copy(sourceP, DestinationP);
 
 // Print the updated state of the destination object
+Console.WriteLine("Test Case 1: ");
 Console.WriteLine("\nDestination object after copy:");
-PrintPerson(destinationPerson);
-
-
-static void PrintPerson(Person person)
-{
-    Console.WriteLine($"Name: {person.Name},Email :{person.Email} ");
-    Console.WriteLine($"Age: {person.Age} , Height : {person.Height}");
-    Console.WriteLine($"Address: {person.Address.Street}, {person.Address.City}");
-}*/
+Console.WriteLine(JsonConvert.SerializeObject(DestinationP,Newtonsoft.Json.Formatting.Indented));
 
 
 
@@ -65,14 +40,13 @@ static void PrintPerson(Person person)
 // Create a source object with nested structures
 
 /// a object with simple types
-///objects with complex types
 ///
 var sourcePerson = new Person1
 {
     Name = "kamal",
     Age = 35,
     Height = 5.8,
-    Expenses = new int[] {1,2,3},
+    Friends = new string[] {"Medha","Ashik","Tonmoy","Ananda"},
     Address = new Address
     {
         Street = "456 Elm St",
@@ -100,6 +74,7 @@ Person2 destinationPerson = new Person2();
 SimpleMapper.Copy(sourcePerson, destinationPerson);
 
 // Print the updated state of the destination object
+Console.WriteLine("Test Case 2 :");
 Console.WriteLine("\nDestination object after copy:");
 Console.WriteLine(JsonConvert.SerializeObject(destinationPerson,Newtonsoft.Json.Formatting.Indented));
 
@@ -108,7 +83,7 @@ Console.WriteLine(JsonConvert.SerializeObject(destinationPerson,Newtonsoft.Json.
 //test case 3
 
 // Create source instances
-/*var sourceContact = new Contact
+var sourceContact = new Contact
 {
     Name = "John Doe",
     PhoneNumbers = new List<int> { 123456789, 987654321 }
@@ -137,42 +112,14 @@ var sourceCompany = new Company
 // Create a destination instance with empty properties
 var destinationCompany = new Company();
 
-Console.WriteLine("Source Company:");
-DisplayCompanyDetails(sourceCompany);
 
 // Copy properties from sourceCompany to destinationCompany
 SimpleMapper.Copy(sourceCompany, destinationCompany);
 
+Console.WriteLine("Test Case 3:");
 Console.WriteLine("\nDestination Company after Copy:");
-DisplayCompanyDetails(destinationCompany);
+Console.WriteLine(JsonConvert.SerializeObject(destinationCompany, Newtonsoft.Json.Formatting.Indented));
 
 
-static void DisplayCompanyDetails(Company company)
-{
-    Console.WriteLine("Company Name: " + company.Name);
-    Console.WriteLine("Employees:");
-    if (company.Employees != null)
-    {
-        foreach (var employee in company.Employees)
-        {
-            Console.WriteLine("  Employee Name: " + employee.Name);
-            Console.WriteLine("  Employee ID: " + employee.EmployeeId);
-            Console.WriteLine("  Employee Address:");
-            Console.WriteLine("    Street: " + employee.EmployeeAddress.Street);
-            Console.WriteLine("    City: " + employee.EmployeeAddress.City);
 
-            Console.WriteLine("  Employee Contacts:");
-            foreach (var contact in employee.Contacts)
-            {
-                Console.WriteLine("    Contact Name: " + contact.Name);
-                Console.WriteLine("    Phone Numbers:");
-                foreach (var phoneNumber in contact.PhoneNumbers)
-                {
-                    Console.WriteLine("      " + phoneNumber);
-                }
-            }
-        }
-    }
-}
-*/
 

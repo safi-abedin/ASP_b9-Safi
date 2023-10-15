@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
+using SimpleMapper.Tester;
 using SimpleMapper.Tester.Test1;
 using SimpleMapper.Tester.Test2;
 using System.Reflection;
 using System.Xml;
-
-
 
 
 
@@ -108,27 +107,36 @@ var userAddresses = new List<SimpleMapper.Tester.Test2.Address> { address1, addr
 
 var user = new ExtendedUser { Username = "alicesmith", Email = "alice.smith@example.com", CustomerInformation = customer, UserAddresses = userAddresses, UserExtendedInfo = customer };
 
+
 // Initialize EcommerceObject1 and EcommerceObject2
 EcommerceObject1 object1 = new EcommerceObject1 { UserDetails = user, LatestExtendedOrder = latestOrder };
 EcommerceObject2 object2 = new EcommerceObject2();
 
-// Load the assembly and get types
+// Copy values from source to destination using SimpleMapper
+
+/*// Load the assembly and get types
 Assembly assembly = Assembly.LoadFile("F:\\ASP_b9-Safi\\Assignment1\\SampleMapper.dll\\bin\\Debug\\net7.0\\SimpleMapperLib.dll");
 Type[] types = assembly.GetTypes();
 
 foreach (Type type in types)
 {
+    var typeName = type.Name;
     if (type.Name == "SimpleMapper")
     {
-        ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
-        object instance = constructorInfo.Invoke(null);
+        //ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
+        //object instance = constructorInfo.Invoke();
+
+        var ins = Activator.CreateInstance(typeName, null);
 
         MethodInfo method = type.GetMethod("Copy", BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly, new Type[] { typeof(object), typeof(object) });
 
         // Copy values from source to destination using SimpleMapper
-        method.Invoke(instance, new object[] { object1, object2 });
+        method.Invoke(ins, new object[] { object1, object2 });
     }
-}
+}*/
+
+Smap.Copy(object1, object2);
+
 
 // Print the copiedSuperComplexObject to verify the results
 Console.WriteLine("After Copying:");
