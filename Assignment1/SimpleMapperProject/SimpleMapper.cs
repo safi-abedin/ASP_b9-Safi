@@ -52,36 +52,11 @@ namespace SimpleMapperProject
                     { 
                         if(srcType.IsArray)
                         {
-                            Console.WriteLine("Inside");
-                            Console.WriteLine(property.Name);
-                            /*if (property.GetValue(srcType, null) != null)
-                            {
-                                Array values = property.GetValue(sourceList, null) as Array;
-                                var qtyItems = values.Length;
-                                foreach (var value in values)
-                                {
-                                    Console.WriteLine(value);
-                                }
-                            }*/
                             // Handle array properties
-                            var sourceArray = (Array)sourceValue;
-                            var destinationArray = Array.CreateInstance(destinationProperty.PropertyType.GetElementType(), sourceArray.Length);
-
-                            for (int i = 0; i < sourceArray.Length; i++)
-                            {
-                                var sourceArrayElement = sourceArray.GetValue(i);
-                                var destinationArrayElement = Activator.CreateInstance(destinationProperty.PropertyType.GetElementType());
-
-                                CopyProperties(sourceArrayElement, destinationArrayElement);
-                                destinationArray.SetValue(destinationArrayElement, i);
-                            }
-
-                            destinationProperty.SetValue(destination, destinationArray);
-                            var ins = Array.CreateInstance(property.PropertyType.GetElementType(), 4);
-                            Console.WriteLine(ins);
-                            /*ConstructorInfo constructorInfo = srcType.GetConstructor(new Type[] { });
-                            object instance = constructorInfo.Invoke(srcType, null);
-                            Console.WriteLine(instance.ToString);*/
+                            var srcListToArray = sourceList as Array;
+                            var instance = Array.CreateInstance(property.PropertyType.GetElementType(), srcListToArray.Length);
+                            Array.Copy(srcListToArray, instance,srcListToArray.Length);
+                            destProperty.SetValue(destination, instance);
                         }
                         else   
                         {
