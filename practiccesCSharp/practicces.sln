@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPractice", "EventPract
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqPractice", "LinqPractice\LinqPractice.csproj", "{CED2572C-78F5-41A3-83CC-F5BEEA2E6E26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ado.net", "Ado.net\Ado.net.csproj", "{39433105-50CF-484D-AC98-45CD213BBCA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{CED2572C-78F5-41A3-83CC-F5BEEA2E6E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CED2572C-78F5-41A3-83CC-F5BEEA2E6E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CED2572C-78F5-41A3-83CC-F5BEEA2E6E26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39433105-50CF-484D-AC98-45CD213BBCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39433105-50CF-484D-AC98-45CD213BBCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39433105-50CF-484D-AC98-45CD213BBCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39433105-50CF-484D-AC98-45CD213BBCA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
