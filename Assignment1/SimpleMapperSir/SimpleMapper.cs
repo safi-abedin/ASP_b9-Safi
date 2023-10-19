@@ -77,6 +77,7 @@ namespace SimpleMapperSir
             }
         }
 
+        //Handle all type of list including inner array
         private static void HandleListType(PropertyInfo destProperty, IEnumerable sourceList, object destination)
         {
             Type elementType = destProperty.PropertyType.GenericTypeArguments[0];
@@ -120,7 +121,7 @@ namespace SimpleMapperSir
         }
 
 
-
+        //Handled Cases for all kind of array
         private static void HandleArrayType(IEnumerable sourceList, PropertyInfo property, object destination, PropertyInfo destProperty)
         {
             var srcListToArray = sourceList as Array;
