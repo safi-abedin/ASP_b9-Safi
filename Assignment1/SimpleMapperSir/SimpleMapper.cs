@@ -84,7 +84,7 @@ namespace SimpleMapperSir
 
             foreach (var item in sourceList)
             {
-                //for inner array in list if needed
+                //for inner array in list if needed and the array should be in destination to copy
                 if (item is IEnumerable innerArray && elementType.GetElementType() is not null)
                 {
                     var arrayElementType = elementType.GetElementType();
