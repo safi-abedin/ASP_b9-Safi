@@ -12,6 +12,6 @@ namespace SimpleMapperSir
 
 
         public string[] HouseFeatures { get; set; }
-        public List<Room[]> Rooms { get; set; }
+        public List<Room> Rooms { get; set; }
     }
 }

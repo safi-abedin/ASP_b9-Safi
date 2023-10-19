@@ -85,9 +85,10 @@ namespace SimpleMapperSir
             foreach (var item in sourceList)
             {
                 //for inner array in list if needed
-                if (item is IEnumerable innerArray)
+                if (item is IEnumerable innerArray && elementType.GetElementType() is not null)
                 {
                     var arrayElementType = elementType.GetElementType();
+                    Console.WriteLine(arrayElementType.Name);
                     var array = Array.CreateInstance(arrayElementType, innerArray.Cast<object>().Count());
 
                     int index = 0;
