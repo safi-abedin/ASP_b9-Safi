@@ -8,7 +8,7 @@ namespace SimpleMapperSir
 {
     public class House
     {
-        public List<Room> Rooms { get; set; }
+        public List<Room[]> Rooms { get; set; }
 
         public string[] HouseFeatures { get; set; }
     }

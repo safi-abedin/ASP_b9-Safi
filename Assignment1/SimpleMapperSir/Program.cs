@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using SimpleMapperSir;
 
-House house = new House
+/*House house = new House
 {
-    
+
     Rooms = new List<Room>
     {
         new Room
@@ -32,10 +32,10 @@ SimpleMapper.Copy(house, building);
 Console.WriteLine("Test 1:");
 Console.WriteLine("Destination Object After Copy :");
 Console.WriteLine(JsonConvert.SerializeObject(building, Newtonsoft.Json.Formatting.Indented));
+*/
 
 
-
-
+/*
 // Including array to test
 
 Window window1 = new Window { Width = 100, Height = 120, Name = "Living Room Window" };
@@ -59,6 +59,51 @@ Room bedroom = new Room
 House myHouse = new House
 {
     Rooms = new List<Room> { livingRoom, bedroom },
+    HouseFeatures = new string[] { "Swimming pool", "Garden" }
+};
+
+Building myBuilding = new Building();
+
+
+SimpleMapper.Copy(myHouse, myBuilding);
+Console.WriteLine("Test 2:");
+Console.WriteLine("Destination Object After Copy :");
+Console.WriteLine(JsonConvert.SerializeObject(myBuilding, Newtonsoft.Json.Formatting.Indented));
+*/
+
+
+
+//test 3:
+House myHouse = new House
+{
+    Rooms = new List<Room[]>
+    {
+        new Room[]
+        {
+            new Room
+            {
+                RoomNumber = "101",
+                Windows = new List<Window>
+                {
+                    new Window { Width = 100, Height = 120, Name = "Living Room Window" },
+                    new Window { Width = 80, Height = 100, Name = "Bedroom Window" }
+                },
+                Features = new string[] { "Carpet flooring", "Fireplace" }
+            }
+        },
+        new Room[]
+        {
+            new Room
+            {
+                RoomNumber = "102",
+                Windows = new List<Window>
+                {
+                    new Window { Width = 80, Height = 100, Name = "Bedroom Window" }
+                },
+                Features = new string[] { "Wooden flooring", "Walk-in closet" }
+            }
+        }
+    },
     HouseFeatures = new string[] { "Swimming pool", "Garden" }
 };
 

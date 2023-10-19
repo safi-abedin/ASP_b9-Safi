@@ -79,10 +79,29 @@ namespace SimpleMapperSir
 
         private static void HandleListType(PropertyInfo destProperty, IEnumerable sourceList, object destination)
         {
-            var destList = (IList)Activator.CreateInstance(destProperty.PropertyType);
+            Type elementType = destProperty.PropertyType.GenericTypeArguments[0];
+            IList destList = (IList)Activator.CreateInstance(destProperty.PropertyType);
+
             foreach (var item in sourceList)
             {
-                if (item.GetType().IsPrimitive || item is string)
+                //for inner array in list if needed
+                if (item is IEnumerable innerArray)
+                {
+                    var arrayElementType = elementType.GetElementType();
+                    var array = Array.CreateInstance(arrayElementType, innerArray.Cast<object>().Count());
+
+                    int index = 0;
+                    foreach (var innerItem in innerArray)
+                    {
+                        var innerDest = Activator.CreateInstance(arrayElementType);
+                        Copy(innerItem, innerDest);
+                        array.SetValue(innerDest, index);
+                        index++;
+                    }
+
+                    destList.Add(array);
+                }
+                else if (item.GetType().IsPrimitive || item is string)
                 {
                     // For primitive types or strings, simply add to the destination list
                     destList.Add(item);
@@ -95,8 +114,11 @@ namespace SimpleMapperSir
                     destList.Add(newItem);
                 }
             }
+
             destProperty.SetValue(destination, destList);
         }
+
+
 
         private static void HandleArrayType(IEnumerable sourceList, PropertyInfo property, object destination, PropertyInfo destProperty)
         {
