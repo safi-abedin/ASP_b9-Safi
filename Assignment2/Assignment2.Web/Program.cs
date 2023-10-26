@@ -2,25 +2,23 @@ using Assignment2.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Configuration;
 using Serilog.Events;
-using Serilog.Sinks.Email;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
-
 
 builder.Host.UseSerilog((ctx, lc) => lc
-            .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
              .Enrich.FromLogContext()
              .ReadFrom.Configuration(builder.Configuration)
            ) ;
 
 
+Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
 try
 {
+
     Log.ForContext<Program>().Error("Test Number {Parm}", "1");
 
     // Add services to the container.
