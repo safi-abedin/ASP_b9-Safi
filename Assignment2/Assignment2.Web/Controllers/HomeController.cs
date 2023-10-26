@@ -15,7 +15,12 @@ namespace Assignment2.Web.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogInformation("I am in Index");
+            _logger.LogTrace("Trace Log Message");
+            _logger.LogDebug("Debug Log Message");
+            _logger.LogInformation("Information Log Message");
+            _logger.LogWarning("Warning Log Message");
+            _logger.LogError("Error Log Message");
+            _logger.LogCritical("Fatal Log Message");
             return View();
         }
 

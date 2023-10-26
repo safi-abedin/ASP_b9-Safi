@@ -15,12 +15,8 @@ builder.Host.UseSerilog((ctx, lc) => lc
            ) ;
 
 
-Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
 try
 {
-
-    Log.ForContext<Program>().Error("Test Number {Parm}", "1");
-
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
