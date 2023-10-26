@@ -21,6 +21,7 @@ namespace Assignment2.Web.Controllers
 
         public IActionResult Privacy()
         {
+            _logger.LogInformation("I am in Privacy");
             return View();
         }
 
