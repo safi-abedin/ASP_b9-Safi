@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Assignment2.Web
 {
-    public static class SerilogCustomEmailExtension
+    public static class SerilogCustomEmailExtension 
     {
         const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
 
