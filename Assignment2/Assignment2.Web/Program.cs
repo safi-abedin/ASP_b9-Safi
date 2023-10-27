@@ -13,7 +13,25 @@ builder.Host.UseSerilog((ctx, lc) => lc
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
              .Enrich.FromLogContext()
              .ReadFrom.Configuration(builder.Configuration)
-           ) ;
+             .WriteTo.Email(new EmailConnectionInfo
+             {
+                 FromEmail = "SerilogIssue.com",
+                 ToEmail = "Safiiitju47@gmail.com",
+                 MailServer = "smtp.gmail.com",
+                 NetworkCredentials = new NetworkCredential
+                 {
+                     UserName = "safiiitju47@gmail.com",
+                     Password = "kzsr xfzu vpoj mbix"
+                 },
+                 EnableSsl = true,
+                 Port = 465,
+                 EmailSubject = "Assignment 2"
+             },
+outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}",
+batchPostingLimit: 10
+, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error
+));
+           
 
 /*{
     "Name": "Email",
@@ -26,6 +44,10 @@ builder.Host.UseSerilog((ctx, lc) => lc
             "EnableSsl": false,
             "EmailSubject": "Exception in Serilog Log in Assignment2.Web"
           },
+            "NetworkCredentials": {
+              "userName": "{gmailuser}@gmail.com",
+              "password": "{gmailPassword}"
+            },
           "RestrictedToMinimumLevel": "Fatal",
           "OutputTemplate": "{Timestamp:yyyy-MM-dd HH:mm} [{Level}] {Message}{NewLine}{Exception}",
           "batchPostingLimit": 100
@@ -39,13 +61,13 @@ try
 
     Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
-    Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
+   /* Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
     var emailInfo = new EmailConnectionInfo
     {
          FromEmail = "app@example.com",
             ToEmail= "safiiitju47@gmail.com",
             Port = 25,
-            MailServer = "localhost",
+            MailServer = "smtp.gmail.com",
             EnableSsl=false,
             EmailSubject= "Exception in Serilog Log in Assignment2.Web"
     };
@@ -59,7 +81,7 @@ try
         {
             logger.Information($"Log #{i}");
         }
-    }
+    }*/
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
