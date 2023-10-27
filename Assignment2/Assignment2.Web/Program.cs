@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-
+using Serilog.Sinks.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +14,29 @@ builder.Host.UseSerilog((ctx, lc) => lc
              .ReadFrom.Configuration(builder.Configuration)
            ) ;
 
+var log = new LoggerConfiguration()
+    .MinimumLevel.Fatal()
+    .WriteTo.Email(new EmailConnectionInfo
+    {
+        FromEmail = "app@example.com",
+        ToEmail = "safiiitju47@gmail.com",
+        MailServer = "smtp.gmail.com",
+        // You can set advanced options here
+        // For example:
+        Port = 465, // Port for the SMTP server
+        EnableSsl = true, // Use SSL for the connection
+        // Other advanced options as needed
+    })
+    .CreateLogger();
+
+log.Fatal("Safi");
+
+Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
 
 try
 {
+    Log.ForContext<Program>().Error("Test Number {Parm}", "1");
+
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
