@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Email;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,28 +15,51 @@ builder.Host.UseSerilog((ctx, lc) => lc
              .ReadFrom.Configuration(builder.Configuration)
            ) ;
 
-var log = new LoggerConfiguration()
-    .MinimumLevel.Fatal()
-    .WriteTo.Email(new EmailConnectionInfo
-    {
-        FromEmail = "app@example.com",
-        ToEmail = "safiiitju47@gmail.com",
-        MailServer = "smtp.gmail.com",
-        // You can set advanced options here
-        // For example:
-        Port = 465, // Port for the SMTP server
-        EnableSsl = true, // Use SSL for the connection
-        // Other advanced options as needed
-    })
-    .CreateLogger();
+/*{
+    "Name": "Email",
+        "Args": {
+        "ConnectionInfo": {
+            "FromEmail": "app@example.com",
+            "ToEmail": "safiiitju47@gmail.com",
+            "Port": "25",
+            "MailServer": "localhost",
+            "EnableSsl": false,
+            "EmailSubject": "Exception in Serilog Log in Assignment2.Web"
+          },
+          "RestrictedToMinimumLevel": "Fatal",
+          "OutputTemplate": "{Timestamp:yyyy-MM-dd HH:mm} [{Level}] {Message}{NewLine}{Exception}",
+          "batchPostingLimit": 100
+        }
+}*/
 
-log.Fatal("Safi");
-
-Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
 
 try
 {
     Log.ForContext<Program>().Error("Test Number {Parm}", "1");
+
+    Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
+
+    Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
+    var emailInfo = new EmailConnectionInfo
+    {
+         FromEmail = "app@example.com",
+            ToEmail= "safiiitju47@gmail.com",
+            Port = 25,
+            MailServer = "localhost",
+            EnableSsl=false,
+            EmailSubject= "Exception in Serilog Log in Assignment2.Web"
+    };
+
+    using (var logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Email(emailInfo)
+            .CreateLogger())
+    {
+        for (var i = 1; i <= 100; i++)
+        {
+            logger.Information($"Log #{i}");
+        }
+    }
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
