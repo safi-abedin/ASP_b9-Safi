@@ -12,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
              .Enrich.FromLogContext()
-             .ReadFrom.Configuration(builder.Configuration)
              .WriteTo.Email(new EmailConnectionInfo
              {
                  FromEmail = "SerilogIssue.com",
@@ -27,61 +26,19 @@ builder.Host.UseSerilog((ctx, lc) => lc
                  Port = 465,
                  EmailSubject = "Assignment 2"
              },
-outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}",
-batchPostingLimit: 10
-, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error
-));
+             outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
+                              "[{Level}] {Message}{NewLine}{Exception}",
+             batchPostingLimit: 10
+             , restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Fatal)
+             .ReadFrom.Configuration(builder.Configuration)
+             );
            
-
-/*{
-    "Name": "Email",
-        "Args": {
-        "ConnectionInfo": {
-            "FromEmail": "app@example.com",
-            "ToEmail": "safiiitju47@gmail.com",
-            "Port": "25",
-            "MailServer": "localhost",
-            "EnableSsl": false,
-            "EmailSubject": "Exception in Serilog Log in Assignment2.Web"
-          },
-            "NetworkCredentials": {
-              "userName": "{gmailuser}@gmail.com",
-              "password": "{gmailPassword}"
-            },
-          "RestrictedToMinimumLevel": "Fatal",
-          "OutputTemplate": "{Timestamp:yyyy-MM-dd HH:mm} [{Level}] {Message}{NewLine}{Exception}",
-          "batchPostingLimit": 100
-        }
-}*/
-
 
 try
 {
     Log.ForContext<Program>().Error("Test Number {Parm}", "1");
 
     Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
-
-   /* Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
-    var emailInfo = new EmailConnectionInfo
-    {
-         FromEmail = "app@example.com",
-            ToEmail= "safiiitju47@gmail.com",
-            Port = 25,
-            MailServer = "smtp.gmail.com",
-            EnableSsl=false,
-            EmailSubject= "Exception in Serilog Log in Assignment2.Web"
-    };
-
-    using (var logger = new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .WriteTo.Email(emailInfo)
-            .CreateLogger())
-    {
-        for (var i = 1; i <= 100; i++)
-        {
-            logger.Information($"Log #{i}");
-        }
-    }*/
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
