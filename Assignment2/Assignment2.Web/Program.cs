@@ -9,6 +9,7 @@ using System.Net;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
 builder.Host.UseSerilog((ctx, lc) => lc
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
              .Enrich.FromLogContext()
@@ -26,13 +27,11 @@ builder.Host.UseSerilog((ctx, lc) => lc
                  Port = 465,
                  EmailSubject = "Assignment 2"
              },
-             outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
-                              "[{Level}] {Message}{NewLine}{Exception}",
              batchPostingLimit: 10
              , restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Fatal)
              .ReadFrom.Configuration(builder.Configuration)
              );
-           
+
 
 try
 {
