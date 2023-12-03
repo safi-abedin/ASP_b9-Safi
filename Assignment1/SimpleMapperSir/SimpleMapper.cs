@@ -89,7 +89,6 @@ namespace SimpleMapperSir
                 if (item is IEnumerable innerArray && elementType.GetElementType() is not null)
                 {
                     var arrayElementType = elementType.GetElementType();
-                    Console.WriteLine(arrayElementType.Name);
                     var array = Array.CreateInstance(arrayElementType, innerArray.Cast<object>().Count());
 
                     int index = 0;
@@ -124,10 +123,36 @@ namespace SimpleMapperSir
         //Handled Cases for all kind of array
         private static void HandleArrayType(IEnumerable sourceList, PropertyInfo property, object destination, PropertyInfo destProperty)
         {
-            var srcListToArray = sourceList as Array;
-            var instance = Array.CreateInstance(property.PropertyType.GetElementType(), srcListToArray.Length);
-            Array.Copy(srcListToArray, instance, srcListToArray.Length);
-            destProperty.SetValue(destination, instance);
+            {
+                var srcListToArray = sourceList as Array;
+                var instance = Array.CreateInstance(property.PropertyType.GetElementType(), srcListToArray.Length);
+
+
+                if (property.PropertyType.GetElementType() == typeof(string))
+                {
+                    Console.WriteLine(sourceList);
+                    Console.WriteLine();
+                    Console.WriteLine($"propertyType : {property.PropertyType.IsArray}");
+                    Console.WriteLine($"instance : {instance}");
+                    Console.WriteLine(destProperty);
+                    Array.Copy(srcListToArray, instance, srcListToArray.Length);
+                    destProperty.SetValue(destination, instance);
+                }
+                else
+                {
+                    for (var i = 0; i < srcListToArray.Length; i++)
+                    {
+                        var item = srcListToArray.GetValue(i);
+                        var newItem = Activator.CreateInstance(property.PropertyType.GetElementType());
+
+                        Copy(item, newItem);
+
+                        instance.SetValue(newItem, i);
+                    }
+
+                    destProperty.SetValue(destination, instance);
+                }
+            }
         }
     }
 }
