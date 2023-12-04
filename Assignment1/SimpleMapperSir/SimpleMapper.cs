@@ -29,7 +29,7 @@ namespace SimpleMapperSir
                 //getting destination property and and source value and cheking if we can copy
                 var destProperty = destinationType.GetProperty(property.Name);
                 var srcValue = property.GetValue(source);
-                if (!property.CanWrite || property == null || destProperty == null)
+                if (!property.CanWrite || property == null || destProperty == null || property.PropertyType != destProperty.PropertyType)
                 {
                     continue;
                 }
