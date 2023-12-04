@@ -77,6 +77,7 @@ namespace SimpleMapperSir
             }
         }
 
+
         //Handle all type of list including inner array
         private static void HandleListType(PropertyInfo destProperty, IEnumerable sourceList, object destination)
         {
@@ -120,21 +121,18 @@ namespace SimpleMapperSir
         }
 
 
+
         //Handled Cases for all kind of array
         private static void HandleArrayType(IEnumerable sourceList, PropertyInfo property, object destination, PropertyInfo destProperty)
         {
             {
                 var srcListToArray = sourceList as Array;
                 var instance = Array.CreateInstance(property.PropertyType.GetElementType(), srcListToArray.Length);
+                var elementType = property.PropertyType.GetElementType();
 
 
-                if (property.PropertyType.GetElementType() == typeof(string))
+                if (elementType == typeof(string) || elementType == typeof(int))
                 {
-                    Console.WriteLine(sourceList);
-                    Console.WriteLine();
-                    Console.WriteLine($"propertyType : {property.PropertyType.IsArray}");
-                    Console.WriteLine($"instance : {instance}");
-                    Console.WriteLine(destProperty);
                     Array.Copy(srcListToArray, instance, srcListToArray.Length);
                     destProperty.SetValue(destination, instance);
                 }
