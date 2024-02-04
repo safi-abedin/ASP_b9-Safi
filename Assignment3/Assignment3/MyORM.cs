@@ -10,7 +10,7 @@ namespace Assignment3
 {
     public class MyORM<G, T> where T : class, IEntity<G>
     {
-        private string connectionString = ".\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
+        private string connectionString = "Data Source=.\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
 
         public void Insert(T entity)
         {
@@ -63,25 +63,12 @@ namespace Assignment3
 
                 PropertyInfo[] nestedProperties = nestedType.GetProperties();
 
-                //first insert the nested primptive types
+                //first insert the nested primptive types with parent id
 
-                var insertelements = new List<PropertyInfo>();
-                foreach (var nestedProp in nestedProperties)
-                {
-                    if (!IsNestedObject(nestedProp))
-                    {
-                        insertelements.Add(nestedProp);
-                    }
-                }
-                string insertMainEntity = GenerateInsertStatement(nestedTableName, insertelements.ToArray());
-                ExecuteNonQuery(insertMainEntity, insertelements.ToArray(), entity);
-
-                //then check if any nested object to travarse
 
                 PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
                 var nestedId = nestedIdProp.GetValue(nestedObject);
 
-                /*
                 var insertelementsNested = new List<PropertyInfo>();
                 foreach (var nestedProp in nestedProperties)
                 {
@@ -92,11 +79,13 @@ namespace Assignment3
                 }
 
                 // Create INSERT statement for the nested entity table
-                string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertelements.ToArray(), parentTableName, parentId);
+                string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertelementsNested.ToArray(), parentTableName, parentId);
 
                 // Execute the INSERT statement for the nested entity
-                ExecuteNonQuery(insertNestedEntity, insertelements.ToArray(), nestedObject);*/
+                ExecuteNonQuery(insertNestedEntity, insertelementsNested.ToArray(), nestedObject);
 
+
+                //then check if any nested object to travarse
                 foreach (var nestedProp in nestedProperties)
                 {
                     if (IsNestedObject(nestedProp))
@@ -104,6 +93,7 @@ namespace Assignment3
                         InsertNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
                     }
                 }
+
             }
         }
 
@@ -137,12 +127,15 @@ namespace Assignment3
                 {
                     foreach (var property in properties)
                     {
+                        if (!IsNestedObject(property))
+                        {
                             SqlParameter parameter = new SqlParameter($"@{property.Name}", GetSqlDbType(property.PropertyType))
                             {
                                 Value = property.GetValue(entity) ?? DBNull.Value
                             };
 
                             command.Parameters.Add(parameter);
+                        }   
                     }
                     command.ExecuteNonQuery();
                 }
