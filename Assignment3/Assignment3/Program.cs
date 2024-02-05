@@ -22,7 +22,7 @@ Course course = new Course
             Name = "Sarif Uddin",
             Email = "sarif.exe@example.com",
             PresentAddress = new Address { Id = 4, Street = "Cumilla", City = "Kandirpar", Country = "BD" },
-            PermanentAddress = new Address { Id = 2, Street = "Dhaka", City = "Townsville", Country = "UK" }
+            PermanentAddress = new Address { Id = 2, Street = "Dhaka", City = "Uttara", Country = "BD" }
         }
 
     },
@@ -30,5 +30,5 @@ Course course = new Course
 };
 
 var orm = new MyORM<int,Course>();
-orm.Insert(course);
+orm.Delete(course);
 

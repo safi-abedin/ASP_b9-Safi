@@ -45,6 +45,40 @@ namespace Assignment3
             }
         }
 
+        public void Update(T entity)
+        {
+            if (entity == null) { throw new ArgumentNullException("Source Can not be null"); }
+
+            Type entityType = typeof(T);
+            string tableName = entityType.Name;
+            PropertyInfo[] properties = entityType.GetProperties();
+
+            // Update the main entity
+            var updateElements = new List<PropertyInfo>();
+            foreach (var property in properties)
+            {
+                if (!IsNestedObject(property) && property.Name != "Id")
+                {
+                    updateElements.Add(property);
+                }
+            }
+
+            PropertyInfo idProp = entityType.GetProperty("Id");
+            var idValue = idProp.GetValue(entity);
+
+            string updateMainEntity = GenerateUpdateStatement(tableName, updateElements.ToArray(), idProp.Name);
+            ExecuteNonQuery(updateMainEntity, properties, entity);
+
+            // Update nested objects
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsNestedObject(property))
+                {
+                    UpdateNestedObject(property, entity, tableName, idValue);
+                }
+            }
+        }
+
         private void InsertNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
         {
             var type = nestedProperty.PropertyType;
@@ -107,7 +141,6 @@ namespace Assignment3
             }
         }
 
-        // Generating query for the object itself without including nested objects
         private string GenerateInsertStatement(string tableName, PropertyInfo[] properties)
         {
             string columns = string.Join(", ", properties.Select(p => p.Name));
@@ -116,7 +149,6 @@ namespace Assignment3
             return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
         }
 
-        // Generating query for nested object with parent table id reference
         private string GenerateNestedInsertStatement(string tableName, PropertyInfo[] properties, string parentTableName, object? parentId)
         {
             string columns = string.Join(", ", properties.Select(p => p.Name));
@@ -125,7 +157,75 @@ namespace Assignment3
             return $"INSERT INTO {tableName} ({columns},{parentTableName}Id) VALUES ({values},{parentId});";
         }
 
-        // To execute query
+        private void UpdateNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
+        {
+            var type = nestedProperty.PropertyType;
+            var nestedObject = nestedProperty.GetValue(entity);
+
+            if (nestedObject != null)
+            {
+                if (IsEnumerableType(type))
+                {
+                    // Handle IEnumerable or List<T> type
+                    IEnumerable<object> nestedList = nestedObject as IEnumerable<object>;
+                    if (nestedList != null)
+                    {
+                        foreach (var item in nestedList)
+                        {
+                            UpdateNestedObjectItem(nestedProperty, item, parentTableName, parentId);
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle single nested object
+                    UpdateNestedObjectItem(nestedProperty, nestedObject, parentTableName, parentId);
+                }
+            }
+        }
+
+        private void UpdateNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
+        {
+            var nestedType = nestedObject.GetType();
+            var nestedTableName = nestedType.Name;
+            PropertyInfo[] nestedProperties = nestedType.GetProperties();
+
+            // Update the nested primitive types
+            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
+            var nestedId = nestedIdProp.GetValue(nestedObject);
+
+            var updateElementsNested = new List<PropertyInfo>();
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (!IsNestedObject(nestedProp))
+                {
+                    updateElementsNested.Add(nestedProp);
+                }
+            }
+
+            // Create UPDATE statement for the nested entity table
+            string updateNestedEntity = GenerateUpdateStatement(nestedTableName, updateElementsNested.ToArray(), nestedIdProp.Name);
+            ExecuteNonQuery(updateNestedEntity, updateElementsNested.ToArray(), nestedObject);
+
+            // Then check if any nested object to traverse
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (IsNestedObject(nestedProp))
+                {
+                    UpdateNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                }
+            }
+        }
+
+
+        private string GenerateUpdateStatement(string tableName, PropertyInfo[] properties, string idColumnName)
+        {
+            string updateSet = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
+            return $"UPDATE {tableName} SET {updateSet} WHERE {idColumnName} = @Id;";
+        }
+
+
+
         private void ExecuteNonQuery(string query, PropertyInfo[] properties, object entity)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
