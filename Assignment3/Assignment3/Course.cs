@@ -12,7 +12,7 @@ namespace Assignment3
 
         public string Title {  get; set; }
 
-        public Instructor Teacher { get; set; }
+        public List<Instructor> Teacher { get; set; }
         
         public double Fees { get; set; }
     }

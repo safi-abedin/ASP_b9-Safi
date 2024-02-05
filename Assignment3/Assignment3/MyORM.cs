@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -14,40 +13,37 @@ namespace Assignment3
 
         public void Insert(T entity)
         {
-            if(entity == null) { throw new ArgumentNullException("Source Can not be null"); }
+            if (entity == null) { throw new ArgumentNullException("Source Can not be null"); }
 
             Type entityType = typeof(T);
             string tableName = entityType.Name;
             PropertyInfo[] properties = entityType.GetProperties();
 
-
-            //First insert the primtive properties
-            var insertelements = new List<PropertyInfo>();
+            // First insert the primitive properties
+            var insertElements = new List<PropertyInfo>();
             foreach (var property in properties)
             {
                 if (!IsNestedObject(property))
                 {
-                    insertelements.Add(property);
+                    insertElements.Add(property);
                 }
             }
 
-            string insertMainEntity = GenerateInsertStatement(tableName, insertelements.ToArray());
+            string insertMainEntity = GenerateInsertStatement(tableName, insertElements.ToArray());
             ExecuteNonQuery(insertMainEntity, properties, entity);
 
-
-            //then the nested object
+            // Then the nested object
             PropertyInfo parentIdProp = entityType.GetProperty("Id");
             var parentId = parentIdProp.GetValue(entity, null);
 
-            foreach(PropertyInfo property in properties)
+            foreach (PropertyInfo property in properties)
             {
                 if (IsNestedObject(property))
                 {
-                    InsertNestedObject(property, entity,tableName, parentId);
+                    InsertNestedObject(property, entity, tableName, parentId);
                 }
             }
         }
-
 
         private void InsertNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
         {
@@ -56,48 +52,62 @@ namespace Assignment3
 
             if (nestedObject != null)
             {
-                var nestedType = nestedObject.GetType();
-                var nestedTableName = nestedType.Name;
-
-                Console.WriteLine(nestedTableName);
-
-                PropertyInfo[] nestedProperties = nestedType.GetProperties();
-
-                //first insert the nested primptive types with parent id
-
-
-                PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
-                var nestedId = nestedIdProp.GetValue(nestedObject);
-
-                var insertelementsNested = new List<PropertyInfo>();
-                foreach (var nestedProp in nestedProperties)
+                if (IsEnumerableType(type))
                 {
-                    if (!IsNestedObject(nestedProp))
+                    // Handle IEnumerable or List<T> type
+                    IEnumerable<object> nestedList = nestedObject as IEnumerable<object>;
+                    if (nestedList != null)
                     {
-                        insertelementsNested.Add(nestedProp);
+                        foreach (var item in nestedList)
+                        {
+                            InsertNestedObjectItem(nestedProperty, item, parentTableName, parentId);
+                        }
                     }
                 }
-
-                // Create INSERT statement for the nested entity table
-                string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertelementsNested.ToArray(), parentTableName, parentId);
-
-                // Execute the INSERT statement for the nested entity
-                ExecuteNonQuery(insertNestedEntity, insertelementsNested.ToArray(), nestedObject);
-
-
-                //then check if any nested object to travarse
-                foreach (var nestedProp in nestedProperties)
+                else
                 {
-                    if (IsNestedObject(nestedProp))
-                    {
-                        InsertNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
-                    }
+                    // Handle single nested object
+                    InsertNestedObjectItem(nestedProperty, nestedObject, parentTableName, parentId);
                 }
-
             }
         }
 
-        //generating query for the object it self without including nested object
+        private void InsertNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
+        {
+            var nestedType = nestedObject.GetType();
+            var nestedTableName = nestedType.Name;
+            PropertyInfo[] nestedProperties = nestedType.GetProperties();
+
+            // First insert the nested primitive types with parent id
+            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
+            var nestedId = nestedIdProp.GetValue(nestedObject);
+
+            var insertElementsNested = new List<PropertyInfo>();
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (!IsNestedObject(nestedProp))
+                {
+                    insertElementsNested.Add(nestedProp);
+                }
+            }
+
+            // Create INSERT statement for the nested entity table
+            string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertElementsNested.ToArray(), parentTableName, parentId);
+
+            // Execute the INSERT statement for the nested entity
+            ExecuteNonQuery(insertNestedEntity, insertElementsNested.ToArray(), nestedObject);
+
+            // Then check if any nested object to traverse
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (IsNestedObject(nestedProp))
+                {
+                    InsertNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                }
+            }
+        }
+
+        // Generating query for the object itself without including nested objects
         private string GenerateInsertStatement(string tableName, PropertyInfo[] properties)
         {
             string columns = string.Join(", ", properties.Select(p => p.Name));
@@ -106,17 +116,16 @@ namespace Assignment3
             return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
         }
 
-        //generating query for nested object with parent table id reference
+        // Generating query for nested object with parent table id reference
         private string GenerateNestedInsertStatement(string tableName, PropertyInfo[] properties, string parentTableName, object? parentId)
         {
-            string columns = string.Join(", ", properties.Select(p =>  p.Name));
+            string columns = string.Join(", ", properties.Select(p => p.Name));
             string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
 
-            return $"INSERT INTO {tableName} ({columns},{parentTableName + "Id"}) VALUES ({values},{parentId});";
+            return $"INSERT INTO {tableName} ({columns},{parentTableName}Id) VALUES ({values},{parentId});";
         }
 
-
-        //to execute  query 
+        // To execute query
         private void ExecuteNonQuery(string query, PropertyInfo[] properties, object entity)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -135,7 +144,7 @@ namespace Assignment3
                             };
 
                             command.Parameters.Add(parameter);
-                        }   
+                        }
                     }
                     command.ExecuteNonQuery();
                 }
@@ -157,11 +166,9 @@ namespace Assignment3
             }
         }
 
-
-        private void SetPropertyValue(object obj, string propertyName, object value)
+        private bool IsEnumerableType(Type type)
         {
-            var property = obj.GetType().GetProperty(propertyName);
-            property?.SetValue(obj, value);
+            return type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IEnumerable<>) || type.GetGenericTypeDefinition() == typeof(List<>));
         }
 
         private bool IsNestedObject(PropertyInfo property)
