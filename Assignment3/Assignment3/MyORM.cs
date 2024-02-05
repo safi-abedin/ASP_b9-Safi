@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -77,6 +78,104 @@ namespace Assignment3
                     UpdateNestedObject(property, entity, tableName, idValue);
                 }
             }
+        }
+
+        public void Delete(T entity)
+        {
+            Type entityType = typeof(T);
+            string tableName = entityType.Name;
+            PropertyInfo[] properties = entityType.GetProperties();
+
+            //first We have to Delete the nested Objects
+
+            PropertyInfo parentIdProp = entityType.GetProperty("Id");
+            var parentId = parentIdProp.GetValue(entity, null);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsNestedObject(property))
+                {
+                    DeleteNestedObject(property, entity, tableName, parentId);
+                }
+            }
+
+            //then we will delete the main entity
+
+             string query = GenerateDeleteStatement(tableName, parentId);
+             ExecuteDeleteQuery(query);
+            
+        }
+
+        private void DeleteNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
+        {
+            var type = nestedProperty.PropertyType;
+            var nestedObject = nestedProperty.GetValue(entity);
+
+            if (nestedObject != null)
+            {
+                if (IsEnumerableType(type))
+                {
+                    // Handle IEnumerable or List<T> type
+                    IEnumerable<object> nestedList = nestedObject as IEnumerable<object>;
+                    if (nestedList != null)
+                    {
+                        foreach (var item in nestedList)
+                        {
+                            DeleteNestedObjectItem(nestedProperty, item, parentTableName, parentId);
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle single nested object
+                    DeleteNestedObjectItem(nestedProperty, nestedObject, parentTableName, parentId);
+                }
+            }
+        }
+
+        private void DeleteNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
+        {
+            var nestedType = nestedObject.GetType();
+            var nestedTableName = nestedType.Name;
+            PropertyInfo[] nestedProperties = nestedType.GetProperties();
+
+            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
+            var nestedId = nestedIdProp.GetValue(nestedObject);
+
+            //if any nested object delete first 
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (IsNestedObject(nestedProp))
+                {
+                    DeleteNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                }
+            }
+
+            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName, parentTableName, parentId);
+            ExecuteDeleteQuery(deleteQuery);
+        }
+
+        private void ExecuteDeleteQuery(string query)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private string GenerateNestedDeleteStatement(string nestedTableName, string parentTableName, object? parentId)
+        {
+            return $"DELETE FROM {nestedTableName} WHERE {parentTableName}Id={parentId};";
+        }
+
+        private string GenerateDeleteStatement(string tableName, object Id)
+        {
+            return $"DELETE FROM {tableName} WHERE Id={Id};";
         }
 
         private void InsertNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
