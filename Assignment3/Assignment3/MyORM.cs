@@ -101,9 +101,9 @@ namespace Assignment3
 
             //then we will delete the main entity
 
-             string query = GenerateDeleteStatement(tableName, parentId);
-             ExecuteDeleteQuery(query);
-            
+            string query = GenerateDeleteStatement(tableName, parentId);
+            ExecuteDeleteQuery(query);
+
         }
 
         private void DeleteNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
@@ -151,7 +151,7 @@ namespace Assignment3
                 }
             }
 
-            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName, parentTableName, parentId);
+            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName,nestedId, parentTableName, parentId);
             ExecuteDeleteQuery(deleteQuery);
         }
 
@@ -168,9 +168,9 @@ namespace Assignment3
             }
         }
 
-        private string GenerateNestedDeleteStatement(string nestedTableName, string parentTableName, object? parentId)
+        private string GenerateNestedDeleteStatement(string nestedTableName,object? nestedTableId, string parentTableName, object? parentId)
         {
-            return $"DELETE FROM {nestedTableName} WHERE {parentTableName}Id={parentId};";
+            return $"DELETE FROM {nestedTableName} WHERE Id={nestedTableId} And {parentTableName}Id={parentId};";
         }
 
         private string GenerateDeleteStatement(string tableName, object Id)
