@@ -523,6 +523,53 @@ namespace Assignment3
         }
 
 
+        public void Delete(G id)
+        {
+            var Object = GetById(id);
+            if (Object != null)
+            {
+                Delete(Object);
+            }
+        }
+
+
+        public List<T> GetAll()
+        {
+            var list = new List<T>();
+
+            var idList = new List<G>();
+
+            var tableName = typeof(T).Name;
+
+            string query = $"SELECT [ID]  FROM {tableName};";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand Command = new SqlCommand(query, connection))
+                {
+
+                    using (SqlDataReader Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            idList.Add((G)Reader["Id"]);
+                        } 
+                    }
+                }
+            }
+
+            foreach (var id in idList)
+            {
+                var obj = GetById(id);
+                list.Add(obj);
+            }
+
+            return list;
+        }
+
+
         private SqlDbType GetSqlDbType(Type type)
         {
             switch (Type.GetTypeCode(type))

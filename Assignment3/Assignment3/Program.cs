@@ -30,10 +30,10 @@ Course c = new Course
 };
 
 var orm = new MyORM<int,Course>();
-var course = orm.GetById(c.Id);
+var course = orm.GetAll();
 
 
-Console.WriteLine("Course Details:");
+/*Console.WriteLine("Course Details:");
 Console.WriteLine($"ID: {course.Id}");
 Console.WriteLine($"Title: {course.Title}");
 Console.WriteLine($"Fees: {course.Fees}");
@@ -58,3 +58,4 @@ foreach (var teacher in course.Teacher)
     Console.WriteLine($"Country: {teacher.PermanentAddress.Country}");
 }
 
+*/
