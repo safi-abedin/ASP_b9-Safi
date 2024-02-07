@@ -1,61 +1,44 @@
-﻿
-using Assignment3;
-using System.Xml.Linq;
+﻿using Assignment3;
+using Assignment3.TestCase1;
 
-Course c = new Course
+Product product1 = new Product
 {
-    Id = 5,
-    Title = "C#",
-    Teacher = new List<Instructor>
+    Id = new Guid("12979002-445A-4624-82FD-52C21DBB956A"),
+    SKU = "ABC123",
+    Name = "Product 1",
+    Price = 29.90,
+    Colors = new List<Color>
     {
-        new Instructor
-        {
-            Id = 6,
-            Name = "Jalal Uddin",
-            Email = "jalal.exe@example.com",
-            PresentAddress = new Address { Id = 115, Street = "Dhaka", City = "Gulshan", Country = "UK" },
-            PermanentAddress = new Address { Id = 8, Street = "Cumilla", City = "Townsville", Country = "UK" }
-        },
-        new Instructor
-        {
-            Id = 2,
-            Name = "Safi Abedin",
-            Email = "safi.exe@example.com",
-            PresentAddress = new Address { Id = 4, Street = "Cumilla", City = "Kandirpar", Country = "BD" },
-            PermanentAddress = new Address { Id = 3, Street = "Dhaka", City = "Banani", Country = "Bangladesh" }
-        }
-
+        new Color { Id = new Guid("6f6e6e34-70e7-4e47-9884-b26038e9e93e"), Name = "Red", Code = "#FF0000" },
+        new Color { Id = new Guid("4eb92b9e-9e39-4bb7-ba21-5f1f11aa6e85"), Name = "Blue", Code = "#0000FF" }
     },
-    Fees = 30000
+    Feedbacks = new List<Feedback>
+    {
+        new Feedback { Id = new Guid("377dd928-dc6d-4659-ba29-df03341f25ac"), FeedbackGiver = new User { Id = new Guid("bb429384-0a16-4ba7-93ac-36d7b750a64d"), Name = "John", Email = "john@example.com" }, Rating = 4.5, Comment = "Great product!" },
+        new Feedback { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), FeedbackGiver = new User { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), Name = "Emma", Email = "emma@example.com" }, Rating = 3.8, Comment = "Could be better." }
+    }
 };
 
-var orm = new MyORM<int,Course>();
-var course = orm.GetAll();
-
-
-/*Console.WriteLine("Course Details:");
-Console.WriteLine($"ID: {course.Id}");
-Console.WriteLine($"Title: {course.Title}");
-Console.WriteLine($"Fees: {course.Fees}");
-
-Console.WriteLine("Teacher Details:");
-foreach (var teacher in course.Teacher)
+Product product2 = new Product
 {
-    Console.WriteLine($"ID: {teacher.Id}");
-    Console.WriteLine($"Name: {teacher.Name}");
-    Console.WriteLine($"Email: {teacher.Email}");
+    Id = new Guid("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), 
+    SKU = "DEF456",
+    Name = "Product 2",
+    Price = 39.90,
+    Colors = new List<Color>
+    {
+        new Color { Id = new Guid("11111111-2222-3333-4444-555555555555"), Name = "Green", Code = "#00FF00" },
+        new Color { Id = new Guid("66666666-7777-8888-9999-000000000000"), Name = "Yellow", Code = "#FFFF00" }
+    },
+    Feedbacks = new List<Feedback>
+    {
+        new Feedback { Id = new Guid("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), FeedbackGiver = new User { Id = new Guid("11111111-2222-3333-4444-555555555555"), Name = "Alice", Email = "alice@example.com" }, Rating = 4.2, Comment = "Good quality." },
+        new Feedback { Id = new Guid("66666666-7777-8888-9999-000000000000"), FeedbackGiver = new User { Id = new Guid("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), Name = "Bob", Email = "bob@example.com" }, Rating = 3.5, Comment = "Average." }
+    }
+};
 
-    Console.WriteLine("Present Address:");
-    Console.WriteLine($"ID: {teacher.PresentAddress.Id}");
-    Console.WriteLine($"Street: {teacher.PresentAddress.Street}");
-    Console.WriteLine($"City: {teacher.PresentAddress.City}");
-    Console.WriteLine($"Country: {teacher.PresentAddress.Country}");
 
-    Console.WriteLine("Permanent Address:");
-    Console.WriteLine($"ID: {teacher.PermanentAddress.Id}");
-    Console.WriteLine($"Street: {teacher.PermanentAddress.Street}");
-    Console.WriteLine($"City: {teacher.PermanentAddress.City}");
-    Console.WriteLine($"Country: {teacher.PermanentAddress.Country}");
-}
 
-*/
+var orm =new MyORM<Guid, Product>();
+var c =  orm.GetById(product1.Id);
+var c2 = 0;

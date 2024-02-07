@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Assignment3
 {
-    public class MyORM<G, T> where T : class, IEntity<G>
+    public class MyORM<G, T> where T : class
     {
         private string connectionString = "Data Source=.\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
 
@@ -170,12 +170,12 @@ namespace Assignment3
 
         private string GenerateNestedDeleteStatement(string nestedTableName,object? nestedTableId, string parentTableName, object? parentId)
         {
-            return $"DELETE FROM {nestedTableName} WHERE Id={nestedTableId} And {parentTableName}Id={parentId};";
+            return $"DELETE FROM [{nestedTableName}] WHERE Id='{nestedTableId}' And [{parentTableName}Id]='{parentId}';";
         }
 
         private string GenerateDeleteStatement(string tableName, object Id)
         {
-            return $"DELETE FROM {tableName} WHERE Id={Id};";
+            return $"DELETE FROM [{tableName}] WHERE Id='{Id}';";
         }
 
         private void InsertNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
@@ -245,7 +245,7 @@ namespace Assignment3
             string columns = string.Join(", ", properties.Select(p => p.Name));
             string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
 
-            return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
+            return $"INSERT INTO [{tableName}] ({columns}) VALUES ({values});";
         }
 
         private string GenerateNestedInsertStatement(string tableName, PropertyInfo[] properties, string parentTableName, object? parentId)
@@ -253,8 +253,18 @@ namespace Assignment3
             string columns = string.Join(", ", properties.Select(p => p.Name));
             string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
 
-            return $"INSERT INTO {tableName} ({columns},{parentTableName}Id) VALUES ({values},{parentId});";
+            if (parentId is Guid)
+            {
+                // If parentId is a Guid, surround it with single quotes
+                return $"INSERT INTO [{tableName}] ({columns},[{parentTableName}Id]) VALUES ({values},'{parentId}');";
+            }
+            else
+            {
+                // If parentId is not a Guid, assume it's already formatted correctly
+                return $"INSERT INTO [{tableName}] ({columns},[{parentTableName}Id]) VALUES ({values},{parentId});";
+            }
         }
+
 
         private void UpdateNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
         {
@@ -320,7 +330,7 @@ namespace Assignment3
         private string GenerateUpdateStatement(string tableName, PropertyInfo[] properties, string idColumnName)
         {
             string updateSet = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
-            return $"UPDATE {tableName} SET {updateSet} WHERE {idColumnName} = @Id;";
+            return $"UPDATE [{tableName}] SET {updateSet} WHERE {idColumnName} = @Id;";
         }
 
 
@@ -355,7 +365,7 @@ namespace Assignment3
         public T GetById(G id)
         {
             string tableName = typeof(T).Name;
-            string query = $"SELECT * FROM {tableName} WHERE Id=@Id;";
+            string query = $"SELECT * FROM [{tableName}] WHERE Id=@Id;";
 
             T result = Activator.CreateInstance<T>();
 
@@ -399,7 +409,7 @@ namespace Assignment3
 
                     // Construct SQL query to retrieve nested objects
                     string childTableName = listType.Name;
-                    string query = $"SELECT * FROM {childTableName} WHERE {parentTableName}Id=@Id;";
+                    string query = $"SELECT * FROM [{childTableName}] WHERE [{parentTableName}Id]=@Id;";
 
                     // Log the constructed query
                     Console.WriteLine($"Constructed Query: {query}");
@@ -437,7 +447,7 @@ namespace Assignment3
                 {
                     object nestedObject = Activator.CreateInstance(property.PropertyType);
                     var childTableName = property.PropertyType.Name;
-                    string query = $"SELECT * FROM {childTableName} WHERE {parentTableName}Id=@Id;";
+                    string query = $"SELECT * FROM [{childTableName}] WHERE [{parentTableName}Id]=@Id;";
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
@@ -541,7 +551,7 @@ namespace Assignment3
 
             var tableName = typeof(T).Name;
 
-            string query = $"SELECT [ID]  FROM {tableName};";
+            string query = $"SELECT [ID]  FROM [{tableName}];";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -569,21 +579,30 @@ namespace Assignment3
             return list;
         }
 
-
         private SqlDbType GetSqlDbType(Type type)
         {
-            switch (Type.GetTypeCode(type))
+            if (type == typeof(string))
             {
-                case TypeCode.String:
-                    return SqlDbType.NVarChar;
-                case TypeCode.Int32:
-                    return SqlDbType.Int;
-                case TypeCode.Double:
-                    return SqlDbType.Float;
-                default:
-                    throw new ArgumentException($"Unsupported data type: {type.Name}");
+                return SqlDbType.NVarChar;
+            }
+            else if (type == typeof(int))
+            {
+                return SqlDbType.Int;
+            }
+            else if (type == typeof(double))
+            {
+                return SqlDbType.Float;
+            }
+            else if (type == typeof(Guid))
+            {
+                return SqlDbType.UniqueIdentifier;
+            }
+            else
+            {
+                throw new ArgumentException($"Unsupported data type: {type.Name}");
             }
         }
+
 
         private bool IsEnumerableType(Type type)
         {
