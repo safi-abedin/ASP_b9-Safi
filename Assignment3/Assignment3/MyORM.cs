@@ -350,6 +350,179 @@ namespace Assignment3
             }
         }
 
+
+
+        public T GetById(G id)
+        {
+            string tableName = typeof(T).Name;
+            string query = $"SELECT * FROM {tableName} WHERE Id=@Id;";
+
+            T result = Activator.CreateInstance<T>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Map primitive properties
+                            result = MapPrimitiveProperties(reader);
+
+                            // Map nested objects
+                            MapNestedObjects(result,reader);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private void MapNestedObjects(object result, SqlDataReader reader)
+        {
+            Type entityType = result.GetType();
+            PropertyInfo[] properties = entityType.GetProperties();
+            string parentTableName = entityType.Name;
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsEnumerableType(property.PropertyType))
+                {
+                    var list = (IList)Activator.CreateInstance(property.PropertyType);
+                    Type listType = property.PropertyType.GetGenericArguments()[0];
+
+                    // Construct SQL query to retrieve nested objects
+                    string childTableName = listType.Name;
+                    string query = $"SELECT * FROM {childTableName} WHERE {parentTableName}Id=@Id;";
+
+                    // Log the constructed query
+                    Console.WriteLine($"Constructed Query: {query}");
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand childCommand = new SqlCommand(query, connection))
+                        {
+                            childCommand.Parameters.AddWithValue("@Id", reader["Id"]);
+
+                            using (SqlDataReader childReader = childCommand.ExecuteReader())
+                            {
+                                while (childReader.Read())
+                                {
+                                    // Log the data read from the childReader
+                                    for (int i = 0; i < childReader.FieldCount; i++)
+                                    {
+                                        Console.WriteLine($"{childReader.GetName(i)}: {childReader.GetValue(i)}");
+                                    }
+
+                                    var nestedObject = MapPrimitiveProperties(childReader, listType);
+                                    MapNestedObjects(nestedObject, childReader); // Recursively map nested objects
+                                    list.Add(nestedObject);
+                                }
+                            }
+                        }
+                    }
+
+                    // Set the populated list to the property
+                    property.SetValue(result, list);
+                }
+                else if (IsNestedObject(property))
+                {
+                    object nestedObject = Activator.CreateInstance(property.PropertyType);
+                    var childTableName = property.PropertyType.Name;
+                    string query = $"SELECT * FROM {childTableName} WHERE {parentTableName}Id=@Id;";
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand childCommand = new SqlCommand(query, connection))
+                        {
+                            childCommand.Parameters.AddWithValue("@Id", reader["Id"]);
+
+                            using (SqlDataReader Reader = childCommand.ExecuteReader())
+                            {
+                                while (Reader.Read())
+                                {
+                                    // Log the data read from the childReader
+                                    for (int i = 0; i < Reader.FieldCount; i++)
+                                    {
+                                        Console.WriteLine($"{Reader.GetName(i)}: {Reader.GetValue(i)}");
+                                    }
+
+                                    nestedObject = MapPrimitiveProperties(Reader, property.PropertyType);
+                                    MapNestedObjects(nestedObject, Reader); // Recursively map nested objects
+                                }
+                            }
+                        }
+                    }
+                    property.SetValue(result, nestedObject);
+                }
+            }
+        }
+
+
+
+
+        private object MapPrimitiveProperties(SqlDataReader reader, Type objectType)
+        {
+            object result = Activator.CreateInstance(objectType);
+            PropertyInfo[] properties = objectType.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (!IsNestedObject(property))
+                {
+                    string columnName = ToPascalCase(property.Name);
+                    int columnIndex = reader.GetOrdinal(columnName);
+                    if (columnIndex != -1 && !reader.IsDBNull(columnIndex))
+                    {
+                        object value = reader[columnIndex] == DBNull.Value ? null : reader[columnIndex];
+                        property.SetValue(result, value);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+
+        private T MapPrimitiveProperties(SqlDataReader reader)
+        {
+            Type entityType = typeof(T);
+            T result = Activator.CreateInstance<T>();
+
+            PropertyInfo[] properties = entityType.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (!IsNestedObject(property))
+                {
+                    string columnName = ToPascalCase(property.Name);
+                    if (!reader.IsDBNull(columnName))
+                    {
+                        object value = reader[columnName] == DBNull.Value ? null : reader[columnName];
+                        property.SetValue(result, value);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private string ToPascalCase(string str)
+        {
+            return char.ToUpper(str[0]) + str.Substring(1);
+        }
+
+
         private SqlDbType GetSqlDbType(Type type)
         {
             switch (Type.GetTypeCode(type))
