@@ -12,13 +12,15 @@ namespace Assignment3
     {
         private string connectionString = "Data Source=.\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
 
+
+        //insert 
         public void Insert(T entity)
         {
             if (entity == null) { throw new ArgumentNullException("Source Can not be null"); }
 
             Type entityType = typeof(T);
             string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties();
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance);
 
             // First insert the primitive properties
             var insertElements = new List<PropertyInfo>();
@@ -46,137 +48,6 @@ namespace Assignment3
             }
         }
 
-        public void Update(T entity)
-        {
-            if (entity == null) { throw new ArgumentNullException("Source Can not be null"); }
-
-            Type entityType = typeof(T);
-            string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties();
-
-            // Update the main entity
-            var updateElements = new List<PropertyInfo>();
-            foreach (var property in properties)
-            {
-                if (!IsNestedObject(property) && property.Name != "Id")
-                {
-                    updateElements.Add(property);
-                }
-            }
-
-            PropertyInfo idProp = entityType.GetProperty("Id");
-            var idValue = idProp.GetValue(entity);
-
-            string updateMainEntity = GenerateUpdateStatement(tableName, updateElements.ToArray(), idProp.Name);
-            ExecuteNonQuery(updateMainEntity, properties, entity);
-
-            // Update nested objects
-            foreach (PropertyInfo property in properties)
-            {
-                if (IsNestedObject(property))
-                {
-                    UpdateNestedObject(property, entity, tableName, idValue);
-                }
-            }
-        }
-
-        public void Delete(T entity)
-        {
-            Type entityType = typeof(T);
-            string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties();
-
-            //first We have to Delete the nested Objects
-
-            PropertyInfo parentIdProp = entityType.GetProperty("Id");
-            var parentId = parentIdProp.GetValue(entity, null);
-
-            foreach (PropertyInfo property in properties)
-            {
-                if (IsNestedObject(property))
-                {
-                    DeleteNestedObject(property, entity, tableName, parentId);
-                }
-            }
-
-            //then we will delete the main entity
-
-            string query = GenerateDeleteStatement(tableName, parentId);
-            ExecuteDeleteQuery(query);
-
-        }
-
-        private void DeleteNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
-        {
-            var type = nestedProperty.PropertyType;
-            var nestedObject = nestedProperty.GetValue(entity);
-
-            if (nestedObject != null)
-            {
-                if (IsEnumerableType(type))
-                {
-                    // Handle IEnumerable or List<T> type
-                    IEnumerable<object> nestedList = nestedObject as IEnumerable<object>;
-                    if (nestedList != null)
-                    {
-                        foreach (var item in nestedList)
-                        {
-                            DeleteNestedObjectItem(nestedProperty, item, parentTableName, parentId);
-                        }
-                    }
-                }
-                else
-                {
-                    // Handle single nested object
-                    DeleteNestedObjectItem(nestedProperty, nestedObject, parentTableName, parentId);
-                }
-            }
-        }
-
-        private void DeleteNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
-        {
-            var nestedType = nestedObject.GetType();
-            var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties();
-
-            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
-            var nestedId = nestedIdProp.GetValue(nestedObject);
-
-            //if any nested object delete first 
-            foreach (var nestedProp in nestedProperties)
-            {
-                if (IsNestedObject(nestedProp))
-                {
-                    DeleteNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
-                }
-            }
-
-            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName,nestedId, parentTableName, parentId);
-            ExecuteDeleteQuery(deleteQuery);
-        }
-
-        private void ExecuteDeleteQuery(string query)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        private string GenerateNestedDeleteStatement(string nestedTableName,object? nestedTableId, string parentTableName, object? parentId)
-        {
-            return $"DELETE FROM [{nestedTableName}] WHERE Id='{nestedTableId}' And [{parentTableName}Id]='{parentId}';";
-        }
-
-        private string GenerateDeleteStatement(string tableName, object Id)
-        {
-            return $"DELETE FROM [{tableName}] WHERE Id='{Id}';";
-        }
 
         private void InsertNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
         {
@@ -209,7 +80,7 @@ namespace Assignment3
         {
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties();
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             // First insert the nested primitive types with parent id
             PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
@@ -265,6 +136,43 @@ namespace Assignment3
             }
         }
 
+        //update
+        public void Update(T entity)
+        {
+            if (entity == null) { throw new ArgumentNullException("Source Can not be null"); }
+
+            Type entityType = typeof(T);
+            string tableName = entityType.Name;
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            // Update the main entity
+            var updateElements = new List<PropertyInfo>();
+            foreach (var property in properties)
+            {
+                if (!IsNestedObject(property) && property.Name != "Id")
+                {
+                    updateElements.Add(property);
+                }
+            }
+
+            PropertyInfo idProp = entityType.GetProperty("Id");
+            var idValue = idProp.GetValue(entity);
+
+            string updateMainEntity = GenerateUpdateStatement(tableName, updateElements.ToArray(), idProp.Name);
+            ExecuteNonQuery(updateMainEntity, properties, entity);
+
+            // Update nested objects
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsNestedObject(property))
+                {
+                    UpdateNestedObject(property, entity, tableName, idValue);
+                }
+            }
+        }
+
+
+
 
         private void UpdateNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
         {
@@ -297,7 +205,7 @@ namespace Assignment3
         {
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties();
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             // Update the nested primitive types
             PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
@@ -334,7 +242,7 @@ namespace Assignment3
         }
 
 
-
+        //insert and update query executor
         private void ExecuteNonQuery(string query, PropertyInfo[] properties, object entity)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -360,8 +268,109 @@ namespace Assignment3
             }
         }
 
+        //Delete
+        public void Delete(T entity)
+        {
+            Type entityType = typeof(T);
+            string tableName = entityType.Name;
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            //first We have to Delete the nested Objects
+
+            PropertyInfo parentIdProp = entityType.GetProperty("Id");
+            var parentId = parentIdProp.GetValue(entity, null);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsNestedObject(property))
+                {
+                    DeleteNestedObject(property, entity, tableName, parentId);
+                }
+            }
+
+            //then we will delete the main entity
+
+            string query = GenerateDeleteStatement(tableName, parentId);
+            ExecuteDeleteQuery(query);
+
+        }
+
+        private void DeleteNestedObject(PropertyInfo nestedProperty, object entity, string parentTableName, object? parentId)
+        {
+            var type = nestedProperty.PropertyType;
+            var nestedObject = nestedProperty.GetValue(entity);
+
+            if (nestedObject != null)
+            {
+                if (IsEnumerableType(type))
+                {
+                    // Handle IEnumerable or List<T> type
+                    IEnumerable<object> nestedList = nestedObject as IEnumerable<object>;
+                    if (nestedList != null)
+                    {
+                        foreach (var item in nestedList)
+                        {
+                            DeleteNestedObjectItem(nestedProperty, item, parentTableName, parentId);
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle single nested object
+                    DeleteNestedObjectItem(nestedProperty, nestedObject, parentTableName, parentId);
+                }
+            }
+        }
+
+        private void DeleteNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
+        {
+            var nestedType = nestedObject.GetType();
+            var nestedTableName = nestedType.Name;
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
+            var nestedId = nestedIdProp.GetValue(nestedObject);
+
+            //if any nested object delete first 
+            foreach (var nestedProp in nestedProperties)
+            {
+                if (IsNestedObject(nestedProp))
+                {
+                    DeleteNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                }
+            }
+
+            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName,nestedId, parentTableName, parentId);
+            ExecuteDeleteQuery(deleteQuery);
+        }
+
+        private void ExecuteDeleteQuery(string query)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private string GenerateNestedDeleteStatement(string nestedTableName,object? nestedTableId, string parentTableName, object? parentId)
+        {
+            return $"DELETE FROM [{nestedTableName}] WHERE Id='{nestedTableId}' And [{parentTableName}Id]='{parentId}';";
+        }
+
+        private string GenerateDeleteStatement(string tableName, object Id)
+        {
+            return $"DELETE FROM [{tableName}] WHERE Id='{Id}';";
+        }
 
 
+
+
+        //get by id
         public T GetById(G id)
         {
             string tableName = typeof(T).Name;
@@ -397,7 +406,7 @@ namespace Assignment3
         private void MapNestedObjects(object result, SqlDataReader reader)
         {
             Type entityType = result.GetType();
-            PropertyInfo[] properties = entityType.GetProperties();
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             string parentTableName = entityType.Name;
 
             foreach (PropertyInfo property in properties)
@@ -483,7 +492,7 @@ namespace Assignment3
         private object MapPrimitiveProperties(SqlDataReader reader, Type objectType)
         {
             object result = Activator.CreateInstance(objectType);
-            PropertyInfo[] properties = objectType.GetProperties();
+            PropertyInfo[] properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             foreach (PropertyInfo property in properties)
             {
@@ -509,7 +518,7 @@ namespace Assignment3
             Type entityType = typeof(T);
             T result = Activator.CreateInstance<T>();
 
-            PropertyInfo[] properties = entityType.GetProperties();
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             foreach (PropertyInfo property in properties)
             {
@@ -579,6 +588,7 @@ namespace Assignment3
             return list;
         }
 
+        //
         private SqlDbType GetSqlDbType(Type type)
         {
             if (type == typeof(string))
@@ -597,11 +607,28 @@ namespace Assignment3
             {
                 return SqlDbType.UniqueIdentifier;
             }
+            else if (type == typeof(decimal))
+            {
+                return SqlDbType.Decimal;
+            }
+            else if (type == typeof(long))
+            {
+                return SqlDbType.BigInt;
+            }
+            else if (type == typeof(bool))
+            {
+                return SqlDbType.Bit;
+            }
+            else if (type == typeof(DateTime))
+            {
+                return SqlDbType.DateTime;
+            }
             else
             {
                 throw new ArgumentException($"Unsupported data type: {type.Name}");
             }
         }
+
 
 
         private bool IsEnumerableType(Type type)
