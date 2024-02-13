@@ -8,6 +8,14 @@ using System.Reflection;
 
 namespace Assignment3
 {
+   /* using Microsoft.Data.SqlClient;
+    using System.Collections;
+    using System.Data;
+    using System.Reflection;
+
+    namespace Assignment3Test.DbOperation;*/
+
+
     public class MyORM<G, T> where T : class
     {
         private string connectionString = "Data Source=.\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
@@ -20,7 +28,7 @@ namespace Assignment3
 
             Type entityType = typeof(T);
             string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance);
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             // First insert the primitive properties
             var insertElements = new List<PropertyInfo>();
@@ -80,7 +88,7 @@ namespace Assignment3
         {
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             // First insert the nested primitive types with parent id
             PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
@@ -143,7 +151,7 @@ namespace Assignment3
 
             Type entityType = typeof(T);
             string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             // Update the main entity
             var updateElements = new List<PropertyInfo>();
@@ -205,7 +213,7 @@ namespace Assignment3
         {
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             // Update the nested primitive types
             PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
@@ -273,7 +281,7 @@ namespace Assignment3
         {
             Type entityType = typeof(T);
             string tableName = entityType.Name;
-            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             //first We have to Delete the nested Objects
 
@@ -326,7 +334,7 @@ namespace Assignment3
         {
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
-            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
             var nestedId = nestedIdProp.GetValue(nestedObject);
@@ -340,7 +348,7 @@ namespace Assignment3
                 }
             }
 
-            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName,nestedId, parentTableName, parentId);
+            var deleteQuery = GenerateNestedDeleteStatement(nestedTableName, nestedId, parentTableName, parentId);
             ExecuteDeleteQuery(deleteQuery);
         }
 
@@ -357,7 +365,7 @@ namespace Assignment3
             }
         }
 
-        private string GenerateNestedDeleteStatement(string nestedTableName,object? nestedTableId, string parentTableName, object? parentId)
+        private string GenerateNestedDeleteStatement(string nestedTableName, object? nestedTableId, string parentTableName, object? parentId)
         {
             return $"DELETE FROM [{nestedTableName}] WHERE Id='{nestedTableId}' And [{parentTableName}Id]='{parentId}';";
         }
@@ -394,7 +402,7 @@ namespace Assignment3
                             result = MapPrimitiveProperties(reader);
 
                             // Map nested objects
-                            MapNestedObjects(result,reader);
+                            MapNestedObjects(result, reader);
                         }
                     }
                 }
@@ -406,7 +414,7 @@ namespace Assignment3
         private void MapNestedObjects(object result, SqlDataReader reader)
         {
             Type entityType = result.GetType();
-            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             string parentTableName = entityType.Name;
 
             foreach (PropertyInfo property in properties)
@@ -492,7 +500,7 @@ namespace Assignment3
         private object MapPrimitiveProperties(SqlDataReader reader, Type objectType)
         {
             object result = Activator.CreateInstance(objectType);
-            PropertyInfo[] properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             foreach (PropertyInfo property in properties)
             {
@@ -518,7 +526,7 @@ namespace Assignment3
             Type entityType = typeof(T);
             T result = Activator.CreateInstance<T>();
 
-            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             foreach (PropertyInfo property in properties)
             {
@@ -552,7 +560,7 @@ namespace Assignment3
         }
 
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             var list = new List<T>();
 
@@ -574,7 +582,7 @@ namespace Assignment3
                         while (Reader.Read())
                         {
                             idList.Add((G)Reader["Id"]);
-                        } 
+                        }
                     }
                 }
             }

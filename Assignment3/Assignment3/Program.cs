@@ -10,12 +10,12 @@ Product product1 = new Product
     Colors = new List<Color>
     {
         new Color { Id = new Guid("6f6e6e34-70e7-4e47-9884-b26038e9e93e"), Name = "Red", Code = "#FF0000" },
-        new Color { Id = new Guid("4eb92b9e-9e39-4bb7-ba21-5f1f11aa6e85"), Name = "Blue", Code = "#0000FF" }
+        new Color { Id = new Guid("4eb92b9e-9e39-4bb7-ba21-5f1f11aa6e85"), Name = "Blue", Code = "#21232" }
     },
     Feedbacks = new List<Feedback>
     {
         new Feedback { Id = new Guid("377dd928-dc6d-4659-ba29-df03341f25ac"), FeedbackGiver = new User { Id = new Guid("bb429384-0a16-4ba7-93ac-36d7b750a64d"), Name = "John", Email = "john@example.com" }, Rating = 4.5, Comment = "Great product!" },
-        new Feedback { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), FeedbackGiver = new User { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), Name = "Emma", Email = "emma@example.com" }, Rating = 3.8, Comment = "Could be better." }
+        new Feedback { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), FeedbackGiver = new User { Id = new Guid("b1838d5d-8c82-4c07-bc8f-e78818b0a6df"), Name = "safi", Email = "abedin@example.com" }, Rating = 3.8, Comment = "Could be better updated." }
     },
     IsActive = false
 };
@@ -42,7 +42,7 @@ Product product2 = new Product
 
 
 var orm =new MyORM<Guid, Product>();
-orm.Insert(product2);
-//orm.Insert(product1);
-//var p = orm.GetById(product.);
+//orm.Insert(product2);
+orm.Update(product1);
+//var p = orm.GetById(new Guid ("58399B04-9120-4BA2-A93A-4E8E9ECA5831"));
 var c2 = 0;
