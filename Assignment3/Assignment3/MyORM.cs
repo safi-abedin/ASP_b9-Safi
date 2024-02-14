@@ -8,13 +8,12 @@ using System.Reflection;
 
 namespace Assignment3
 {
-   /* using Microsoft.Data.SqlClient;
-    using System.Collections;
-    using System.Data;
-    using System.Reflection;
+    /* using Microsoft.Data.SqlClient;
+     using System.Collections;
+     using System.Data;
+     using System.Reflection;
 
-    namespace Assignment3Test.DbOperation;*/
-
+     namespace Assignment3Test.DbOperation;*/
 
     public class MyORM<G, T> where T : class
     {
@@ -408,7 +407,25 @@ namespace Assignment3
                 }
             }
 
-            return result;
+            var IdType = result.GetType().GetProperty("Id").PropertyType;
+            if (IdType == typeof(Guid))
+            {
+                Guid Id = (Guid)result.GetType().GetProperty("Id").GetValue(result);
+                var nullGuid = new Guid("00000000-0000-0000-0000-000000000000");
+
+                return Id == nullGuid ? null : result;
+            }
+            else if (IdType == typeof(int))
+            {
+                int Id = (int)result.GetType().GetProperty("Id").GetValue(result);
+
+                return Id == 0 ? null : result;
+            }
+            else
+            {
+                return result;
+
+            }
         }
 
         private void MapNestedObjects(object result, SqlDataReader reader)
