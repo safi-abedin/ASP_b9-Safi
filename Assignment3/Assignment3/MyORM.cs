@@ -15,7 +15,7 @@ namespace Assignment3
 
      namespace Assignment3Test.DbOperation;*/
 
-    public class MyORM<G, T> where T : class
+    internal class MyORM<G, T> where T : class
     {
         private string connectionString = "Data Source=.\\SQLEXPRESS;Database=AspnetB9;User Id=aspnetb9;Password=123456;TrustServerCertificate=True;";
 
@@ -28,6 +28,7 @@ namespace Assignment3
             Type entityType = typeof(T);
             string tableName = entityType.Name;
             PropertyInfo[] properties = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
 
             // First insert the primitive properties
             var insertElements = new List<PropertyInfo>();
@@ -85,38 +86,55 @@ namespace Assignment3
 
         private void InsertNestedObjectItem(PropertyInfo nestedProperty, object nestedObject, string parentTableName, object? parentId)
         {
+
+
             var nestedType = nestedObject.GetType();
             var nestedTableName = nestedType.Name;
             PropertyInfo[] nestedProperties = nestedType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
-            // First insert the nested primitive types with parent id
-            PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
-            var nestedId = nestedIdProp.GetValue(nestedObject);
-
-            var insertElementsNested = new List<PropertyInfo>();
-            foreach (var nestedProp in nestedProperties)
+            if (nestedObject == null)
             {
-                if (!IsNestedObject(nestedProp))
-                {
-                    insertElementsNested.Add(nestedProp);
-                }
+                // If nested object is null, insert null value for the foreign key
+
+                // Create INSERT statement for the nested entity table with null value for foreign key
+                string NestedEntity = GenerateNestedInsertStatement(nestedTableName, new PropertyInfo[0], parentTableName, null);
+
+                // Execute the INSERT statement for the nested entity
+                ExecuteNonQuery(NestedEntity, new PropertyInfo[0], null);
+                return;
             }
-
-            // Create INSERT statement for the nested entity table
-            string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertElementsNested.ToArray(), parentTableName, parentId);
-
-            // Execute the INSERT statement for the nested entity
-            ExecuteNonQuery(insertNestedEntity, insertElementsNested.ToArray(), nestedObject);
-
-            // Then check if any nested object to traverse
-            foreach (var nestedProp in nestedProperties)
+            else
             {
-                if (IsNestedObject(nestedProp))
+                // First insert the nested primitive types with parent id
+                PropertyInfo nestedIdProp = nestedType.GetProperty("Id");
+                var nestedId = nestedIdProp.GetValue(nestedObject);
+
+                var insertElementsNested = new List<PropertyInfo>();
+                foreach (var nestedProp in nestedProperties)
                 {
-                    InsertNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                    if (!IsNestedObject(nestedProp))
+                    {
+                        insertElementsNested.Add(nestedProp);
+                    }
+                }
+
+                // Create INSERT statement for the nested entity table
+                string insertNestedEntity = GenerateNestedInsertStatement(nestedTableName, insertElementsNested.ToArray(), parentTableName, parentId);
+
+                // Execute the INSERT statement for the nested entity
+                ExecuteNonQuery(insertNestedEntity, insertElementsNested.ToArray(), nestedObject);
+
+                // Then check if any nested object to traverse
+                foreach (var nestedProp in nestedProperties)
+                {
+                    if (IsNestedObject(nestedProp))
+                    {
+                        InsertNestedObject(nestedProp, nestedObject, nestedTableName, nestedId);
+                    }
                 }
             }
         }
+
 
         private string GenerateInsertStatement(string tableName, PropertyInfo[] properties)
         {
@@ -252,28 +270,46 @@ namespace Assignment3
         //insert and update query executor
         private void ExecuteNonQuery(string query, PropertyInfo[] properties, object entity)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (entity != null)
                 {
-                    foreach (var property in properties)
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        if (!IsNestedObject(property))
-                        {
-                            SqlParameter parameter = new SqlParameter($"@{property.Name}", GetSqlDbType(property.PropertyType))
-                            {
-                                Value = property.GetValue(entity) ?? DBNull.Value
-                            };
+                        connection.Open();
 
-                            command.Parameters.Add(parameter);
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            foreach (var property in properties)
+                            {
+                                if (!IsNestedObject(property))
+                                {
+                                    SqlParameter parameter = new SqlParameter($"@{property.Name}", GetSqlDbType(property.PropertyType))
+                                    {
+                                        Value = property.GetValue(entity) ?? DBNull.Value
+                                    };
+                                    command.Parameters.Add(parameter);
+                                }
+                            }
+                            command.ExecuteNonQuery();
                         }
                     }
-                    command.ExecuteNonQuery();
                 }
             }
+            catch (SqlException ex)
+            {
+                // Log or handle the SQL exception
+                Console.WriteLine($"SQL Exception: {ex.Message}");
+                throw; // Rethrow the exception for higher-level handling
+            }
+            catch (Exception ex)
+            {
+                // Log or handle other exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                throw; // Rethrow the exception for higher-level handling
+            }
         }
+
 
         //Delete
         public void Delete(T entity)
@@ -528,13 +564,23 @@ namespace Assignment3
                     if (columnIndex != -1 && !reader.IsDBNull(columnIndex))
                     {
                         object value = reader[columnIndex] == DBNull.Value ? null : reader[columnIndex];
-                        property.SetValue(result, value);
+
+                        // Check if the value is default Guid or integer 0, then set property value to null
+                        if ((value is Guid guidValue && guidValue == Guid.Empty) ||
+                            (value is int intValue && intValue == 0))
+                        {
+                            property.SetValue(result, null);
+                        }
+                        else
+                        {
+                            property.SetValue(result, value);
+                        }
                     }
                 }
             }
-
             return result;
         }
+
 
 
 
@@ -553,13 +599,21 @@ namespace Assignment3
                     if (!reader.IsDBNull(columnName))
                     {
                         object value = reader[columnName] == DBNull.Value ? null : reader[columnName];
-                        property.SetValue(result, value);
+                        if (property.PropertyType == typeof(Guid) && (Guid)value == Guid.Empty)
+                        {
+                            property.SetValue(result, null);
+                        }
+                        else
+                        {
+                            property.SetValue(result, value);
+                        }
                     }
                 }
             }
 
             return result;
         }
+
 
         private string ToPascalCase(string str)
         {
