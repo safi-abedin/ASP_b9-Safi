@@ -17,4 +17,10 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.14" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <ProjectReference Include="..\StockData.Application\StockData.Application.csproj" />
+	  <ProjectReference Include="..\StockData.Domain\StockData.Domain.csproj" />
+	</ItemGroup>
+
 </Project>

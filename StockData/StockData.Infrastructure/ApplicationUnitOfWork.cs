@@ -1,5 +1,5 @@
-﻿using Exam1.Application;
-using Exam1.Domain.Repositories;
+﻿/*using Exam1.Application;
+using Exam1.Domain.Repositories;*/
 using Microsoft.EntityFrameworkCore;
 using StockData.Application;
 using System;
@@ -10,15 +10,19 @@ using System.Threading.Tasks;
 
 namespace StockData.Infrastructure
 {
-    public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
+    public class ApplicationUnitOfWork
     {
 
-        public IExpenseRepository ExpenseRepository { get; private set; }
+    }
+   /* public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
+    {
+
+    *//*    public IExpenseRepository ExpenseRepository { get; private set; }
         public ApplicationUnitOfWork(IApplicationDbContext dbContext,IExpenseRepository expenseRepository) : base((DbContext)dbContext)
         {
             ExpenseRepository = expenseRepository;
-        }
+        }*//*
 
         
-    }
+    }*/
 }

@@ -32,12 +32,12 @@ namespace StockData.Infrastructure
                 .WithParameter("migrationAssembly",_migrationAssembly)
                 .InstancePerLifetimeScope();
 
-
+/*
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ExpenseRepository>().As<IExpenseRepository>()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope();*/
         }
     }
 }
