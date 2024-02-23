@@ -1,8 +1,4 @@
 ﻿using Autofac;
-using Exam1.Application;
-using Exam1.Application.Features.Money;
-using Exam1.Domain.Repositories;
-using Exam1.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
-﻿using Exam1.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace StockData.Infrastructure
 {

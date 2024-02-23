@@ -1,4 +1,4 @@
-﻿using Exam1.Domain;
+﻿using StockData.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

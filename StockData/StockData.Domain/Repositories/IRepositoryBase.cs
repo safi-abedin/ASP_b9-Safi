@@ -1,4 +1,4 @@
-using Exam1.Domain.Entities;
+using StockData.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

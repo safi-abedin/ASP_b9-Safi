@@ -1,6 +1,4 @@
-﻿using Exam1.Domain.Entities;
-using Exam1.Domain;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -15,6 +13,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using StockData.Domain.Entities;
 
 namespace StockData.Infrastructure.Repositories
 {

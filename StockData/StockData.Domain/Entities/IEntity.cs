@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exam1.Domain.Entities
+namespace StockData.Domain.Entities
 {
     public interface IEntity<T>
     {
