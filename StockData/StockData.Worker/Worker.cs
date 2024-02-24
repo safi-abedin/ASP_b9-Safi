@@ -1,4 +1,14 @@
 using HtmlAgilityPack;
+using HtmlAgilityPack.CssSelectors.NetCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StockData.Worker
 {
@@ -22,37 +32,36 @@ namespace StockData.Worker
                 var marketStatus = marketStatusNode?.InnerText.Trim();
                 _logger.LogInformation(marketStatus);
 
+
                 if (marketStatus != null && marketStatus.Contains("Open"))
                 {
-                    var tbodyNodes = doc.DocumentNode.SelectNodes("//div[@class='table-responsive inner-scroll']//tbody");
-                    if (tbodyNodes != null)
-                    {
-                        foreach (var tbodyNode in tbodyNodes)
-                        {
-                            var stockNodes = tbodyNode.SelectNodes(".//tr");
-                            if (stockNodes != null)
-                            {
-                                foreach (var stockNode in stockNodes)
-                                {
-                                    var tradeCode = stockNode.SelectSingleNode(".//td[2]/a")?.InnerText.Trim();
-                                    var lastTradingPrice = stockNode.SelectSingleNode(".//td[3]")?.InnerText.Trim();
-                                    var high = stockNode.SelectSingleNode(".//td[4]")?.InnerText.Trim();
-                                    var low = stockNode.SelectSingleNode(".//td[5]")?.InnerText.Trim();
-                                    var closePrice = stockNode.SelectSingleNode(".//td[6]")?.InnerText.Trim();
-                                    var yesterdayClosePrice = stockNode.SelectSingleNode(".//td[7]")?.InnerText.Trim();
-                                    var change = stockNode.SelectSingleNode(".//td[8]")?.InnerText.Trim();
-                                    var trade = stockNode.SelectSingleNode(".//td[9]")?.InnerText.Trim();
-                                    var value = stockNode.SelectSingleNode(".//td[10]")?.InnerText.Trim();
-                                    var volume = stockNode.SelectSingleNode(".//td[11]")?.InnerText.Trim();
+                    _logger.LogInformation("Market is closed. No data scraping performed.");
+                }
+                else
+                {
+                    var data = doc.DocumentNode.SelectNodes("//div[@class='table-responsive inner-scroll']//table//tr");
 
-                                    _logger.LogInformation("TradeCode: {0}, LastTradingPrice: {1}, High: {2}, Low: {3}, ClosePrice: {4}, YesterdayClosePrice: {5}, Change: {6}, Trade: {7}, Value: {8}, Volume: {9}",
-                                        tradeCode, lastTradingPrice, high, low, closePrice, yesterdayClosePrice, change, trade, value, volume);
-                                }
-                            }
-                        }
+
+                    foreach (var row in data)
+                    {
+                        var TradingCode = row.SelectSingleNode(".//td[2]/a")?.InnerText.Trim();
+                        var LastTradingPrice = row.SelectSingleNode(".//td[3]")?.InnerText.Trim();
+                        var High = row.SelectSingleNode(".//td[4]")?.InnerText.Trim();
+                        var Low = row.SelectSingleNode(".//td[5]")?.InnerText.Trim();
+                        var ClosePrice = row.SelectSingleNode(".//td[6]")?.InnerText.Trim();
+                        var YesterdayClosePrice = row.SelectSingleNode(".//td[7]")?.InnerText.Trim();
+                        var Change = row.SelectSingleNode(".//td[8]")?.InnerText.Trim();
+                        var Trade = row.SelectSingleNode(".//td[9]")?.InnerText.Trim();
+                        var Value = row.SelectSingleNode(".//td[10]")?.InnerText.Trim();
+                        var Volume = row.SelectSingleNode(".//td[11]")?.InnerText.Trim();
+
+                        _logger.LogInformation("Trading Code: {TradingCode}, Last Trading Price: {LastTradingPrice}, High: {High}," +
+                            " Low: {Low}, Close Price: {ClosePrice}, Yesterday Close Price: {YesterdayClosePrice}, Change: {Change}, Trade: {Trade}, " +
+                            "Value: {Value}, Volume: {Volume}", TradingCode, LastTradingPrice, High, Low, ClosePrice, YesterdayClosePrice, Change, Trade, Value, Volume);
                     }
                 }
-                await Task.Delay(1000, stoppingToken);
+
+                await Task.Delay(60000, stoppingToken); // Delay for 1 minute before scraping next data
             }
         }
     }
