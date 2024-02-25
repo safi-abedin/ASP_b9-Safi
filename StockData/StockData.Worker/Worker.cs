@@ -34,10 +34,9 @@ namespace StockData.Worker
 
                 var marketStatusNode = doc.DocumentNode.SelectSingleNode("//span[@class='time'][contains(text(), 'Market Status')]/span");
                 var marketStatus = marketStatusNode?.InnerText.Trim();
-                _logger.LogInformation(marketStatus);
 
 
-                if (marketStatus != null && marketStatus.Contains("Open"))
+                if (marketStatus != null && marketStatus.Contains("Closed"))
                 {
                     _logger.LogInformation("Market is closed. No data scraping performed.");
                 }
