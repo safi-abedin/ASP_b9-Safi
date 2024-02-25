@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace StockData.Domain.Repositories
 {
-    public interface ICompanyRepository :IRepositoryBase<Company,Guid>
+    public interface ICompanyRepository : IRepositoryBase<Company, Guid>
     {
+        Task<IList<Company>> GetCompany(string tradingCode);
+        Task<int> GetCompanyCountAsync(string tradingCode);
     }
 }

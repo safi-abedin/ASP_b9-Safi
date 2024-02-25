@@ -1,4 +1,5 @@
-﻿using StockData.Domain.Repositories;
+﻿using StockData.Domain;
+using StockData.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StockData.Application
 {
-    public interface IApplicationUnitOfWork
+    public interface IApplicationUnitOfWork : IUnitOfWork
     {
         IStockPriceRepository StockPriceRepository { get; }
 

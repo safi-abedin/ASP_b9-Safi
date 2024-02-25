@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using StockData.Application.Features.Scrapper;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -16,9 +17,12 @@ namespace StockData.Worker
     {
         private readonly ILogger<Worker> _logger;
 
-        public Worker(ILogger<Worker> logger)
+        public IStockDataManagementService _stockDataManagementService { get; set; }
+
+        public Worker(ILogger<Worker> logger,IStockDataManagementService stockDataManagementService)
         {
             _logger = logger;
+            _stockDataManagementService = stockDataManagementService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -58,6 +62,11 @@ namespace StockData.Worker
                         var Trade = row.SelectSingleNode(".//td[9]")?.InnerText.Trim();
                         var Value = row.SelectSingleNode(".//td[10]")?.InnerText.Trim();
                         var Volume = row.SelectSingleNode(".//td[11]")?.InnerText.Trim();
+
+                        await _stockDataManagementService.CreateCompany(TradingCode);
+
+                        await _stockDataManagementService.CreateStock(TradingCode, LastTradingPrice, High, Low
+                            , ClosePrice, YesterdayClosePrice, Change, Trade, Value, Volume);
 
                         _logger.LogInformation("Trading Code: {TradingCode}, Last Trading Price: {LastTradingPrice}, High: {High}," +
                             " Low: {Low}, Close Price: {ClosePrice}, Yesterday Close Price: {YesterdayClosePrice}, Change: {Change}, Trade: {Trade}, " +
