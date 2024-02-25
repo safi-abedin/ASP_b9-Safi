@@ -37,7 +37,7 @@ namespace StockData.Worker
                 _logger.LogInformation(marketStatus);
 
 
-                if (marketStatus != null && marketStatus.Contains("Close"))
+                if (marketStatus != null && marketStatus.Contains("Open"))
                 {
                     _logger.LogInformation("Market is closed. No data scraping performed.");
                 }
@@ -53,28 +53,37 @@ namespace StockData.Worker
                         {
                             continue;
                         }
-                        var LastTradingPrice = row.SelectSingleNode(".//td[3]")?.InnerText.Trim();
-                        var High = row.SelectSingleNode(".//td[4]")?.InnerText.Trim();
-                        var Low = row.SelectSingleNode(".//td[5]")?.InnerText.Trim();
-                        var ClosePrice = row.SelectSingleNode(".//td[6]")?.InnerText.Trim();
-                        var YesterdayClosePrice = row.SelectSingleNode(".//td[7]")?.InnerText.Trim();
-                        var Change = row.SelectSingleNode(".//td[8]")?.InnerText.Trim();
-                        var Trade = row.SelectSingleNode(".//td[9]")?.InnerText.Trim();
-                        var Value = row.SelectSingleNode(".//td[10]")?.InnerText.Trim();
-                        var Volume = row.SelectSingleNode(".//td[11]")?.InnerText.Trim();
+
+                        var LastTradingPriceStr = row.SelectSingleNode(".//td[3]")?.InnerText.Trim();
+                        var HighStr = row.SelectSingleNode(".//td[4]")?.InnerText.Trim();
+                        var LowStr = row.SelectSingleNode(".//td[5]")?.InnerText.Trim();
+                        var ClosePriceStr = row.SelectSingleNode(".//td[6]")?.InnerText.Trim();
+                        var YesterdayClosePriceStr = row.SelectSingleNode(".//td[7]")?.InnerText.Trim();
+                        var ChangeStr = row.SelectSingleNode(".//td[8]")?.InnerText.Trim();
+                        var TradeStr = row.SelectSingleNode(".//td[9]")?.InnerText.Trim();
+                        var ValueStr = row.SelectSingleNode(".//td[10]")?.InnerText.Trim();
+                        var VolumeStr = row.SelectSingleNode(".//td[11]")?.InnerText.Trim();
+
+                        // Convert string values to decimal
+                        decimal.TryParse(LastTradingPriceStr, out decimal LastTradingPrice);
+                        decimal.TryParse(HighStr, out decimal High);
+                        decimal.TryParse(LowStr, out decimal Low);
+                        decimal.TryParse(ClosePriceStr, out decimal ClosePrice);
+                        decimal.TryParse(YesterdayClosePriceStr, out decimal YesterdayClosePrice);
+                        decimal.TryParse(ChangeStr, out decimal Change);
+                        decimal.TryParse(TradeStr, out decimal Trade);
+                        decimal.TryParse(ValueStr, out decimal Value);
+                        decimal.TryParse(VolumeStr, out decimal Volume);
 
                         await _stockDataManagementService.CreateCompany(TradingCode);
 
                         await _stockDataManagementService.CreateStock(TradingCode, LastTradingPrice, High, Low
                             , ClosePrice, YesterdayClosePrice, Change, Trade, Value, Volume);
 
-                        _logger.LogInformation("Trading Code: {TradingCode}, Last Trading Price: {LastTradingPrice}, High: {High}," +
-                            " Low: {Low}, Close Price: {ClosePrice}, Yesterday Close Price: {YesterdayClosePrice}, Change: {Change}, Trade: {Trade}, " +
-                            "Value: {Value}, Volume: {Volume}", TradingCode, LastTradingPrice, High, Low, ClosePrice, YesterdayClosePrice, Change, Trade, Value, Volume);
                     }
                 }
 
-                await Task.Delay(60000, stoppingToken); // Delay for 1 minute before scraping next data
+                await Task.Delay(60000, stoppingToken); 
             }
         }
     }
