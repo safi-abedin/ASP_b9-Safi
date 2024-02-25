@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using StockData.Application;
+using StockData.Domain.Repositories;
+using StockData.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +35,16 @@ namespace StockData.Infrastructure
                 .WithParameter("migrationAssembly",_migrationAssembly)
                 .InstancePerLifetimeScope();
 
-/*
+
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<ExpenseRepository>().As<IExpenseRepository>()
-                .InstancePerLifetimeScope();*/
+            builder.RegisterType<StockPriceRepository>().As<IStockPriceRepository>()
+                .InstancePerLifetimeScope();
+
+
+            builder.RegisterType<CompanyRepository>().As<ICompanyRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

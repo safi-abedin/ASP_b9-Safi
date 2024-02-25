@@ -18,10 +18,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\StockData.Domain\StockData.Domain.csproj" />
   </ItemGroup>
 

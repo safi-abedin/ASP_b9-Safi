@@ -33,7 +33,7 @@ namespace StockData.Worker
                 _logger.LogInformation(marketStatus);
 
 
-                if (marketStatus != null && marketStatus.Contains("Open"))
+                if (marketStatus != null && marketStatus.Contains("Close"))
                 {
                     _logger.LogInformation("Market is closed. No data scraping performed.");
                 }
@@ -45,6 +45,10 @@ namespace StockData.Worker
                     foreach (var row in data)
                     {
                         var TradingCode = row.SelectSingleNode(".//td[2]/a")?.InnerText.Trim();
+                        if (TradingCode == null)
+                        {
+                            continue;
+                        }
                         var LastTradingPrice = row.SelectSingleNode(".//td[3]")?.InnerText.Trim();
                         var High = row.SelectSingleNode(".//td[4]")?.InnerText.Trim();
                         var Low = row.SelectSingleNode(".//td[5]")?.InnerText.Trim();

@@ -1,14 +1,17 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using StockData.Application;
+using StockData.Infrastructure;
 using StockData.Worker;
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false)
                 .AddEnvironmentVariables()
                 .Build();
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
-var migrationAssemblyName = typeof(Worker).Assembly.FullName;
+var migrationAssembly = typeof(Worker).Assembly.FullName;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -28,10 +31,16 @@ try
         .ConfigureContainer<ContainerBuilder>(builder =>
         {
             builder.RegisterModule(new WorkerModule());
+            builder.RegisterModule(new ApplicationModule());
+            builder.RegisterModule(new InfrastructureModule(connectionString, migrationAssembly));
         })
         .ConfigureServices(services =>
         {
             services.AddHostedService<Worker>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(connectionString,
+            (m) => m.MigrationsAssembly(migrationAssembly)));
         })
         .Build();
 
