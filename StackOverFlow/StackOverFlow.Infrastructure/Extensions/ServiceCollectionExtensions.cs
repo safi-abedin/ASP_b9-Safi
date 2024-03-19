@@ -36,8 +36,9 @@ namespace StackOverFlow.Infrastructure.Extensions
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
 
+
                 //confirmation required
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

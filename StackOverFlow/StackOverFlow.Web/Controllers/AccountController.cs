@@ -7,6 +7,7 @@ using System.Text;
 using StackOverFlow.Infrastructure.Membership;
 using Autofac;
 using StackOverFlow.Web.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace StackOverFlow.Web.Controllers
 {
@@ -53,7 +54,7 @@ namespace StackOverFlow.Web.Controllers
  
             if (ModelState.IsValid)
             {
-                var user =   new ApplicationUser { UserName = model.FirstName + " " + model.LastName ,Email = model.Email 
+                var user =   new ApplicationUser { UserName = model.Email,Email = model.Email 
                                                    ,FirstName = model.FirstName ,LastName = model.LastName };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -95,7 +96,90 @@ namespace StackOverFlow.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RegisterConfirmation(string userId, string token)
+        {
+            if (userId is null || token is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
+            var user = await _userManager.FindByIdAsync(userId);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                //have to return to question controller table action
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            var model = _scope.Resolve<LoginModel>();
+
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            model.ReturnUrl = returnUrl;
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginModel model)
+        {
+            model.ReturnUrl ??= Url.Content("~/");
+
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
+                   /* var token = await _tokenService.GetJwtToken(claims,
+                            _configuration["Jwt:Key"],
+                            _configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"]
+                        );*/
+                   // HttpContext.Session.SetString("token", token);
+
+                    return LocalRedirect(model.ReturnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogoutAsync(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
 
     }
 }

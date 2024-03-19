@@ -9,6 +9,8 @@ namespace StackOverFlow.Web
         {
             builder.RegisterType<RegistrationModel>().AsSelf();
 
+            builder.RegisterType<LoginModel>().AsSelf();
+
             base.Load(builder);
         }
     }
