@@ -3,10 +3,15 @@ using StackOverFlow.Infrastructure;
 //using FirstDemo.Infrastructure.Membership;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StackOverFlow.Infrastructure.Membership;
 
 namespace StackOverFlow.Infrastructure
 {
-    public class ApplicationDbContext :IdentityDbContext,
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,
+        ApplicationRole, Guid,
+        ApplicationUserClaim, ApplicationUserRole,
+        ApplicationUserLogin, ApplicationRoleClaim,
+        ApplicationUserToken>,
         IApplicationDbContext
     {
 		private readonly string _connectionString;

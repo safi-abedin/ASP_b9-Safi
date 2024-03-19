@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverFlow.Web.Models;
 
 namespace StackOverFlow.Web
 {
@@ -6,6 +7,8 @@ namespace StackOverFlow.Web
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<RegistrationModel>().AsSelf();
+
             base.Load(builder);
         }
     }

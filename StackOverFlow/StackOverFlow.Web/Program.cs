@@ -7,9 +7,9 @@ using Serilog.Events;
 using StackOverFlow.Application;
 using StackOverFlow.Infrastructure;
 using StackOverFlow.Web;
-using StackOverFlow.Web.Data;
-using System.Reflection;
+using System.Reflection; 
 using Microsoft.AspNetCore.Builder;
+using StackOverFlow.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,13 +37,15 @@ try
         containerBuilder.RegisterModule(new WebModule());
     });
 
-    builder.Services.AddDbContext<StackOverFlow.Infrastructure.ApplicationDbContext>(options =>
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString,
         (m) => m.MigrationsAssembly(migrationAssembly)));
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     builder.Services.AddControllersWithViews();
+    builder.Services.AddIdentity();
+    builder.Services.AddCookieAuthentication();
 
     builder.Services.AddSession(options =>
     {
@@ -90,6 +92,8 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 
