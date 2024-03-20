@@ -8,6 +8,7 @@ using StackOverFlow.Infrastructure.Membership;
 using Autofac;
 using StackOverFlow.Web.Models;
 using Microsoft.AspNetCore.Authentication;
+using StackOverFlow.Application.Utilities;
 
 namespace StackOverFlow.Web.Controllers
 {
@@ -23,15 +24,19 @@ namespace StackOverFlow.Web.Controllers
 
         private readonly ILogger<AccountController> _logger;
 
+        private readonly IEmailService _emailService;
+
+
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager
-                                , RoleManager<ApplicationRole> roleManager, ILifetimeScope scope,ILogger<AccountController> logger)
+                                , RoleManager<ApplicationRole> roleManager, ILifetimeScope scope,ILogger<AccountController> logger,IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _scope = scope;
             _logger = logger;
+            _emailService = emailService;
         }
 
         
@@ -67,16 +72,12 @@ namespace StackOverFlow.Web.Controllers
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = userId, code = code, returnUrl =model.ReturnUrl },
-                        protocol: Request.Scheme);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = code }, Request.Scheme);
 
-                   _logger.LogInformation($"{callbackUrl}");
+                    _logger.LogInformation($"{callbackUrl}");
 
-                    /*await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");*/
+                    _emailService.SendSingleEmail($"hello {model.FirstName}", model.Email, "Confirm your email",
+                   $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -97,7 +98,7 @@ namespace StackOverFlow.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RegisterConfirmation(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (userId is null || token is null)
             {
@@ -112,10 +113,16 @@ namespace StackOverFlow.Web.Controllers
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 //have to return to question controller table action
-                return View();
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Index", "Home");
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View();
+
         }
 
 

@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using StackOverFlow.Application;
+using StackOverFlow.Application.Utilities;
+using StackOverFlow.Infrastructure.Email;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,11 +38,13 @@ namespace StackOverFlow.Infrastructure
             builder.RegisterType<CourseRepository>().As<ICourseRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<HtmlEmailService>().As<IEmailService>()
-                .InstancePerLifetimeScope();
 
             builder.RegisterType<TokenService>().As<ITokenService>()
                .InstancePerLifetimeScope();*/
+
+
+            builder.RegisterType<HtmlEmailService>().As<IEmailService>()
+                .InstancePerLifetimeScope();
         }
     }
 }

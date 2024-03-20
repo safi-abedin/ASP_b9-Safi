@@ -42,8 +42,8 @@ try
         (m) => m.MigrationsAssembly(migrationAssembly)));
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-    builder.Services.AddControllersWithViews();
+    //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+   // builder.Services.AddControllersWithViews();
     builder.Services.AddIdentity();
     builder.Services.AddCookieAuthentication();
 
@@ -93,7 +93,7 @@ finally
     Log.CloseAndFlush();
 }
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 
 
