@@ -81,7 +81,7 @@ namespace StackOverFlow.Web.Controllers
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = model.Email, returnUrl = model.ReturnUrl });
+                        return RedirectToAction("RegisterConfirmation", "Account");
                     }
                     else
                     {
@@ -97,6 +97,11 @@ namespace StackOverFlow.Web.Controllers
             return View(model);
         }
 
+        public IActionResult RegisterConfirmation()
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
@@ -106,9 +111,12 @@ namespace StackOverFlow.Web.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(userId);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (user is null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
 
+            var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -122,9 +130,7 @@ namespace StackOverFlow.Web.Controllers
             }
 
             return View();
-
         }
-
 
         public async Task<IActionResult> Login(string returnUrl = null)
         {

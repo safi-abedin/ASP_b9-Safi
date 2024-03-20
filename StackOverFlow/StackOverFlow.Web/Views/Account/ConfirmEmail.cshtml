@@ -1,0 +1,20 @@
+﻿@model ConfirmEmailViewModel
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<h1>Confirm Email</h1>
+
+@if (Model.IsSuccess)
+{
+    <div class="alert alert-success" role="alert">
+        Your email has been confirmed successfully. You can now access your account.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        There was an error confirming your email. Please try again later.
+    </div>
+}

@@ -10,6 +10,7 @@ using StackOverFlow.Web;
 using System.Reflection; 
 using Microsoft.AspNetCore.Builder;
 using StackOverFlow.Infrastructure.Extensions;
+using StackOverFlow.Infrastructure.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,7 @@ try
    // builder.Services.AddControllersWithViews();
     builder.Services.AddIdentity();
     builder.Services.AddCookieAuthentication();
+    builder.Services.Configure<Smtp>(builder.Configuration.GetSection("Smtp")); 
 
     builder.Services.AddSession(options =>
     {
