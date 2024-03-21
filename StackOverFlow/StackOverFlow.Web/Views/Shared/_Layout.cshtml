@@ -3,34 +3,107 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StackOverFlow.Web</title>
+    <title>@ViewData["Title"] - StackOverFlow</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StackOverFlow.Web.styles.css" asp-append-version="true" />
+
+    <style>
+        /* Custom Styles */
+        .navbar {
+            border-top: 6px solid orange;
+            margin-top: 0px; 
+        }
+
+        .navbar-brand {
+            text-decoration: none;
+            color: black;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+            .navbar-toggler:focus {
+                outline: none;
+            }
+
+        .menu-item {
+            margin-right: 20px;
+        }
+
+        .logo-text {
+            margin-left: 6px;
+            text-decoration: none; 
+        }
+
+            .logo-text:hover {
+                text-decoration: none;
+                color: black;
+            }
+
+        
+        .border-after-navbar {
+            border-top: 1px solid #dee2e6;
+            margin-top: 0px; 
+        }
+
+        .custom-search-input {
+            border-radius: 12px; 
+            border: 1px solid #ced4da;
+            padding: 10px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+        }
+
+            .custom-search-input:focus {
+                border-color: #007bff;
+                outline: 0;
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            }
+    </style>
 </head>
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StackOverFlow.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+                <div class="row w-100">
+                    <div class="col-1">
+                        <!-- Optional: Add content if needed -->
+                    </div>
+                    <div class="col-4 d-flex justify-content-between align-items-center">
+                        <!-- Logo and Product/About Buttons -->
+                        <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="~/logo4.png" alt="Stack Overflow Logo" class="img-fluid align-self-center mt-1" style="max-width: 60px; height:50px;">
+                            <span class="logo-text" style="font-size: 2.0rem; margin-left: 8px;">Stack<span style="font-weight: bold;">Overflow</span></span>
+                        </a>
+
+                        <a class="navbar-brand" href="#">Product</a>
+                        <a class="navbar-brand" href="#">About</a>
+                        <a class="navbar-brand" href="#">For Teams</a>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end align-items-center">
+                        <!-- Search Part -->
+                        <form class="d-flex flex-grow-1 me-2">
+                            <input class="form-control me-2 flex-grow-1 custom-search-input" type="search" placeholder="Search" aria-label="Search">
+                            <i class="fas fa-search mr-1"></i>
+                        </form>
+                        <!-- LoginPartial -->
+                        <div>
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
+        <!-- Add border after navbar -->
+        <div class="border-after-navbar"></div>
     </header>
+    
+    <br/>
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -42,6 +115,7 @@
             &copy; 2024 - StackOverFlow.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

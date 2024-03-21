@@ -1,8 +1,517 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@section Scripts{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        /* Common Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Hero Section */
+        .hero {
+
+            background-image: url('https://plus.unsplash.com/premium_photo-1661486987044-b1a69b9bbaed?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            padding: 4rem 0;
+            text-align: center;
+            color: #fff;
+        }
+
+            .hero h1, .hero p {
+                margin-top:5rem;
+                margin-bottom: 3rem;
+            }
+
+            .hero .btn-primary {
+                background-color: #563d7c;
+                color: white;
+                margin-top: 1rem;
+            }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+        }
+
+        .stat {
+            flex: 0 0 calc(50% - 2rem);
+            max-width: calc(50% - 2rem);
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            margin: 1rem;
+            background-color: #fff;
+        }
+
+            .stat h3 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+        /* About Section */
+        .about {
+            background-image: url('https://images.unsplash.com/photo-1503443207922-dff7d543fd0e');
+            background-size: cover;
+            padding: 4rem 0;
+            color: #fff;
+        }
+
+            .about h2 {
+                margin-bottom: 2rem;
+            }
+
+            .about .card {
+                background-color: rgba(255, 255, 255, 0.8);
+                border: none;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                color: #333;
+            }
+
+                .about .card h3 {
+                    font-weight: bold;
+                    margin-bottom: 1rem;
+                }
+
+        /* Pricing Section */
+        .pricing {
+            background-image: url('https://images.unsplash.com/photo-1551651645-2e376ff3e489');
+            background-size: cover;
+            padding: 4rem 0;
+            text-align: center;
+            color: #fff;
+        }
+
+            .pricing .card {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                color: #fff;
+            }
+
+                .pricing .card h2 {
+                    margin-bottom: 2rem;
+                }
+
+                .pricing .card .btn {
+                    margin-top: 2rem;
+                }
+    </style>
+    <style>
+        .hero {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+        }
+
+            .hero h1, .hero p {
+                margin-bottom: 1rem;
+            }
+
+            .hero .btn-primary {
+                background-color: #563d7c;
+                color: white;
+                margin-top: 1rem;
+            }
+
+        .stats {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            margin: 0.5rem;
+        }
+
+            .stat h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+        .about {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+            .about h2 {
+                margin-bottom: 1rem;
+            }
+
+            .about .public, .about .private {
+                margin-bottom: 2rem;
+            }
+
+            .about .card {
+                border: 1px solid #ddd;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+                .about .card h3 {
+                    font-weight: bold;
+                    margin-bottom: 0.5rem;
+                }
+
+        .team-benefits {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f2f2f2;
+        }
+
+            .team-benefits h2 {
+                margin-bottom: 1rem;
+            }
+
+            .team-benefits .benefit {
+                display: flex;
+                align-items: center;
+                margin-bottom: 1rem;
+            }
+
+                .team-benefits .benefit i {
+                    margin-right: 1rem;
+                    font-size: 1.2rem;
+                    color: #563d7c;
+                }
+
+            .team-benefits .pricing {
+                margin-top: 2rem;
+                text-align: center;
+            }
+
+            .team-benefits .card {
+                border: 1px solid #ddd;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+                .team-benefits .card h3 {
+                    font-weight: bold;
+                    margin-bottom: 0.5rem;
+                }
+
+        .testimonials {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+            .testimonials h2 {
+                margin-bottom: 1rem;
+            }
+
+        .testimonial {
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+            .testimonial .author {
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+            .testimonial .company {
+                font-style: italic;
+            }
+
+        .additional-products {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+            .additional-products h2 {
+                margin-bottom: 1rem;
+            }
+
+            .additional-products .product {
+                display: flex;
+                align-items: center;
+                margin-bottom: 1rem;
+            }
+
+                .additional-products .product i {
+                    margin-right: 1rem;
+                    font-size: 1.2rem;
+                    color: #563d7c;
+                }
+
+        .explore-network {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+            .explore-network h2 {
+                margin-bottom: 1rem;
+            }
+
+            .explore-network .network-sites {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                margin-bottom: 1rem;
+            }
+
+            .explore-network .network-site {
+                text-align: center;
+                padding: 0.5rem 1rem;
+                border: 1px solid #ddd;
+                border-radius: 0.5rem;
+                margin: 0.5rem;
+            }
+
+                .explore-network .network-site a {
+                    color: #563d7c;
+                    text-decoration: none;
+                }
+
+            .explore-network .create-team {
+                text-align: center;
+                margin-top: 1rem;
+            }
+    </style >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .hero {
+            background-color: #f8f9fa;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1, .hero p {
+            margin-bottom: 1rem;
+        }
+
+        .hero .btn-primary {
+            background-color: #563d7c;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .stats {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            flex: 0 0 calc(50% - 2rem);
+            max-width: calc(50% - 2rem);
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            margin: 1rem;
+        }
+
+        .stat h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .about,
+        .team-benefits {
+            margin-top: 4rem;
+            padding: 4rem 0;
+        }
+
+        .about .row {
+            margin-top: 2rem;
+        }
+
+        .about .card,
+        .team-benefits .benefit {
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .team-benefits .benefit {
+            display: flex;
+            align-items: center;
+        }
+
+        .benefit i {
+            margin-right: 1rem;
+            font-size: 2rem;
+            color: #563d7c;
+        }
+
+        .team-benefits .pricing {
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .pricing table {
+            width: 100%;
+        }
+
+        .pricing th,
+        .pricing td {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .pricing th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .pricing td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .pricing .btn {
+            margin-top: 1rem;
+        }
+    </style>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<main class="container">
+    <section class="hero">
+        <h1>Find the best answer to your technical question, help others answer theirs</h1>
+        <p>A public platform building the definitive collection of coding questions & answers.</p>
+        <button type="button" class="btn btn-primary">Join the community</button>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <h3>100+ million</h3>
+            <p>Monthly visitors</p>
+        </div>
+        <div class="stat">
+            <h3>45.1+ billion</h3>
+            <p>Times a developer got help since 2008</p>
+        </div>
+        <div class="stat">
+            <h3>191% ROI</h3>
+            <p>From companies using Stack Overflow for Teams</p>
+        </div>
+        <div class="stat">
+            <h3>5,000+</h3>
+            <p>Stack Overflow for Teams instances active every day</p>
+        </div>
+    </section>
+
+    <section class="about">
+        <h2>What is Stack Overflow?</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card public">
+                    <h3>Public platform</h3>
+                    <p>A community-based space to find and contribute answers to technical challenges, and one of the most popular websites in the world.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card private">
+                    <h3>Stack Overflow for Teams</h3>
+                    <p>Private collaboration & knowledge sharing SaaS platform for companies.</p>
+                    <p>A web-based platform to increase productivity, decrease cycle times, accelerate time to market, and protect institutional knowledge.</p>
+                    <a href="#" class="btn btn-primary">Get started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-benefits">
+        <h2>Benefits of Stack Overflow for Teams</h2>
+        <div class="benefit">
+            <i class="fas fa-unlock-alt"></i>
+            <p>Capture your company’s knowledge and context in a discoverable format to unblock your team</p>
+        </div>
+        <div class="benefit">
+            <i class="fas fa-sync-alt"></i>
+            <p>Increase productivity: If somebody somewhere has the right answer, suddenly you have it too. Collaborate better in a remote-first world.</p>
+        </div>
+        <div class="benefit">
+            <i class="fas fa-rocket"></i>
+            <p>Accelerate time to market: Shorten the time between initial idea and complete product. Take delays and misinformation out of the equation.</p>
+        </div>
+        <div class="benefit">
+            <i class="fas fa-archive"></i>
+            <p>Protect institutional knowledge: People come and people go, but if you capture their contributions in one central place, that expertise sticks around.</p>
+        </div>
+        <div class="benefit">
+            <i class="fas fa-anchor"></i>
+            <p>Ensure your company stays on course</p>
+        </div>
+        <div class="card pricing">
+            <h2>Pricing Plans</h2>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Features</th>
+                            <th>Free</th>
+                            <th>Basic</th>
+                            <th>Business</th>
+                            <th>Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Team size</td>
+                            <td>Up to 50</td>
+                            <td>Up to 250</td>
+                            <td>Unlimited</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>SSO (SAML, Okta)</td>
+                            <td>No</td>
+                            <td>No</td>
+                            <td><i class="fas fa-check"></i></td>
+                            <td><i class="fas fa-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>ChatOps Integrations</td>
+                            <td>Slack, Microsoft Teams</td>
+                            <td>Slack, Microsoft Teams</td>
+                            <td>Slack, Microsoft Teams, Jira, GitHub, Okta</td>
+                            <td><i class="fas fa-check"></i></td>
+                        </tr>
+                        <!-- Add other rows here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer text-center">
+                <a href="#" class="btn btn-primary">Get started</a>
+                <a href="#" class="btn btn-outline-primary">Calculate your ROI</a>
+            </div>
+        </div>
+    </section>
+</main>
