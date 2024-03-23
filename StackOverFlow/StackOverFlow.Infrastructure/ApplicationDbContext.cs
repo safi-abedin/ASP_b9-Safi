@@ -4,6 +4,8 @@ using StackOverFlow.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StackOverFlow.Infrastructure.Membership;
+using StackOverFlow.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace StackOverFlow.Infrastructure
 {
@@ -36,7 +38,21 @@ namespace StackOverFlow.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-			/*builder.Entity<CourseEnrollment>().ToTable("CourseEnrollments");
+
+            builder.Entity<QuestionTag>()
+          .HasKey(qt => new { qt.Id, qt.TagId });
+
+            builder.Entity<QuestionTag>()
+                .HasOne(qt => qt.Question)
+                .WithMany(q => q.QuestionTags)
+                .HasForeignKey(qt => qt.Id);
+
+            builder.Entity<QuestionTag>()
+                .HasOne(qt => qt.Tag)
+                .WithMany(t => t.QuestionTags)
+                .HasForeignKey(qt => qt.TagId);
+
+            /*builder.Entity<CourseEnrollment>().ToTable("CourseEnrollments");
 
             builder.Entity<CourseEnrollment>().HasKey(x => new { x.CourseId, x.StudentId });
 
@@ -59,6 +75,10 @@ namespace StackOverFlow.Infrastructure
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<QuestionTag> QuestionTags { get; set; }
 
     }
 }
