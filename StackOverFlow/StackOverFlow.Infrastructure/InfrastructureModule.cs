@@ -34,13 +34,13 @@ namespace StackOverFlow.Infrastructure
 
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
                 .InstancePerLifetimeScope();
-/*
-            builder.RegisterType<CourseRepository>().As<ICourseRepository>()
-                .InstancePerLifetimeScope();
+
+            /*builder.RegisterType<CourseRepository>().As<ICourseRepository>()
+                .InstancePerLifetimeScope();*/
 
 
             builder.RegisterType<TokenService>().As<ITokenService>()
-               .InstancePerLifetimeScope();*/
+               .InstancePerLifetimeScope();
 
 
             builder.RegisterType<HtmlEmailService>().As<IEmailService>()
