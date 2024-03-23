@@ -1,0 +1,66 @@
+﻿@model QuestionCreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <!-- Include the bundled styles -->
+    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
+}
+
+
+
+
+<div class="col-md-12">
+    <h1>Create Question</h1>
+    <form id="questionForm" asp-action="Create" asp-area="User" asp-antiforgery="true" method="post">
+        <!-- Your form inputs -->
+
+        <div>
+            <label>Details:</label><br>
+            <div id="detailsEditor"></div>
+            <input type="hidden" asp-for="Details" id="detailsInput" required>
+            <span asp-validation-for="Details" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label>Tried Approach:</label><br>
+            <div id="approachEditor"></div>
+            <input type="hidden" asp-for="TriedApproach" id="approachInput" required>
+            <span asp-validation-for="TriedApproach" class="text-danger"></span>
+        </div>
+
+        <!-- Your form inputs -->
+
+        <button class="s-btn s-btn__filled" type="submit">Post Your Question</button>
+    </form>
+</div>
+
+<!-- Ensure the Scripts section -->
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Stacks Editors
+            var detailsEditor = new window.stacksEditor.StacksEditor(
+                document.querySelector("#detailsEditor"), "", {});
+
+            var approachEditor = new window.stacksEditor.StacksEditor(
+                document.querySelector("#approachEditor"), "", {});
+
+            // Update hidden inputs with Markdown content
+            document.getElementById("questionForm").addEventListener("submit", function () {
+                document.getElementById("detailsInput").value = detailsEditor.getValue();
+                document.getElementById("approachInput").value = approachEditor.getValue();
+            });
+        });
+    </script>
+}
+
+
+
+
+

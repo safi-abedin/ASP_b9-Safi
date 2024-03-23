@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverFlow.Web.Areas.User.Models;
 using StackOverFlow.Web.Models;
 
 namespace StackOverFlow.Web
@@ -10,6 +11,9 @@ namespace StackOverFlow.Web
             builder.RegisterType<RegistrationModel>().AsSelf();
 
             builder.RegisterType<LoginModel>().AsSelf();
+
+
+            builder.RegisterType<QuestionCreateModel>().AsSelf();
 
             base.Load(builder);
         }

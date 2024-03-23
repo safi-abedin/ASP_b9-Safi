@@ -1,0 +1,69 @@
+{
+    "name": "@stackoverflow/stacks-icons",
+    "description": "The icon library for Stack Overflow, Stack Overflow Careers, and the Stack Exchange Network.",
+    "version": "6.0.2",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/StackExchange/Stacks-Icons.git"
+    },
+    "license": "MIT",
+    "type": "module",
+    "main": "dist/index.umd.cjs",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/index.umd.cjs",
+            "default": "./dist/index.esm.js"
+        },
+        "./icons": "./dist/icons.js",
+        "./spots": "./dist/spots.js",
+        "./src/Icon/*": "./src/Icon/*",
+        "./src/Spot/*": "./src/Spot/*",
+        "./dist/Icon/*": "./dist/lib/Icon/*",
+        "./dist/Spot/*": "./dist/lib/Spot/*",
+        "./dist/icons.css": "./dist/icons.css"
+    },
+    "files": [
+        "dist/**/*",
+        "src/**/*"
+    ],
+    "sideEffects": false,
+    "eslintConfig": {
+        "extends": [
+            "./.eslintrc.js"
+        ]
+    },
+    "prettier": "@stackoverflow/prettier-config",
+    "scripts": {
+        "start": "npm run build",
+        "build": "node --no-warnings --loader ts-node/esm ./scripts/build/index.ts",
+        "preview": "http-server ./preview -o",
+        "prepublishOnly": "npm start",
+        "version": "node --no-warnings --loader ts-node/esm ./scripts/sync-dotnet-version.ts",
+        "lint": "prettier --check . --end-of-line auto && eslint .",
+        "format": "prettier --write . --end-of-line auto",
+        "build:nuget": "dotnet build -c Release ./dotnet",
+        "pack:nuget": "dotnet pack -c Release ./dotnet",
+        "test:nuget": "dotnet test ./dotnet"
+    },
+    "devDependencies": {
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@stackoverflow/eslint-config": "^1.0.0",
+        "@stackoverflow/prettier-config": "^1.0.0",
+        "@stackoverflow/tsconfig": "^1.0.0",
+        "axios": "^1.6.5",
+        "chalk": "^5.3.0",
+        "commander": "^12.0.0",
+        "concat": "^1.0.3",
+        "del": "^7.1.0",
+        "dotenv": "^16.3.2",
+        "http-server": "^14.1.1",
+        "mini-svg-data-uri": "^1.4.4",
+        "rollup": "^4.9.6",
+        "svgo": "^3.2.0",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.6.2",
+        "typescript": "^5.3.3"
+    }
+}
