@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1.Ocsp;
 using StackOverFlow.Web.Areas.User.Models;
+using System.Web;
 
 namespace StackOverFlow.Web.Areas.User.Controllers
 {
@@ -35,37 +36,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             if (ModelState.IsValid)
             {
-                
-                    model.Resolve(_scope);
-                    //await model.CreateCourseAsync();
-
-                    /*TempData.Put("ResponseMessage", new ResponseModel
-                    {
-                        Message = "Course created successfuly",
-                        Type = ResponseTypes.Success
-                    });*/
-
-                    return RedirectToAction("Index");
-                
-               /* catch (DuplicateTitleException de)
-                {
-                    TempData.Put("ResponseMessage", new ResponseModel
-                    {
-                        Message = de.Message,
-                        Type = ResponseTypes.Danger
-                    });
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e, "Server Error");
-
-                    TempData.Put("ResponseMessage", new ResponseModel
-                    {
-                        Message = "There was a problem in creating course",
-                        Type = ResponseTypes.Danger
-                    });
-                }*/
+                //more logic
             }
+            model.TriedApproach = HttpUtility.HtmlDecode(model.TriedApproach);
             return View(model);
         }
     }
