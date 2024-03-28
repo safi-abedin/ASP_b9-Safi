@@ -6,7 +6,6 @@ namespace StackOverFlow.Web.Areas.User.Models
 {
     public class QuestionCreateModel
     {
-        private ILifetimeScope _scope;
 
         public string Title { get; set; }
 
@@ -17,15 +16,8 @@ namespace StackOverFlow.Web.Areas.User.Models
         public List<string> Tags { get; set; }
 
         //Display property
-        public List<SelectListItem> MultiTags { get; set; }
+        public List<SelectListItem>? MultiTags { get; set; }
 
-        public QuestionCreateModel() { }
-
-
-        internal void Resolve(ILifetimeScope scope)
-        {
-            _scope = scope;
-        }
 
     }
 }

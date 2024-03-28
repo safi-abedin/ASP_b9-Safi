@@ -21,9 +21,5 @@
 	  <ProjectReference Include="..\StackOverFlow.Infrastructure\StackOverFlow.Infrastructure.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="RequestHandlers\" />
-	</ItemGroup>
-
 
 </Project>

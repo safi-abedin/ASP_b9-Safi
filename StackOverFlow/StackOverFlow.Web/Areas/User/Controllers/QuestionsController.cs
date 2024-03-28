@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Ocsp;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Web.Areas.User.Models;
+using System.Text;
 using System.Web;
 
 namespace StackOverFlow.Web.Areas.User.Controllers
@@ -13,12 +15,17 @@ namespace StackOverFlow.Web.Areas.User.Controllers
     {
         private readonly ILifetimeScope _scope;
         private readonly ILogger<QuestionsController> _logger;
+        Uri baseAdress = new Uri("https://localhost:7118/api/v3");
+        private readonly HttpClient _httpClient;
+
 
         public QuestionsController(ILifetimeScope scope,
             ILogger<QuestionsController> logger)
         {
             _scope = scope;
             _logger = logger;
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = baseAdress;
         }
 
 
@@ -35,10 +42,10 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var model = _scope.Resolve<QuestionCreateModel>();
 
-            // Assuming you have a method to get available tags
+
             var tagsList = GetAvailableTags();
 
-            // Pass the list of available tags to the view
+           
             model.MultiTags = new List<SelectListItem>();
             foreach (var tag in tagsList)
             {
@@ -57,10 +64,29 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             if (ModelState.IsValid)
             {
-                //more logic
+
+                    var data = JsonConvert.SerializeObject(model);
+                    var content =  new StringContent(data,Encoding.UTF8,"application/json");
+                    //call api
+                    var response = _httpClient.PostAsync(_httpClient.BaseAddress + "/Questions/Post", content).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                       return  RedirectToAction("Index");
+                    }
             }
 
+            // Assuming you have a method to get available tags
+            var tagsList = GetAvailableTags();
 
+            // Pass the list of available tags to the view
+            model.MultiTags = new List<SelectListItem>();
+            foreach (var tag in tagsList)
+            {
+                model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
+            }
+
+            model.Details = HttpUtility.HtmlDecode(model.TriedApproach); 
             model.TriedApproach = HttpUtility.HtmlDecode(model.TriedApproach);
             return View(model);
         }

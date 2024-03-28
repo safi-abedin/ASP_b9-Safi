@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverFlow.API.RequestHandlers;
 
 namespace StackOverFlow.API
 {
@@ -6,6 +7,7 @@ namespace StackOverFlow.API
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<QuestionsRequestHandlers>().AsSelf();
             base.Load(builder);
         }
     }

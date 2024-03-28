@@ -17,39 +17,46 @@
 
 
 
-<div class="col-md-12">
-    <h1>Create Question</h1>
+<div class="col-md-10">
+    <br />
+    <h1>Ask A  Question</h1>
+    <br />
     <form id="questionForm" asp-action="Create" asp-area="User" asp-antiforgery="true" method="post">
-        <!-- Your form inputs -->
 
 
-        <div class="d-flex gy4 fd-column">
+
+        <div class="d-flex gy4 fd-column mb-3">
             <label class="s-label" asp-for="Title">Title</label>
             <p class="s-description mtn2 mb0">Be specific and imagine you’re asking a question to another person.</p>
             <input class="s-input" asp-for="Title" id="example-item1" type="text" placeholder="e.g. How to return the wrong fruit if it is the first item in the array?" />
         </div>
 
-        <div>
-            <label>Details:</label><br>
-            <div id="detailsEditor"></div>
-            <input type="hidden" asp-for="Details" id="detailsInput">
+        <br />
+
+        <div class="mb-3">
+            <label class="s-label" asp-for="Details">What are the details of your problem?</label>
+            <p class="s-description mtn2 mb0">Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
+            <div id="editor-example-1"></div>
+            <textarea id="editor-content-1" asp-for="Details" class="d-none"></textarea>
             <span asp-validation-for="Details" class="text-danger"></span>
         </div>
 
-        <div>
-            <label>Tried Approach:</label><br>
+        <br />
 
+        <div class="mb-3">
+            <label class="s-label" asp-for="TriedApproach">What did you try and what were you expecting?</label>
+            <p class="s-description mtn2 mb0">Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
             <div id="editor-example-2"></div>
             <textarea id="editor-content-2" asp-for="TriedApproach" class="d-none"></textarea>
-
             <span asp-validation-for="TriedApproach" class="text-danger"></span>
         </div>
 
-
         <br />
 
+
         <div class="form-group">
-            <label class="s-label" for="tag-selector">Tags</label>
+            <label class="s-label" asp-for="Tags">Tags</label>
+            <p class="s-description mtn2 mb0">Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
             <div class="select2-primary">
                 <select id="tags" class="select2" asp-for="Tags" asp-items="Model.MultiTags" multiple="multiple" data-placeholder="Select tags" data-dropdown-css-class="select2-primary" style="width: 100%;">
 
@@ -57,12 +64,12 @@
             </div>
         </div>
 
+        <br />
 
 
-
-        <!-- Your form inputs -->
 
         <button class="s-btn s-btn__filled" type="submit">Post Your Question</button>
+        <br />
     </form>
 </div>
 
@@ -71,41 +78,42 @@
 
 
 
-<!-- Ensure the Scripts section -->
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
     <script src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 
     <script>
 
-        var data = [];
-
-
-        //Initialize Select2 Elements
-        $('.select2').select2({
-            data: data
-        })
-
         $('#tags').select2();
 
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initialize Stacks Editors
-            var detailsEditor = new window.stacksEditor.StacksEditor(
-                document.querySelector("#detailsEditor"), "", {});
-
-            var approachEditor = new window.stacksEditor.StacksEditor(
-                document.querySelector("#approachEditor"), "", {});
-
-            // Update hidden inputs with Markdown content
-            document.getElementById("questionForm").addEventListener("submit", function () {
-                document.getElementById("detailsInput").value = detailsEditor.getValue();
-                document.getElementById("approachInput").value = approachEditor.getValue();
-            });
-        });
     </script>
 
+
     <script>
+        // Event listener for submitting the form
+        document.querySelector("#questionForm").addEventListener("submit", function (event) {
+
+            // Get the element containing the user input for "Details"
+            var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
+
+            // Get the inner HTML of the user input element for "Details"
+            var userInputHTML1 = userInputDiv1.innerHTML;
+
+            // Set the content of "Details" hidden textarea
+            document.querySelector("#editor-content-1").value = userInputHTML1;
+
+            // Get the element containing the user input for "TriedApproach"
+            var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
+
+            // Get the inner HTML of the user input element for "TriedApproach"
+            var userInputHTML2 = userInputDiv2.innerHTML;
+
+            // Set the content of "TriedApproach" hidden textarea
+            document.querySelector("#editor-content-2").value = userInputHTML2;
+
+        });
+
+        // Initialize Stacks Editor for "TriedApproach"
         new window.stacksEditor.StacksEditor(
             document.querySelector("#editor-example-2"),
             document.querySelector("#editor-content-2").value,
@@ -115,30 +123,20 @@
                 },
             }
         );
-        document.querySelector("#questionForm").addEventListener("submit", function (event) {
 
-
-            // Get the element containing the user input
-            var userInputDiv = document.querySelector('.s-prose');
-
-            // Get the inner HTML of the user input element
-            var userInputHTML = userInputDiv.innerHTML;
-
-            // Set the content to the hidden textarea
-            document.querySelector("#editor-content-2").value = userInputHTML;
-
-
-            // Get selected tags
-            var selectedTags = $('#tags').val();
-
-            console.log(selectedTags);
-
-            // Set selected tags to the hidden input
-            document.getElementById("Tags").value = selectedTags;
-
-        });
+        // Initialize Stacks Editor for "Details"
+        new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-example-1"),
+            document.querySelector("#editor-content-1").value,
+            {
+                parserFeatures: {
+                    tables: true,
+                },
+            }
+        );
 
     </script>
+
 }
 
 

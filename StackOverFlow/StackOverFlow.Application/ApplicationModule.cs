@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverFlow.Application.Features.Question;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace StackOverFlow.Application
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<QuestionManagementService>().As<IQuestionManagementService>().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }
