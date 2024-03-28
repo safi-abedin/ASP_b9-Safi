@@ -1,11 +1,12 @@
 ﻿using Autofac;
-using StackOverFlow.Domain.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace StackOverFlow.Web.Areas.User.Models
 {
     public class QuestionCreateModel
     {
-		private ILifetimeScope _scope;
+        private ILifetimeScope _scope;
 
         public string Title { get; set; }
 
@@ -13,7 +14,10 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public string TriedApproach { get; set; }
 
-        public ICollection<QuestionTag> Tags { get; set; }
+        public List<string> Tags { get; set; }
+
+        //Display property
+        public List<SelectListItem> MultiTags { get; set; }
 
         public QuestionCreateModel() { }
 
@@ -22,7 +26,6 @@ namespace StackOverFlow.Web.Areas.User.Models
         {
             _scope = scope;
         }
-
 
     }
 }

@@ -8,6 +8,10 @@
     <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
 }
 
 
@@ -18,10 +22,17 @@
     <form id="questionForm" asp-action="Create" asp-area="User" asp-antiforgery="true" method="post">
         <!-- Your form inputs -->
 
+
+        <div class="d-flex gy4 fd-column">
+            <label class="s-label" asp-for="Title">Title</label>
+            <p class="s-description mtn2 mb0">Be specific and imagine you’re asking a question to another person.</p>
+            <input class="s-input" asp-for="Title" id="example-item1" type="text" placeholder="e.g. How to return the wrong fruit if it is the first item in the array?" />
+        </div>
+
         <div>
             <label>Details:</label><br>
             <div id="detailsEditor"></div>
-            <input type="hidden" asp-for="Details" id="detailsInput" >
+            <input type="hidden" asp-for="Details" id="detailsInput">
             <span asp-validation-for="Details" class="text-danger"></span>
         </div>
 
@@ -35,6 +46,19 @@
         </div>
 
 
+        <br />
+
+        <div class="form-group">
+            <label class="s-label" for="tag-selector">Tags</label>
+            <div class="select2-primary">
+                <select id="tags" class="select2" asp-for="Tags" asp-items="Model.MultiTags" multiple="multiple" data-placeholder="Select tags" data-dropdown-css-class="select2-primary" style="width: 100%;">
+
+                </select>
+            </div>
+        </div>
+
+
+
 
         <!-- Your form inputs -->
 
@@ -42,11 +66,29 @@
     </form>
 </div>
 
+
+
+
+
+
 <!-- Ensure the Scripts section -->
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+    <script src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 
     <script>
+
+        var data = [];
+
+
+        //Initialize Select2 Elements
+        $('.select2').select2({
+            data: data
+        })
+
+        $('#tags').select2();
+
+
         document.addEventListener("DOMContentLoaded", function () {
             // Initialize Stacks Editors
             var detailsEditor = new window.stacksEditor.StacksEditor(
@@ -74,10 +116,7 @@
             }
         );
         document.querySelector("#questionForm").addEventListener("submit", function (event) {
-            // Get the content from the Stacks Editor div
-            var editorContent = document.querySelector("#editor-example-2").innerHTML;
 
-            console.log(editorContent);
 
             // Get the element containing the user input
             var userInputDiv = document.querySelector('.s-prose');
@@ -87,13 +126,19 @@
 
             // Set the content to the hidden textarea
             document.querySelector("#editor-content-2").value = userInputHTML;
+
+
+            // Get selected tags
+            var selectedTags = $('#tags').val();
+
+            console.log(selectedTags);
+
+            // Set selected tags to the hidden input
+            document.getElementById("Tags").value = selectedTags;
+
         });
 
-
-
     </script>
-
-
 }
 
 
