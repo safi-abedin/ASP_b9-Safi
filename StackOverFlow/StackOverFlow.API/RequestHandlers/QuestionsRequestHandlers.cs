@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using StackOverFlow.Application.Features.Question;
+using StackOverFlow.Application.Features.Questions;
+using StackOverFlow.Domain.Entities;
+using StackOverFlow.Infrastructure.Membership;
 
 namespace StackOverFlow.API.RequestHandlers
 {
@@ -8,6 +11,7 @@ namespace StackOverFlow.API.RequestHandlers
     {
         private IQuestionManagementService? _questionManagementService;
         private ILifetimeScope _scope;
+       
 
         public Guid Id { get; set; }
 
@@ -16,6 +20,8 @@ namespace StackOverFlow.API.RequestHandlers
         public string Details { get; set; }
 
         public string TriedApproach { get; set; }
+
+        public Guid UserId { get; set; }
 
         public List<string> Tags { get; set; }
 
@@ -36,7 +42,15 @@ namespace StackOverFlow.API.RequestHandlers
         internal async Task CreateQuestionAsync()
         {
             var body = Details + TriedApproach ;
-            await _questionManagementService.CreateQuestionAsync(Title, body, Tags);
+            var userId = UserId;
+            var s = userId;
+            var selectedTags = new List<Tag>();
+            foreach(var tag in Tags)
+            {
+                selectedTags.Add(new Tag {Id=Guid.NewGuid(),Name=tag});
+            }
+
+            await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
         }
 
         internal void ResolveDependency(ILifetimeScope scope)

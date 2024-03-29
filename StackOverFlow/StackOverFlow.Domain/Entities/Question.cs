@@ -14,6 +14,13 @@ namespace StackOverFlow.Domain.Entities
 
         public string  Body { get; set; }
 
-        public ICollection<QuestionTag> QuestionTags { get; set; }
+
+        public Guid CreatorUserId { get; set; }
+
+
+        public DateTime CreationDateTime { get; set; }
+
+        public ICollection<Tag> Tags { get; set; }
+
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using StackOverFlow.Application;
 using StackOverFlow.Application.Utilities;
+using StackOverFlow.Domain.Repositories;
 using StackOverFlow.Infrastructure.Email;
+using StackOverFlow.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +37,8 @@ namespace StackOverFlow.Infrastructure
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
                 .InstancePerLifetimeScope();
 
-            /*builder.RegisterType<CourseRepository>().As<ICourseRepository>()
-                .InstancePerLifetimeScope();*/
+            builder.RegisterType<QuestionRepository>().As<IQuestionRepository>()
+                .InstancePerLifetimeScope();
 
 
             builder.RegisterType<TokenService>().As<ITokenService>()

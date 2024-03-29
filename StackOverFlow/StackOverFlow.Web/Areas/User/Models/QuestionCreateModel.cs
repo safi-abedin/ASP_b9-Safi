@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using StackOverFlow.Domain.Entities;
+using StackOverFlow.Infrastructure.Membership;
 
 namespace StackOverFlow.Web.Areas.User.Models
 {
@@ -12,6 +13,8 @@ namespace StackOverFlow.Web.Areas.User.Models
         public string Details { get; set; }
 
         public string TriedApproach { get; set; }
+
+        public Guid? UserID { get; set; }
 
         public List<string> Tags { get; set; }
 

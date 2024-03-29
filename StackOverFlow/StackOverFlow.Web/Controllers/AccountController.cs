@@ -10,6 +10,8 @@ using StackOverFlow.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using StackOverFlow.Application.Utilities;
 
+
+
 namespace StackOverFlow.Web.Controllers
 {
     public class AccountController : Controller
@@ -160,14 +162,14 @@ namespace StackOverFlow.Web.Controllers
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
                     var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
-                   /* var token = await _tokenService.GetJwtToken(claims,
-                            _configuration["Jwt:Key"],
-                            _configuration["Jwt:Issuer"],
-                            _configuration["Jwt:Audience"]
-                        );*/
-                   // HttpContext.Session.SetString("token", token);
+                    /* var token = await _tokenService.GetJwtToken(claims,
+                             _configuration["Jwt:Key"],
+                             _configuration["Jwt:Issuer"],
+                             _configuration["Jwt:Audience"]
+                         );*/
+                    // HttpContext.Session.SetString("token", token);
 
-                    return LocalRedirect(model.ReturnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

@@ -1,10 +1,13 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Ocsp;
 using StackOverFlow.Domain.Entities;
+using StackOverFlow.Infrastructure.Membership;
 using StackOverFlow.Web.Areas.User.Models;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 
@@ -17,15 +20,17 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         private readonly ILogger<QuestionsController> _logger;
         Uri baseAdress = new Uri("https://localhost:7118/api/v3");
         private readonly HttpClient _httpClient;
+        private UserManager<ApplicationUser> _userManager;
 
 
         public QuestionsController(ILifetimeScope scope,
-            ILogger<QuestionsController> logger)
+            ILogger<QuestionsController> logger,UserManager<ApplicationUser> userManager)
         {
             _scope = scope;
             _logger = logger;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAdress;
+            _userManager = userManager;
         }
 
 
@@ -62,13 +67,15 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var selectedTags = model.Tags;
 
+            var user = await _userManager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
-
+                    model.UserID = user.Id;
                     var data = JsonConvert.SerializeObject(model);
                     var content =  new StringContent(data,Encoding.UTF8,"application/json");
                     //call api
-                    var response = _httpClient.PostAsync(_httpClient.BaseAddress + "/Questions/Post", content).Result;
+                    var response =  _httpClient.PostAsync(_httpClient.BaseAddress + "/Questions/Post", content).Result;
 
                     if (response.IsSuccessStatusCode)
                     {

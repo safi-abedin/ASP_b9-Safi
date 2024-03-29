@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using StackOverFlow.Application.Features.Question;
+using StackOverFlow.Application.Features.Questions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

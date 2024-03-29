@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StackOverFlow.Web.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class QuestionTables : Migration
+    public partial class AddQuestionTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,40 +37,40 @@ namespace StackOverFlow.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestionTags",
+                name: "QuestionsTags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    QuestionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionTags", x => new { x.Id, x.TagId });
+                    table.PrimaryKey("PK_QuestionsTags", x => new { x.QuestionsId, x.TagsId });
                     table.ForeignKey(
-                        name: "FK_QuestionTags_Questions_Id",
-                        column: x => x.Id,
+                        name: "FK_QuestionsTags_Questions_QuestionsId",
+                        column: x => x.QuestionsId,
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_QuestionTags_Tags_TagId",
-                        column: x => x.TagId,
+                        name: "FK_QuestionsTags_Tags_TagsId",
+                        column: x => x.TagsId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionTags_TagId",
-                table: "QuestionTags",
-                column: "TagId");
+                name: "IX_QuestionsTags_TagsId",
+                table: "QuestionsTags",
+                column: "TagsId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "QuestionTags");
+                name: "QuestionsTags");
 
             migrationBuilder.DropTable(
                 name: "Questions");

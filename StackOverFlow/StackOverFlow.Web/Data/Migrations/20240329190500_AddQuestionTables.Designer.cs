@@ -12,8 +12,8 @@ using StackOverFlow.Infrastructure;
 namespace StackOverFlow.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240323191448_QuestionTables")]
-    partial class QuestionTables
+    [Migration("20240329190500_AddQuestionTables")]
+    partial class AddQuestionTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace StackOverFlow.Web.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("QuestionTag", b =>
+                {
+                    b.Property<Guid>("QuestionsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("QuestionsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("QuestionsTags", (string)null);
+                });
 
             modelBuilder.Entity("StackOverFlow.Domain.Entities.Question", b =>
                 {
@@ -42,21 +57,6 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("StackOverFlow.Domain.Entities.QuestionTag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("QuestionTags");
                 });
 
             modelBuilder.Entity("StackOverFlow.Domain.Entities.Tag", b =>
@@ -280,23 +280,19 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("StackOverFlow.Domain.Entities.QuestionTag", b =>
+            modelBuilder.Entity("QuestionTag", b =>
                 {
-                    b.HasOne("StackOverFlow.Domain.Entities.Question", "Question")
-                        .WithMany("QuestionTags")
-                        .HasForeignKey("Id")
+                    b.HasOne("StackOverFlow.Domain.Entities.Question", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StackOverFlow.Domain.Entities.Tag", "Tag")
-                        .WithMany("QuestionTags")
-                        .HasForeignKey("TagId")
+                    b.HasOne("StackOverFlow.Domain.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("StackOverFlow.Infrastructure.Membership.ApplicationRoleClaim", b =>
@@ -348,16 +344,6 @@ namespace StackOverFlow.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("StackOverFlow.Domain.Entities.Question", b =>
-                {
-                    b.Navigation("QuestionTags");
-                });
-
-            modelBuilder.Entity("StackOverFlow.Domain.Entities.Tag", b =>
-                {
-                    b.Navigation("QuestionTags");
                 });
 #pragma warning restore 612, 618
         }

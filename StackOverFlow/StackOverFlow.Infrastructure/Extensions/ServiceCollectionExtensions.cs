@@ -39,7 +39,7 @@ namespace StackOverFlow.Infrastructure.Extensions
 
                 //confirmation required
 
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
