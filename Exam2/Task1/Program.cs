@@ -11,3 +11,17 @@ students.Add((3, "Jalaluddin", "Mirpur", 2));
 students.Add((4, "Hasan", "Moghbazar", 1));
 
 
+var StudentsEnrolled = from student in students
+                       join course in courses on student.courseId equals course.id
+                       select new
+                       {
+                           studentName = student.name,
+                           courseName = course.name
+                       };
+
+
+foreach(var student in StudentsEnrolled)
+{
+    Console.WriteLine($"{student.studentName},{student.courseName}");
+}
+
