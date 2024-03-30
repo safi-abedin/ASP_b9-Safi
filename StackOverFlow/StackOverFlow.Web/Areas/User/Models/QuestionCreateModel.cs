@@ -14,7 +14,7 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public string TriedApproach { get; set; }
 
-        public Guid? UserID { get; set; }
+        public Guid? UserId { get; set; }
 
         public List<string> Tags { get; set; }
 

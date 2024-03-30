@@ -21,7 +21,7 @@ namespace StackOverFlow.API.RequestHandlers
 
         public string TriedApproach { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public List<string> Tags { get; set; }
 

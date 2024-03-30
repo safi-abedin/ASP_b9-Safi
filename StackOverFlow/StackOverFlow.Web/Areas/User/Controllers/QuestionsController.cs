@@ -18,7 +18,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
     {
         private readonly ILifetimeScope _scope;
         private readonly ILogger<QuestionsController> _logger;
-        Uri baseAdress = new Uri("https://localhost:7118/api/v3");
+        Uri baseAdress = new Uri("https://localhost:7242/api/v3");
         private readonly HttpClient _httpClient;
         private UserManager<ApplicationUser> _userManager;
 
@@ -67,11 +67,11 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var selectedTags = model.Tags;
 
-            var user = await _userManager.GetUserAsync(User);
+            //var user = await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
-                    model.UserID = user.Id;
+                    model.UserId = new Guid();
                     var data = JsonConvert.SerializeObject(model);
                     var content =  new StringContent(data,Encoding.UTF8,"application/json");
                     //call api
@@ -83,7 +83,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                     }
             }
 
-            // Assuming you have a method to get available tags
             var tagsList = GetAvailableTags();
 
             // Pass the list of available tags to the view
@@ -101,7 +100,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
         private List<Tag> GetAvailableTags()
         {
-            // Define hardcoded tags for demonstration
             var tagsList = new List<Tag>
         {
             new Tag { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "CSS" },

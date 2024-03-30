@@ -14,7 +14,6 @@ namespace StackOverFlow.API.Controllers
         private readonly ILifetimeScope _scope;
         private readonly ILogger<QuestionsController> _logger;
 
-
         public QuestionsController(ILogger<QuestionsController> logger, ILifetimeScope scope)
         {
             _logger = logger;
