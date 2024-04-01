@@ -1,13 +1,14 @@
 ﻿using Autofac;
+using MailKit.Search;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StackOverFlow.Application.Features.Questions;
 using StackOverFlow.Domain.Entities;
-using StackOverFlow.Infrastructure.Membership;
+using StackOverFlow.Infrastructure;
 
 namespace StackOverFlow.API.RequestHandlers
 {
-    public class QuestionsRequestHandlers
+    public class QuestionsRequestHandlers : DataTables
     {
         private IQuestionManagementService? _questionManagementService;
         private ILifetimeScope _scope;
@@ -39,6 +40,12 @@ namespace StackOverFlow.API.RequestHandlers
         }
 
 
+        internal void ResolveDependency(ILifetimeScope scope)
+        {
+            _scope = scope;
+            _questionManagementService = _scope.Resolve<IQuestionManagementService>();
+        }
+
         internal async Task CreateQuestionAsync()
         {
             var body = Details + TriedApproach ;
@@ -53,10 +60,35 @@ namespace StackOverFlow.API.RequestHandlers
             await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
         }
 
-        internal void ResolveDependency(ILifetimeScope scope)
+
+
+        internal async Task<object?> GetPagedCourses()
         {
-            _scope = scope;
-            _questionManagementService = _scope.Resolve<IQuestionManagementService>();
+
+            var data = await _questionManagementService?.GetPagedCoursesAsync(
+                PageIndex,
+                PageSize,
+                FormatSortExpression("Title", "Description", "Fees"));
+
+            return new
+            {
+                recordsTotal = data.total,
+                recordsFiltered = data.totalDisplay,
+                data = (from record in data.records
+                        select new string[]
+                        {
+                                record.title,
+                                record.Body,
+                                record.Tags.ToString(),
+                                record.Id.ToString()
+                        }
+                    ).ToArray()
+            };
+        }
+
+        internal async Task<IEnumerable<Question>> GetQuestionsAsync()
+        {
+            return await _questionManagementService.GetQuestionsAsync();
         }
     }
 }

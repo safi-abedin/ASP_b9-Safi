@@ -34,5 +34,16 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.QuestionRepository.AddAsync(question);
             await _unitOfWork.SaveAsync();
         }
+
+        public async Task<(IList<Question> records, int total, int totalDisplay)> GetPagedCoursesAsync(int pageIndex, int pageSize, string orderBy)
+        {
+            return await _unitOfWork.QuestionRepository.GetTableDataAsync(orderBy, pageIndex, pageSize);
+        }
+
+        public async Task<IEnumerable<Question>> GetQuestionsAsync()
+        {
+            var data = await _unitOfWork.QuestionRepository.GetAllQuestionsAsync();
+            return data;
+        }
     }
 }
