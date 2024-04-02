@@ -84,7 +84,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             if (ModelState.IsValid)
             {
                     var user = await _userManager.GetUserAsync(User);
-                    model.UserId = user.Id;
+                model.UserId = new Guid();
                     model.ResolveAsync(_scope);
                     await model.CreateAsync();
             }

@@ -42,7 +42,7 @@ namespace StackOverFlow.Web.Areas.User.Models
                         {
                                 HttpUtility.HtmlEncode(record.title),
                                 HttpUtility.HtmlEncode(record.Body),
-                                record.Tags.ToString(),
+                                record.Tags.ToHashSet().ToString(),
                                 record.Id.ToString()
                         }
                     ).ToArray()
