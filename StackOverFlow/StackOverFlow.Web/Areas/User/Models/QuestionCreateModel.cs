@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using StackOverFlow.Application.Features.Questions;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure.Membership;
 
@@ -7,6 +8,10 @@ namespace StackOverFlow.Web.Areas.User.Models
 {
     public class QuestionCreateModel
     {
+
+        public ILifetimeScope _scope;
+
+        public IQuestionManagementService _questionManagementService;
 
         public string Title { get; set; }
 
@@ -21,6 +26,34 @@ namespace StackOverFlow.Web.Areas.User.Models
         //Display property
         public List<SelectListItem>? MultiTags { get; set; }
 
+
+        public QuestionCreateModel()
+        {
+
+        }
+
+        public QuestionCreateModel(IQuestionManagementService questionManagementService)
+        {
+            _questionManagementService = questionManagementService;
+        }
+
+        internal async Task CreateAsync()
+        {
+            var body = Details + TriedApproach;
+            var selectedTags = new List<Tag>();
+            foreach (var tag in Tags)
+            {
+                selectedTags.Add(new Tag { Id = Guid.NewGuid(), Name = tag });
+            }
+
+            await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
+        }
+
+        internal void ResolveAsync(ILifetimeScope scope)
+        {
+            _scope = scope;
+            _questionManagementService = _scope.Resolve<IQuestionManagementService>();
+        }
 
     }
 }

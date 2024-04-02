@@ -26,16 +26,16 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Description</th>
-                                <th>Fees</th>
+                                <th>Body</th>
+                                <th>Tags</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Title</th>
-                                <th>Description</th>
-                                <th>Fees</th>
+                                <th>Body</th>
+                                <th>Tags</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -74,10 +74,8 @@
                 lengthChange: false,
                 autoWidth: false,
                 ajax: {
-                    url: "https://localhost:7242/api/v3/Questions/Post",
+                    url: "/User/Questions/GetQuestions",
                     type: "POST",
-                    contentType: "application/json", //must be added
-                    dataType: "json", //better to add, not mandatory
                 },
                 columnDefs: [
                     {

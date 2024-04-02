@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Ocsp;
 using StackOverFlow.Domain.Entities;
+using StackOverFlow.Infrastructure;
 using StackOverFlow.Infrastructure.Membership;
 using StackOverFlow.Web.Areas.User.Models;
 using System.Security.Claims;
@@ -41,6 +42,20 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<JsonResult> GetQuestions(QuestionListModel model)
+        {
+            var dataTableModel = new DataTablesAjaxRequestUtility(Request);
+
+            model.Resolve(_scope);
+
+            var data = await model.GetPagedCoursesAsync(dataTableModel);
+
+            return Json(data);
+        }
+
+
+
 
         [HttpGet]
         public IActionResult Create()
@@ -65,22 +80,13 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuestionCreateModel model)
         {
-            var selectedTags = model.Tags;
-
-            //var user = await _userManager.GetUserAsync(User);
-
+      
             if (ModelState.IsValid)
             {
-                    model.UserId = new Guid();
-                    var data = JsonConvert.SerializeObject(model);
-                    var content =  new StringContent(data,Encoding.UTF8,"application/json");
-                    //call api
-                    var response =  _httpClient.PostAsync(_httpClient.BaseAddress + "/Questions/Post", content).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                       return  RedirectToAction("Index");
-                    }
+                    var user = await _userManager.GetUserAsync(User);
+                    model.UserId = user.Id;
+                    model.ResolveAsync(_scope);
+                    await model.CreateAsync();
             }
 
             var tagsList = GetAvailableTags();
@@ -127,8 +133,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             return tagsList;
         }
-
-
 
 
     }
