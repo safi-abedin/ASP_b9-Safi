@@ -22,9 +22,9 @@ namespace StackOverFlow.Infrastructure.Repositories
             Expression<Func<Question, bool>> expression = null;
 
             
-            var data = await GetDynamicAsync(expression,orderBy, null, pageIndex, pageSize, true);
+            var data = await _dbSet.Include(q => q.Tags).ToListAsync();
 
-            return data;
+            return (data,12,12);
         }
 
         public async Task<IList<Question>> GetAllQuestionsAsync()

@@ -26,9 +26,9 @@ namespace StackOverFlow.Web.Areas.User.Models
             _questionManagementService = _scope.Resolve<IQuestionManagementService>();
         }
 
-        public async Task<object> GetPagedCoursesAsync(DataTablesAjaxRequestUtility dataTablesUtility)
+        public async Task<object> GetPagedQuestionsAsync(DataTablesAjaxRequestUtility dataTablesUtility)
         {
-            var data = await _questionManagementService.GetPagedCoursesAsync(
+            var data = await _questionManagementService.GetPagedQuestionsAsync(
                 dataTablesUtility.PageIndex,
                 dataTablesUtility.PageSize,
                 dataTablesUtility.GetSortText(new string[] { "", "", "" }));
@@ -42,7 +42,7 @@ namespace StackOverFlow.Web.Areas.User.Models
                         {
                                 HttpUtility.HtmlEncode(record.title),
                                 HttpUtility.HtmlEncode(record.Body),
-                                record.Tags.ToHashSet().ToString(),
+                                record.Tags.ToString(),
                                 record.Id.ToString()
                         }
                     ).ToArray()

@@ -49,7 +49,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             model.Resolve(_scope);
 
-            var data = await model.GetPagedCoursesAsync(dataTableModel);
+            var data = await model.GetPagedQuestionsAsync(dataTableModel);
 
             return Json(data);
         }

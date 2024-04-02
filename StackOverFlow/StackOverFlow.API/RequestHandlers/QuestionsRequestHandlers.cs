@@ -65,7 +65,7 @@ namespace StackOverFlow.API.RequestHandlers
         internal async Task<object?> GetPagedCourses()
         {
 
-            var data = await _questionManagementService?.GetPagedCoursesAsync(
+            var data = await _questionManagementService?.GetPagedQuestionsAsync(
                 PageIndex,
                 PageSize,
                 FormatSortExpression("Title", "Description", "Fees"));

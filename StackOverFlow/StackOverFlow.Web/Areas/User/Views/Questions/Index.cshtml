@@ -5,53 +5,32 @@
     ViewData["Title"] = "Courses";
 }
 @section Styles
-    {                            
+    {
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
 }
 
 <!-- /.content-header -->
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">DataTable with default features</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <partial name="_ResponsePartial" />
-                    <table id="courses" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Body</th>
-                                <th>Tags</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Title</th>
-                                <th>Body</th>
-                                <th>Tags</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <partial name="_ModalPartial" />
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+            <table id="questions" class="table table-bordered table-striped">
+                <tbody>
+                    <!-- DataTable rows will be dynamically inserted here -->
+                </tbody>
+            </table>
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
 </div>
+
 @section Scripts
-    {           
+    {
     <script src="~/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -67,7 +46,7 @@
 
     <script>
         $(function () {
-            $("#courses").DataTable({
+            $("#questions").DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -77,43 +56,25 @@
                     url: "/User/Questions/GetQuestions",
                     type: "POST",
                 },
-                columnDefs: [
-                    {
-                        orderable: false,
-                        targets: 3,
-                        render: function (data, type, row) {
-                            return `<button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/course/update/${data}'" value='${data}'>
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </button>
-                                    <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Delete
-                                    </button>`;
-                        }
-                    }
+                columns: [
+                    { data: "data" }, // Adjust the data property to match the actual property name
                 ],
+                initComplete: function () {
+                    var dataTable = $('#questions').DataTable(); // Fix the selector here
+                    dataTable.rows().every(function () {
+                        var data = this.data();
+                        var cardHtml = `<div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${data.QuestionTitle}</h5>
+                                        <p class="card-text">${data.QuestionBody}</p>
+                                        <p class="card-text"><small class="text-muted">${data.TagName}</small></p>
+                                    </div>
+                                </div>`;
+                        $(this.node()).empty().append(cardHtml);
+                    });
+                },
                 buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#courses_wrapper');
-
-            $('#courses').on('click', '.show-bs-modal', function (event) {
-                let id = $(this).data("id");
-                let modal = $("#modal-default");
-                modal.find('.modal-body p').text('Are you sure you want to delete this record?');
-                $("#deleteId").val(id);
-                $("#deleteForm").attr("action", "/admin/course/delete");
-                modal.modal('show');
-            });
-
-            $("#deleteButton").click(function () {
-                $("#deleteForm").submit();
-            });
-
-            $("#searchButton").click(function () {
-                $('#courses').DataTable().ajax.reload(null, false);
-            });
+            }).buttons().container().appendTo('#questions_wrapper'); // Fix the selector here
         });
     </script>
 }
