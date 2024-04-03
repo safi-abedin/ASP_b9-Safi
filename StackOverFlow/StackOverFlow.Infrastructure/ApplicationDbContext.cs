@@ -41,8 +41,8 @@ namespace StackOverFlow.Infrastructure
 			builder.Entity<Question>()
 				.HasMany(x => x.Tags).WithMany(x => x.Questions)
 				.UsingEntity(t => t.ToTable("QuestionsTags"));
-          
-            base.OnModelCreating(builder);
+
+			base.OnModelCreating(builder);
         }
 
         public DbSet<Question> Questions { get; set; }

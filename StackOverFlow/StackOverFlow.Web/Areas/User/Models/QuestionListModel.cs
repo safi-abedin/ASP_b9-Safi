@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using StackOverFlow.Application.Features.Questions;
+using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure;
+using System.Linq;
 using System.Web;
 
 namespace StackOverFlow.Web.Areas.User.Models
@@ -33,19 +35,19 @@ namespace StackOverFlow.Web.Areas.User.Models
                 dataTablesUtility.PageSize,
                 dataTablesUtility.GetSortText(new string[] { "", "", "" }));
 
+            var transformedData = data.records.Select(record => new
+            {
+                Title = HttpUtility.HtmlEncode(record.title),
+                Body = HttpUtility.HtmlEncode(record.Body),
+                Tags = record.Tags.Select(tag => tag.Name).ToList(), // Transform tags directly here
+                Id = record.Id.ToString()
+            });
+
             return new
             {
                 recordsTotal = data.total,
                 recordsFiltered = data.totalDisplay,
-                data = (from record in data.records
-                        select new string[]
-                        {
-                                HttpUtility.HtmlEncode(record.title),
-                                HttpUtility.HtmlEncode(record.Body),
-                                record.Tags.ToString(),
-                                record.Id.ToString()
-                        }
-                    ).ToArray()
+                data = transformedData
             };
         }
 
