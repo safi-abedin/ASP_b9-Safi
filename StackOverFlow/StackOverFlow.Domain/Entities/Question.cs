@@ -20,6 +20,17 @@ namespace StackOverFlow.Domain.Entities
 
         public DateTime CreationDateTime { get; set; }
 
+        public int ViewCount { get; set; }
+
+
+        public int VoteCount { get; set; }
+
+
+
+        public ICollection<Answer> Answers { get; set; }
+
+
+
         public ICollection<Tag> Tags { get; set; }
 
     }

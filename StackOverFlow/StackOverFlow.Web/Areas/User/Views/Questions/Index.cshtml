@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
     <style>
         .card {
             margin-bottom: 20px;
@@ -16,18 +19,30 @@
     </style>
 }
 
-<!-- /.content-header -->
+<br />
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
+            <br />
+            <div class="s-btn-group jc-end">
+                <button class="s-btn s-btn__muted flex-item jc-end " type="button" id="btnThisWeek">
+                    <span class="s-btn--text" data-text="Newest">Newest</span>
+                </button>
+                <button class="s-btn s-btn__muted" type="button" id="btnThisMonth">
+                    <span class="s-btn--text" data-text="Frequent">Frequent</span>
+                </button>
+                <button class="s-btn s-btn__muted is-selected" type="button" aria-current="true" id="btnHot">
+                    <span class="s-btn--text" data-text="Hot">Hot</span>
+                </button>
+            </div>
             <table id="questions" class="table ">
                 <tbody>
-                    <!-- DataTable rows will be dynamically inserted here -->
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 
 @section Scripts
     {
@@ -43,6 +58,7 @@
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
 
     <script>
         $(function () {
@@ -52,32 +68,68 @@
                 responsive: true,
                 lengthChange: false,
                 autoWidth: false,
-                searching: false, // Disable searching
+                searching: false,
                 ajax: {
                     url: "/User/Questions/GetQuestions",
                     type: "POST",
                 },
                 columns: [
-                    { data: "title" },
-                    { data: "body", visible: false }, // Hide the body column
-                    { data: "tags", visible: false }, // Hide the tags column
-                    { data: "id", visible: false } // Hide the id column
+                    { data: "title", orderable: false },
+                    { data: "body", visible: false },
+                    { data: "tags", visible: false },
+                    { data: "id", visible: false }
                 ],
                 initComplete: function () {
                     var dataTable = $('#questions').DataTable();
                     dataTable.rows().every(function () {
                         var data = this.data();
+                        var tagButtonsHtml = data.tags.map(tag => `<a class="s-tag">${tag}</a>`).join(' ');
                         var cardHtml = `<div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title">${data.title}</h5>
-                                                <p class="card-text">Tags: ${data.tags.join(', ')}</p>
+                                                <h3 class="s-post-summary--content-title">
+                                                        <a href="…" class="s-link">${data.title}</a>
+                                                </h3>
+                                                <p class="card-text">${tagButtonsHtml}</p>
                                             </div>
                                         </div>`;
+
                         $(this.node()).empty().append(cardHtml);
                     });
                 },
-                buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#questions_wrapper');
         });
+
+
+
+        $(function () {
+            $("#btnThisWeek").click(function () {
+                reloadTableData("this_week"); 
+            });
+
+            $("#btnThisMonth").click(function () {
+                reloadTableData("this_month"); 
+            });
+
+            $("#btnHot").click(function () {
+                reloadTableData("hot"); 
+            });
+
+            function reloadTableData(filter) {
+                var dataTable = $('#questions').DataTable();
+                dataTable.clear().draw(); 
+
+                $.ajax({
+                    url: "/User/Questions/GetQuestions?filter=" + filter,
+                    type: "POST",
+                    success: function (response) {
+                        dataTable.rows.add(response.data).draw();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error loading data:", error);
+                    }
+                });
+            }
+        });
+
     </script>
 }

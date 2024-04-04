@@ -42,11 +42,25 @@ namespace StackOverFlow.Infrastructure
 				.HasMany(x => x.Tags).WithMany(x => x.Questions)
 				.UsingEntity(t => t.ToTable("QuestionsTags"));
 
-			base.OnModelCreating(builder);
+
+            builder.Entity<Answer>()
+                .HasOne(a => a.Question)
+                .WithMany(q => q.Answers)
+                .HasForeignKey(a => a.QuestionId);
+
+            builder.Entity<Reply>()
+                .HasOne(c => c.Answer)
+                .WithMany(a => a.Replies)
+                .HasForeignKey(c => c.AnswerId);
+
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Question> Questions { get; set; }
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Reply> Replies { get; set; }
 
     }
 }

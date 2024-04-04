@@ -37,6 +37,32 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.ToTable("QuestionsTags", (string)null);
                 });
 
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Answer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AnswerTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("AnsweredByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("StackOverFlow.Domain.Entities.Question", b =>
                 {
                     b.Property<Guid>("Id")
@@ -53,6 +79,12 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.Property<Guid>("CreatorUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoteCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -62,11 +94,46 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Reply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AnswerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RepliedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ReplyTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Replies");
+                });
+
             modelBuilder.Entity("StackOverFlow.Domain.Entities.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -135,11 +202,17 @@ namespace StackOverFlow.Web.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AboutMe")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -153,6 +226,9 @@ namespace StackOverFlow.Web.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -180,6 +256,9 @@ namespace StackOverFlow.Web.Data.Migrations
 
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Reputation")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -298,6 +377,36 @@ namespace StackOverFlow.Web.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Answer", b =>
+                {
+                    b.HasOne("StackOverFlow.Domain.Entities.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Reply", b =>
+                {
+                    b.HasOne("StackOverFlow.Domain.Entities.Answer", "Answer")
+                        .WithMany("Replies")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StackOverFlow.Domain.Entities.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Answer");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("StackOverFlow.Infrastructure.Membership.ApplicationRoleClaim", b =>
                 {
                     b.HasOne("StackOverFlow.Infrastructure.Membership.ApplicationRole", null)
@@ -347,6 +456,16 @@ namespace StackOverFlow.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Answer", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("StackOverFlow.Domain.Entities.Question", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }
