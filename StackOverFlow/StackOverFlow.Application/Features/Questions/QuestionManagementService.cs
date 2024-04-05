@@ -35,9 +35,10 @@ namespace StackOverFlow.Application.Features.Questions
             {
                 if (allTags.Any(t => t.Name == tag.Name))
                 {
-                    selectedAndInAllTags.Add(tag);
+                    selectedAndInAllTags.Add(allTags.FirstOrDefault(t => t.Name == tag.Name));
                 }
             }
+
 
 
             var question = new Question
@@ -51,6 +52,11 @@ namespace StackOverFlow.Application.Features.Questions
 
             await _unitOfWork.QuestionRepository.AddAsync(question);
             await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<IEnumerable<Tag>> GetAllTags()
+        {
+            return await _unitOfWork.TagRepository.GetAllAsync();
         }
 
         public async Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy)

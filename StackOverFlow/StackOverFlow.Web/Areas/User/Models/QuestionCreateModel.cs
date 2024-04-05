@@ -55,6 +55,9 @@ namespace StackOverFlow.Web.Areas.User.Models
             await _questionManagementService.CreateQuestionAsync(Title, body, Tags,UserId);
         }
 
-
+        internal async Task<IEnumerable<Tag>> GetAvailableTags()
+        {
+            return await _questionManagementService.GetAllTags();
+        }
     }
 }

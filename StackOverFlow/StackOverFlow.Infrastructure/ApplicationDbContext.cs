@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using StackOverFlow.Infrastructure.Membership;
 using StackOverFlow.Domain.Entities;
 using System.Reflection.Emit;
+using StackOverFlow.Infrastructure.Data;
 
 namespace StackOverFlow.Infrastructure
 {
@@ -52,6 +53,9 @@ namespace StackOverFlow.Infrastructure
                 .HasOne(c => c.Answer)
                 .WithMany(a => a.Replies)
                 .HasForeignKey(c => c.AnswerId);
+
+            builder.Entity<Tag>().HasData(new TagsSeed().Tags);
+
 
             base.OnModelCreating(builder);
         }

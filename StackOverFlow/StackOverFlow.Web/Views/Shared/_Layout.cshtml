@@ -119,9 +119,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             text-decoration: none;
         }
 
-            .footer-category a:hover {
-                text-decoration: underline;
-            }
+        .footer-category a:hover {
+            text-decoration: underline;
+        }
 
         .copyright {
             margin-top: 20px;
@@ -145,16 +145,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         .logo-textFooter {
             font-size: 30px; /* Adjust font size as needed */
         }
-
-
     </style>
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
-
-        <nav class="main-header navbar navbar-expand-md layout-navbar-fixed navbar-light bg-white s-topbar">
-            <div class="container s-topbar--container">
+        <nav class="main-header navbar navbar-expand-md layout-navbar-fixed navbar-light bg-white ">
+            <div class="container ">
                 <div class="row w-100">
                     <div class="col-1">
                         <!-- Optional: Add content if needed -->
@@ -206,15 +203,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 
-
-
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-dark elevation-4">
-    
-
+  
             <!-- Sidebar -->
             <div class="sidebar">
-
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
@@ -294,18 +287,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container">
-                    @RenderBody()
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Dashboard v2</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard v2</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                @RenderBody()
+            </section>
             <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
 
     </div>
 
