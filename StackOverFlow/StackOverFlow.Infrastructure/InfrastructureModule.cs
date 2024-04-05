@@ -40,6 +40,9 @@ namespace StackOverFlow.Infrastructure
             builder.RegisterType<QuestionRepository>().As<IQuestionRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<TagRepository>().As<ITagRepository>()
+                .InstancePerLifetimeScope();
+
 
             builder.RegisterType<TokenService>().As<ITokenService>()
                .InstancePerLifetimeScope();

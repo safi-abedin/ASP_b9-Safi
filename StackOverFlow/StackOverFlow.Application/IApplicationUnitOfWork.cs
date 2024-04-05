@@ -12,6 +12,8 @@ namespace StackOverFlow.Application
     {
         IQuestionRepository QuestionRepository { get; }
 
+        ITagRepository TagRepository { get;}
+
        /* ICourseRepository CourseRepository { get; }
         Task<(IList<CourseEnrollmentDTO> records, int total, int totalDisplay)> GetCourseEnrollmentsAsync(
             int pageIndex,

@@ -16,11 +16,13 @@ namespace StackOverFlow.Infrastructure
 
         public IQuestionRepository QuestionRepository { get; set; }
 
+        public ITagRepository TagRepository { get; set; }
 
-        public ApplicationUnitOfWork(IQuestionRepository questionRepository
+        public ApplicationUnitOfWork(IQuestionRepository questionRepository,ITagRepository tagRepository
             ,IApplicationDbContext dbContext):base((DbContext)dbContext)
         {
             QuestionRepository = questionRepository;
+            TagRepository = tagRepository;
         }
 
 

@@ -39,7 +39,12 @@ namespace StackOverFlow.Web.Areas.User.Models
             {
                 Title = HttpUtility.HtmlEncode(record.title),
                 Body = HttpUtility.HtmlEncode(record.Body),
-                Tags = record.Tags.Select(tag => tag.Name).ToList(), // Transform tags directly here
+                Tags = record.Tags.Select(tag => tag.Name).ToList(),
+                CreatedBy = record.CreatorUserId.ToString(),
+                CreateTime = HttpUtility.HtmlEncode(record.CreationDateTime),
+                AnswerCount = record.AnswerCount.ToString(),
+                VoteCount = record.VoteCount.ToString(),
+                viewCount = record.ViewCount,
                 Id = record.Id.ToString()
             });
 

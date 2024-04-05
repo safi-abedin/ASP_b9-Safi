@@ -7,6 +7,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure;
 using StackOverFlow.Infrastructure.Membership;
+using StackOverFlow.Web.Areas.Admin.Models;
 using StackOverFlow.Web.Areas.User.Models;
 using System.Security.Claims;
 using System.Text;
@@ -19,8 +20,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
     {
         private readonly ILifetimeScope _scope;
         private readonly ILogger<QuestionsController> _logger;
-        Uri baseAdress = new Uri("https://localhost:7242/api/v3");
-        private readonly HttpClient _httpClient;
         private UserManager<ApplicationUser> _userManager;
 
 
@@ -29,8 +28,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             _scope = scope;
             _logger = logger;
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = baseAdress;
             _userManager = userManager;
         }
 
@@ -83,23 +80,44 @@ namespace StackOverFlow.Web.Areas.User.Controllers
       
             if (ModelState.IsValid)
             {
+                try
+                {
                     var user = await _userManager.GetUserAsync(User);
-                model.UserId = new Guid();
+                    model.UserId = user.Id;
                     model.ResolveAsync(_scope);
                     await model.CreateAsync();
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Your Question Added successfully",
+                        Type = ResponseTypes.Success
+                    });
+
+                    return RedirectToAction("Index");
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError(ex, "Server Error");
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "There was a problem in creating course",
+                        Type = ResponseTypes.Danger
+                    });
+                }
+                
             }
 
             var tagsList = GetAvailableTags();
-
-            // Pass the list of available tags to the view
             model.MultiTags = new List<SelectListItem>();
             foreach (var tag in tagsList)
             {
                 model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
             }
-
             model.Details = HttpUtility.HtmlDecode(model.TriedApproach); 
             model.TriedApproach = HttpUtility.HtmlDecode(model.TriedApproach);
+
+
             return View(model);
         }
 

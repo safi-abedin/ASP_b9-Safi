@@ -57,7 +57,7 @@ namespace StackOverFlow.API.RequestHandlers
                 selectedTags.Add(new Tag {Id=Guid.NewGuid(),Name=tag});
             }
 
-            await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
+            //await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
         }
 
 

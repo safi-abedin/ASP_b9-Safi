@@ -25,6 +25,8 @@ namespace StackOverFlow.Domain.Entities
 
         public int VoteCount { get; set; }
 
+        public int AnswerCount { get; set; }
+
 
 
         public ICollection<Answer> Answers { get; set; }

@@ -19,15 +19,33 @@ namespace StackOverFlow.Application.Features.Questions
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateQuestionAsync(string title, string body, List<Tag> tags)
+        public async Task CreateQuestionAsync(string title, string body, List<string> tags,Guid UserId)
         {
+            var allTags = _unitOfWork.TagRepository.GetAll();
+            var selectedTags = new List<Tag>();
+
+            foreach (var tag in tags)
+            {
+                selectedTags.Add(new Tag { Id = Guid.NewGuid(), Name = tag });
+            }
+
+            var selectedAndInAllTags = new List<Tag>();
+
+            foreach (var tag in selectedTags)
+            {
+                if (allTags.Any(t => t.Name == tag.Name))
+                {
+                    selectedAndInAllTags.Add(tag);
+                }
+            }
+
+
             var question = new Question
             {
                 title = title,
                 Body = body,
-                Tags = tags,
-                //have to replace later with actual user Id
-                CreatorUserId = Guid.NewGuid(),
+                Tags = selectedAndInAllTags,
+                CreatorUserId = UserId,
                 CreationDateTime = DateTime.Now
             };
 

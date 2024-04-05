@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using StackOverFlow.Application.Features.Questions;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure.Membership;
+using System.ComponentModel.DataAnnotations;
 
 namespace StackOverFlow.Web.Areas.User.Models
 {
@@ -13,14 +14,18 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public IQuestionManagementService _questionManagementService;
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Details { get; set; }
 
+        [Required]
         public string TriedApproach { get; set; }
 
-        public Guid? UserId { get; set; }
+        public Guid UserId { get; set; }
 
+        [Required]
         public List<string> Tags { get; set; }
 
         //Display property
@@ -37,23 +42,19 @@ namespace StackOverFlow.Web.Areas.User.Models
             _questionManagementService = questionManagementService;
         }
 
-        internal async Task CreateAsync()
-        {
-            var body = Details + TriedApproach;
-            var selectedTags = new List<Tag>();
-            foreach (var tag in Tags)
-            {
-                selectedTags.Add(new Tag { Id = Guid.NewGuid(), Name = tag });
-            }
-
-            await _questionManagementService.CreateQuestionAsync(Title, body, selectedTags);
-        }
-
         internal void ResolveAsync(ILifetimeScope scope)
         {
             _scope = scope;
             _questionManagementService = _scope.Resolve<IQuestionManagementService>();
         }
+
+        internal async Task CreateAsync()
+        {
+            var body = Details + TriedApproach;
+            
+            await _questionManagementService.CreateQuestionAsync(Title, body, Tags,UserId);
+        }
+
 
     }
 }

@@ -45,7 +45,8 @@ namespace StackOverFlow.Web.Data.Migrations
                     CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ViewCount = table.Column<int>(type: "int", nullable: false),
-                    VoteCount = table.Column<int>(type: "int", nullable: false)
+                    VoteCount = table.Column<int>(type: "int", nullable: false),
+                    AnswerCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

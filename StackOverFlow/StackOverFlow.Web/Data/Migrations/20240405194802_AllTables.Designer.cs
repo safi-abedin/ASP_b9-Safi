@@ -12,7 +12,7 @@ using StackOverFlow.Infrastructure;
 namespace StackOverFlow.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240404165342_AllTables")]
+    [Migration("20240405194802_AllTables")]
     partial class AllTables
     {
         /// <inheritdoc />
@@ -71,6 +71,9 @@ namespace StackOverFlow.Web.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AnswerCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Body")
                         .IsRequired()

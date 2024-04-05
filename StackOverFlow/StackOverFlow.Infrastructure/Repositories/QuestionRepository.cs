@@ -1,5 +1,6 @@
 ﻿using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Domain.Repositories;
 using System;
@@ -21,11 +22,12 @@ namespace StackOverFlow.Infrastructure.Repositories
         {
             Expression<Func<Question, bool>> expression = null;
 
-            
-            var data = await _dbSet.Include(q => q.Tags).ToListAsync();
+            Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
+                query.Include(q => q.Tags);
 
-            return (data,12,12);
+            return await GetDynamicAsync(expression, orderBy, include, pageIndex, pageSize, true);
         }
+
 
         public async Task<IList<Question>> GetAllQuestionsAsync()
         {
