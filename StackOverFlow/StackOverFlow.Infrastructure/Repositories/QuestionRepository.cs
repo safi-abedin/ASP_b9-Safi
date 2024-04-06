@@ -39,5 +39,18 @@ namespace StackOverFlow.Infrastructure.Repositories
             return await _dbSet.Include(q => q.Tags).ToListAsync();
         }
 
+        public async Task<Question> GetAsync(Guid id)
+        {
+            Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
+               query.Include(q => q.Tags);
+            Expression<Func<Question, bool>> expression = null;
+            if (!id.Equals(null))
+            {
+                expression = x => x.Id == id;
+            }
+            var data = await GetAsync(expression,include);
+
+            return data.First();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 using StackOverFlow.Application.Features.Questions;
+using StackOverFlow.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -19,6 +20,8 @@ namespace StackOverFlow.Web.Areas.User.Models
 
 
         public DateTime CreationDateTime { get; set; }
+
+        public List<Tag> Tags { get; set; }
 
         public int ViewCount { get; set; }
 
@@ -62,6 +65,7 @@ namespace StackOverFlow.Web.Areas.User.Models
                 Id = question.Id;
                 title = question.title;
                 Body = WebUtility.HtmlDecode(question.Body);
+                Tags = question.Tags.ToList();
                 CreationDateTime = question.CreationDateTime;
                 CreatorUserId = question.CreatorUserId;
                 ViewCount = question.ViewCount;

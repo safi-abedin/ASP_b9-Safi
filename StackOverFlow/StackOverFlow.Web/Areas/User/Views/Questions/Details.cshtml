@@ -9,43 +9,77 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
     <link rel="stylesheet" href="~/stackoverflow/stacks/dist/css/stacks.min.css" />
-    <link rel="stylesheet" href="~/stackoverflow/stacks/dist/css/stacks.css"/>
+    <link rel="stylesheet" href="~/stackoverflow/stacks/dist/css/stacks.css" />
+
 }
 
 <div class="container">
     <div class="s-page-title">
-        <h1 class="s-page-title--header">@Model.title</h1>
+        <div class="s-page-title--text">
+            <h1 class="s-page-title--header">@Model.title</h1>
+        </div>
+        <div class="s-page-title--actions">
+            <button class="s-btn s-btn__filled mb-3" asp-action="create" asp-area="user" asp-controller="questions" type="submit">Ask Question</button>
+        </div>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
+            <a>
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 25H34L18 9L2 25Z" fill="black" />
+                </svg>
+            </a>
+            <br />
+            <br />
+            <a>
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 11H34L18 27L2 11Z" fill="black" />
+                </svg>
+            </a>
+        </div>
 
+        <div class="col-md-8">
             <div class="user-inputs ">
-            <pre class="s-code-block language-html">
+                <pre class="s-code-block language-html">
                     @Html.Raw(Model.Body)
             </pre>
             </div>
-
             <hr />
-            <dl class="row">
-                <dt class="col-sm-3">Creator:</dt>
-                <dd class="col-sm-9">@Model.CreatorUserId</dd>
-
-                <dt class="col-sm-3">Creation Date:</dt>
-                <dd class="col-sm-9">@Model.CreationDateTime</dd>
-
-                <dt class="col-sm-3">View Count:</dt>
-                <dd class="col-sm-9">@Model.ViewCount</dd>
-
-                <dt class="col-sm-3">Vote Count:</dt>
-                <dd class="col-sm-9">@Model.VoteCount</dd>
-
-                <dt class="col-sm-3">Answer Count:</dt>
-                <dd class="col-sm-9">@Model.AnswerCount</dd>
-            </dl>
+            <div class="tags-askedby">
+                <div class="row justify-content-between">
+                    <div class="col-md-4">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <a class="s-tag">@tag.Name</a>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <div class="s-user-card">
+                            <time class="s-user-card--time">Created on @Model.CreationDateTime</time>
+                            <a href="…" class="s-avatar s-avatar__32 s-user-card--avatar">
+                                <img class="s-avatar--image" src="…" />
+                            </a>
+                            <div class="s-user-card--info">
+                                <a href="…" class="s-user-card--link">@Model.CreatorUserId</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
- @section Scripts{
+@section Scripts{
     <script src="~/stackoverflow/stacks/dist/components/code-block/code-block.fixtures.d.ts" /></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/code-block.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/html-block.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/image.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/tag-link.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/plugins/preview.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/markdown-parser.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/markdown-serializer.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/view.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/styles.bundle.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/index.js"></script>
  }

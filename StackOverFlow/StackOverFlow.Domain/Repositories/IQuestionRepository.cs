@@ -12,5 +12,6 @@ namespace StackOverFlow.Domain.Repositories
         Task<(IList<Question> records, int total, int totalDisplay)> GetTableDataAsync(string orderBy, int pageIndex, int pageSize);
 
         Task<IList<Question>> GetAllQuestionsAsync();
+        Task<Question> GetAsync(Guid id);
     }
 }

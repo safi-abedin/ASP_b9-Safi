@@ -65,7 +65,7 @@ namespace StackOverFlow.Application.Features.Questions
 
         public async Task<Question> GetQuestionAsync(Guid id)
         {
-            return await _unitOfWork.QuestionRepository.GetByIdAsync(id);
+            return await _unitOfWork.QuestionRepository.GetAsync(id);
         }
 
         public async Task<IEnumerable<Question>> GetQuestionsAsync()
