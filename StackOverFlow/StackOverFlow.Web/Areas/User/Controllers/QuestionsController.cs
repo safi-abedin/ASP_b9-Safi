@@ -121,7 +121,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
             }
 
-            model.Details =model.TriedApproach; 
+            model.Details =model.Details; 
             model.TriedApproach = model.TriedApproach;
 
 

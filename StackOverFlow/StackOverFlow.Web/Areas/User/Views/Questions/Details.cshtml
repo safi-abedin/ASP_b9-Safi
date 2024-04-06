@@ -1,4 +1,4 @@
-﻿@model StackOverFlow.Web.Areas.User.Models.QuestionDetailsModel
+﻿@model QuestionDetailsModel
 
 @{
     ViewData["Title"] = "Question Details";
@@ -13,12 +13,15 @@
 }
 
 <div class="container">
+    <div class="s-page-title">
+        <h1 class="s-page-title--header">@Model.title</h1>
+    </div>
     <div class="row">
         <div class="col-md-8">
-            <h2>@Model.title</h2>
-            <div class="user-inputs">
-            <pre class="s-code-block language-html linenums">
-                    @Model.Body
+
+            <div class="user-inputs ">
+            <pre class="s-code-block language-html">
+                    @Html.Raw(Model.Body)
             </pre>
             </div>
 
