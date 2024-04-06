@@ -40,7 +40,6 @@ namespace StackOverFlow.Application.Features.Questions
             }
 
 
-
             var question = new Question
             {
                 title = title,
@@ -62,6 +61,11 @@ namespace StackOverFlow.Application.Features.Questions
         public async Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy)
         {
             return await _unitOfWork.QuestionRepository.GetTableDataAsync(orderBy, pageIndex, pageSize);
+        }
+
+        public async Task<Question> GetQuestionAsync(Guid id)
+        {
+            return await _unitOfWork.QuestionRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<Question>> GetQuestionsAsync()

@@ -82,12 +82,11 @@
                     var dataTable = $('#questions').DataTable();
                     dataTable.rows().every(function () {
                         var data = this.data();
-                        console.log("Data received:", response.data);
                         var tagButtonsHtml = data.tags.map(tag => `<a class="s-tag">${tag}</a>`).join(' ');
                         var cardHtml = `<div class="card">
                                             <div class="card-body">
                                                 <h3 class="s-post-summary--content-title">
-                                                        <a href="…" class="s-link">${data.title}</a>
+                                            <a class="s-link" onclick="window.location.href='/user/questions/Details/${data.id}'" value='${data.id}'>${data.title}</a>
                                                 </h3>
                                                 <p class="card-text">${tagButtonsHtml}</p>
                                             </div>
@@ -99,6 +98,37 @@
             }).buttons().container().appendTo('#questions_wrapper');
         });
 
+
+
+        $(function () {
+            $("#btnThisWeek").click(function () {
+                reloadTableData("this_week"); 
+            });
+
+            $("#btnThisMonth").click(function () {
+                reloadTableData("this_month"); 
+            });
+
+            $("#btnHot").click(function () {
+                reloadTableData("hot"); 
+            });
+
+            function reloadTableData(filter) {
+                var dataTable = $('#questions').DataTable();
+                dataTable.clear().draw(); 
+
+                $.ajax({
+                    url: "/User/Questions/GetQuestions?filter=" + filter,
+                    type: "POST",
+                    success: function (response) {
+                        dataTable.rows.add(response.data).draw();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error loading data:", error);
+                    }
+                });
+            }
+        });
 
     </script>
 }

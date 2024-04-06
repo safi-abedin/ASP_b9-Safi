@@ -52,6 +52,13 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var model = _scope.Resolve<QuestionDetailsModel>();
+            model.Resolve(_scope);
+            await model.LoadAsync(id);
+            return View(model);
+        }
 
 
         [HttpGet]

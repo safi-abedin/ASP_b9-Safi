@@ -1,0 +1,69 @@
+﻿@model StackOverFlow.Web.Areas.User.Models.QuestionDetailsModel
+
+@{
+    ViewData["Title"] = "Question Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>@Model.title</h2>
+            <div class="user-inputs">
+                <!-- Dynamic content will be inserted here -->
+                <pre class="s-code-block language-html">
+                    @Model.Body
+            </pre>
+            </div>
+
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Creator:</dt>
+                <dd class="col-sm-9">@Model.CreatorUserId</dd>
+
+                <dt class="col-sm-3">Creation Date:</dt>
+                <dd class="col-sm-9">@Model.CreationDateTime</dd>
+
+                <dt class="col-sm-3">View Count:</dt>
+                <dd class="col-sm-9">@Model.ViewCount</dd>
+
+                <dt class="col-sm-3">Vote Count:</dt>
+                <dd class="col-sm-9">@Model.VoteCount</dd>
+
+                <dt class="col-sm-3">Answer Count:</dt>
+                <dd class="col-sm-9">@Model.AnswerCount</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        // Function to display user inputs
+        function displayUserInputs() {
+            // Get all elements with class "html_block" which contain user inputs
+            var userInputs = document.querySelectorAll('.html_block');
+
+            // Container to hold the extracted inputs
+            var userInputContainer = document.querySelector('.user-inputs');
+
+            // Iterate through each user input element
+            userInputs.forEach(function (input) {
+                // Extract the text content
+                var userInputText = input.textContent.trim();
+
+                // Check if the input is not empty
+                if (userInputText !== '') {
+                    // Create a new paragraph element to display the input
+                    var userInputParagraph = document.createElement('p');
+                    userInputParagraph.innerHTML = userInputText;
+
+                    // Append the paragraph element to the container
+                    userInputContainer.appendChild(userInputParagraph);
+                }
+            });
+        }
+
+        // Call the function to display user inputs when the page loads
+        window.onload = displayUserInputs;
+    </script>
+}

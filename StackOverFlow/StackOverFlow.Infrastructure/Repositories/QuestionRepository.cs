@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StackOverFlow.Infrastructure.Repositories
 {
@@ -25,7 +26,11 @@ namespace StackOverFlow.Infrastructure.Repositories
             Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
                 query.Include(q => q.Tags);
 
-            return await GetDynamicAsync(expression, orderBy, include, pageIndex, pageSize, true);
+            //var data = await GetDynamicAsync(expression,orderBy,include, pageIndex, pageSize, true);
+
+            var data2 = await _dbSet.Include(q => q.Tags).ToListAsync();
+
+            return (data2,data2.Count,12);
         }
 
 

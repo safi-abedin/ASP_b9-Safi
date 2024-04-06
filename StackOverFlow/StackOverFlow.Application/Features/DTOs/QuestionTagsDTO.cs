@@ -9,12 +9,11 @@ namespace StackOverFlow.Application.Features.DTOs
 {
     public class QuestionTagsDTO
     {
-        public Guid Id { get; set; }
-
-        public string Title { get; set; }
-
-        public string Body { get; set; }
-
-        public IList<Tag>  tags { get; set; }
+        public Guid QuestionId { get; set; }
+        public string QuestionTitle { get; set; }
+        public string QuestionBody { get; set; }
+        public Guid QuestionCreatorUserId { get; set; }
+        public DateTime QuestionCreationDateTime { get; set; }
+        public List<TagDto> Tags { get; set; }
     }
 }
