@@ -2,6 +2,7 @@
 using AutoMapper;
 using StackOverFlow.Application.Features.Questions;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace StackOverFlow.Web.Areas.User.Models
 {
@@ -60,7 +61,7 @@ namespace StackOverFlow.Web.Areas.User.Models
             {
                 Id = question.Id;
                 title = question.title;
-                Body = question.Body;
+                Body = WebUtility.HtmlDecode(question.Body);
                 CreationDateTime = question.CreationDateTime;
                 CreatorUserId = question.CreatorUserId;
                 ViewCount = question.ViewCount;

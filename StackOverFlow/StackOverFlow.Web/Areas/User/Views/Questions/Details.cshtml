@@ -4,13 +4,20 @@
     ViewData["Title"] = "Question Details";
 }
 
+@section Styles{
+    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
+    <link rel="stylesheet" href="~/stackoverflow/stacks/dist/css/stacks.min.css" />
+    <link rel="stylesheet" href="~/stackoverflow/stacks/dist/css/stacks.css"/>
+}
+
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <h2>@Model.title</h2>
             <div class="user-inputs">
-                <!-- Dynamic content will be inserted here -->
-                <pre class="s-code-block language-html">
+            <pre class="s-code-block language-html linenums">
                     @Model.Body
             </pre>
             </div>
@@ -36,34 +43,6 @@
     </div>
 </div>
 
-@section Scripts{
-    <script>
-        // Function to display user inputs
-        function displayUserInputs() {
-            // Get all elements with class "html_block" which contain user inputs
-            var userInputs = document.querySelectorAll('.html_block');
-
-            // Container to hold the extracted inputs
-            var userInputContainer = document.querySelector('.user-inputs');
-
-            // Iterate through each user input element
-            userInputs.forEach(function (input) {
-                // Extract the text content
-                var userInputText = input.textContent.trim();
-
-                // Check if the input is not empty
-                if (userInputText !== '') {
-                    // Create a new paragraph element to display the input
-                    var userInputParagraph = document.createElement('p');
-                    userInputParagraph.innerHTML = userInputText;
-
-                    // Append the paragraph element to the container
-                    userInputContainer.appendChild(userInputParagraph);
-                }
-            });
-        }
-
-        // Call the function to display user inputs when the page loads
-        window.onload = displayUserInputs;
-    </script>
-}
+ @section Scripts{
+    <script src="~/stackoverflow/stacks/dist/components/code-block/code-block.fixtures.d.ts" /></script>
+ }

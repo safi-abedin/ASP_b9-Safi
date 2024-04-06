@@ -1,159 +1,41 @@
 ﻿
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StackOverFlow</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - DashBoard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/AdminLTE/css/adminlte.min.css">
-
-    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
-    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
-
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/StackOverFlow.Web.styles.css" asp-append-version="true" />
-
-    <style>
-        /* Custom Styles */
-        .navbar {
-            border-top: 6px solid orange;
-            margin-top: 0px;
-        }
-
-        .navbar-brand {
-            text-decoration: none;
-            color: black;
-        }
-
-        .navbar-toggler {
-            border: none;
-        }
-
-            .navbar-toggler:focus {
-                outline: none;
-            }
-
-        .menu-item {
-            margin-right: 20px;
-        }
-
-        .logo-text {
-            margin-left: 6px;
-            text-decoration: none;
-        }
-
-            .logo-text:hover {
-                text-decoration: none;
-                color: black;
-            }
-
-
-        .border-after-navbar {
-            border-top: 1px solid #dee2e6;
-            margin-top: 0px;
-        }
-
-        .custom-search-input {
-            border-radius: 12px;
-            border: 1px solid #ced4da;
-            padding: 10px;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-            .custom-search-input:focus {
-                border-color: #007bff;
-                outline: 0;
-                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-            }
-
-        .main-footer {
-            background-color: black;
-            padding: 20px;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-logo img {
-            width: 120px; /* Adjust size as needed */
-            height: auto;
-        }
-
-        .footer-links {
-            display: flex;
-        }
-
-        .footer-category {
-            margin-right: 40px;
-        }
-
-        .category-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .footer-category a {
-            display: block;
-            margin-bottom: 5px;
-            color: #6a737c; /* Dark grey colour */
-            text-decoration: none;
-        }
-
-            .footer-category a:hover {
-                text-decoration: underline;
-            }
-
-        .copyright {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #6a737c;
-        }
-
-        .footer-logo a {
-            display: flex;
-            align-items: center; 
-            color: inherit; 
-            text-decoration: none; 
-        }
-
-        .footer-logo img {
-            width: auto; 
-            height: 5em; 
-            margin-right: 10px; 
-        }
-
-        .logo-textFooter {
-            font-size: 30px; /* Adjust font size as needed */
-        }
-
-    </style>
-    @await RenderSectionAsync("Styles", required: false)
+    <link href="~/stackoverflow/stacks-editor/dist/styles.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles",required : false);
 </head>
-<body class="hold-transition layout-top-nav">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed ">
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand-md layout-navbar-fixed navbar-light bg-white s-topbar">
-            <div class="container s-topbar--container">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="~/AdminLTE/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md layout-navbar-fixed navbar-light bg-white ">
+            <div class="container ">
                 <div class="row w-100">
                     <div class="col-1">
                         <!-- Optional: Add content if needed -->
                     </div>
                     <div class="col-4 d-flex justify-content-between align-items-center">
+
+
                         <!-- Logo and Product/About Buttons -->
                         <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                             <img src="~/logo4.png" alt="Stack Overflow Logo" class="img-fluid align-self-center mt-1 s-topbar--item" style="max-width: 60px; height:50px;">
@@ -182,26 +64,90 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
             </div>
         </nav>
-
-        <!-- Add border after navbar -->
-        <div class="border-after-navbar"></div>
-
-
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-light-dark elevation-4">
 
 
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-3">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <br></br>
+                        <li class="nav-item">
+                            <a  class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Home
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="questions" asp-action="index" asp-area="user" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    Questions
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kanban.html" class="nav-link">
+                                <i class="nav-icon fas fa-columns"></i>
+                                <p>
+                                    Tags
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                    <br></br>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <li class="nav-header"></li>
+                        <li class="nav-item">
+                            <a href="../calendar.html" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Saves
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../gallery.html" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kanban.html" class="nav-link">
+                                <i class="nav-icon fas fa-columns"></i>
+                                <p>
+                                    Companies
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard v2</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v2</li>
-                            </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
@@ -213,65 +159,125 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </section>
             <!-- /.content -->
         </div>
-
+        <!-- /.content-wrapper -->
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="https://stackoverflow.com/">
+                        <img src="~/logo4.png" alt="Stack Overflow Logo">
+                        <span class="logo-textFooter">Stack Overflow</span>
+                    </a>
 
+                </div>
+                <div class="footer-links">
+                    <div class="footer-category">
+                        <span class="category-header">STACK OVERFLOW</span>
+                        <a href="https://stackoverflow.com/questions">Questions</a>
+                        <a href="https://stackoverflow.com/help">Help</a>
+                    </div>
+                    <div class="footer-category">
+                        <span class="category-header">PRODUCTS</span>
+                        <a href="https://stackoverflow.com/teams">Teams</a>
+                        <a href="https://stackoverflow.com/advertising">Advertising</a>
+                        <a href="https://stackoverflow.com/collectives">Collectives</a>
+                        <a href="https://stackoverflow.com/talent">Talent</a>
+                    </div>
+                    <div class="footer-category">
+                        <span class="category-header">COMPANY</span>
+                        <a href="https://stackoverflow.com/company/about">About</a>
+                        <a href="https://stackoverflow.com/company/press">Press</a>
+                        <a href="https://stackoverflow.com/company/work-here">Work Here</a>
+                        <a href="https://stackoverflow.com/legal">Legal</a>
+                    </div>
+                    <div class="footer-category">
+                        <span class="category-header">STACK EXCHANGE NETWORK</span>
+                        <a href="https://stackoverflow.com/legal/privacy-policy">Privacy Policy</a>
+                        <a href="https://stackoverflow.com/legal/terms-of-service/public">Terms of Service</a>
+                        <a href="https://stackoverflow.com/company/contact">Contact Us</a>
+                        <a href="https://stackoverflow.com/legal/privacy-policy#cookie-settings">Cookie Settings</a>
+                        <a href="https://stackoverflow.com/legal/cookie-policy">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">© 2024 Stack Exchange Inc; user contributions licensed under CC BY-SA. rev 2024.4.3.7257</div>
+        </footer>
     </div>
-
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <a href="https://stackoverflow.com/">
-                    <img src="~/logo4.png" alt="Stack Overflow Logo">
-                    <span class="logo-textFooter">Stack Overflow</span>
-                </a>
-            </div>
-            <div class="footer-links">
-                <div class="footer-category">
-                    <span class="category-header">STACK OVERFLOW</span>
-                    <a href="https://stackoverflow.com/questions">Questions</a>
-                    <a href="https://stackoverflow.com/help">Help</a>
-                </div>
-                <div class="footer-category">
-                    <span class="category-header">PRODUCTS</span>
-                    <a href="https://stackoverflow.com/teams">Teams</a>
-                    <a href="https://stackoverflow.com/advertising">Advertising</a>
-                    <a href="https://stackoverflow.com/collectives">Collectives</a>
-                    <a href="https://stackoverflow.com/talent">Talent</a>
-                </div>
-                <div class="footer-category">
-                    <span class="category-header">COMPANY</span>
-                    <a href="https://stackoverflow.com/company/about">About</a>
-                    <a href="https://stackoverflow.com/company/press">Press</a>
-                    <a href="https://stackoverflow.com/company/work-here">Work Here</a>
-                    <a href="https://stackoverflow.com/legal">Legal</a>
-                </div>
-                <div class="footer-category">
-                    <span class="category-header">STACK EXCHANGE NETWORK</span>
-                    <a href="https://stackoverflow.com/legal/privacy-policy">Privacy Policy</a>
-                    <a href="https://stackoverflow.com/legal/terms-of-service/public">Terms of Service</a>
-                    <a href="https://stackoverflow.com/company/contact">Contact Us</a>
-                    <a href="https://stackoverflow.com/legal/privacy-policy#cookie-settings">Cookie Settings</a>
-                    <a href="https://stackoverflow.com/legal/cookie-policy">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-        <div class="copyright">© 2024 Stack Exchange Inc; user contributions licensed under CC BY-SA. rev 2024.4.3.7257</div>
-    </footer>
-
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
+    <!-- Bootstrap -->
     <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="~/AdminLTE/js/adminlte.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+    <script src="~/AdminLTE/js/adminlte.js"></script>
+
+    <!-- PAGE PLUGINS -->
+    <!-- jQuery Mapael -->
+    <script src="~/AdminLTE/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="~/AdminLTE/plugins/raphael/raphael.min.js"></script>
+    <script src="~/AdminLTE/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+    <script src="~/AdminLTE/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/AdminLTE/plugins/chart.js/Chart.min.js"></script>
+
+    <script src="~/stackoverflow/stacks/dist/js/stacks.js" ></script>
+    <script src="~/stackoverflow/stacks/dist/js/stacks.min.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/commands.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/editor.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/key-bindings.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/plugins/markdown-highlight.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/plugins/preview.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/plugins/text-copy-handler.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/plugins/triple-click-handler.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/commonmark/schema.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/index.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/commands/helpers.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/commands/index.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/commands/tables.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/editor.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/inputrules.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/key-bindings.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/code-block.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/html-block.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/image.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/node-views/tag-link.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/link-editor.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/html-helpers.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/link-paste-handler.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/link-preview.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/plain-text-paste-handler.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/spoiler-toggle.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/plugins/link-editor.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/rich-text/schema.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/editor-plugin.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/html-helpers.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/localization.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/logger.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/markdown-serializer.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/schema.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/utils.js"></script>
+
+    <script src="~/stackoverflow/stacks-editor/dist/shared/view.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/case-normalize-keymap.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/code-paste-handler.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/interface-manager.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/placeholder.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/plugin-extensions.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/readonly.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/shared/prosemirror-plugins/selection-debug.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/stacks-editor/editor.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/index.js"></script>
+    <script src="~/stackoverflow/stacks-editor/dist/styles.bundle.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

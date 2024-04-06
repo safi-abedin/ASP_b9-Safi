@@ -82,6 +82,11 @@ body {
     width: 100%;
 }
 
+.main-footer a {
+    color: lightgrey; /* Set text color to light grey */
+    text-decoration: none; /* Remove underlines */
+}
+
 .footer-content {
     display: flex;
     justify-content: space-between;
@@ -127,7 +132,7 @@ body {
 .footer-logo a {
     display: flex;
     align-items: center; /* Align items vertically */
-    color: inherit; /* Ensure the link colour inherits from its parent */
+    color: lightgray; /* Ensure the link colour inherits from its parent */
     text-decoration: none; /* Remove underline */
 }
 

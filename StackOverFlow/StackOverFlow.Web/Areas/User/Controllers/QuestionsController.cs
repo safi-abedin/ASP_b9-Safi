@@ -66,7 +66,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var model = _scope.Resolve<QuestionCreateModel>();
 
-
+            model.ResolveAsync(_scope);
             var tagsList = await model.GetAvailableTags();
            
             model.MultiTags = new List<SelectListItem>();
@@ -121,8 +121,8 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
             }
 
-            model.Details = HttpUtility.HtmlDecode(model.TriedApproach); 
-            model.TriedApproach = HttpUtility.HtmlDecode(model.TriedApproach);
+            model.Details =model.TriedApproach; 
+            model.TriedApproach = model.TriedApproach;
 
 
             return View(model);
