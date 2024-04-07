@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using StackOverFlow.Application.Features.Questions;
 using StackOverFlow.Domain.Entities;
+using StackOverFlow.Infrastructure.Membership;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -23,12 +25,23 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public List<Tag> Tags { get; set; }
 
+
+        public List<Answer> Answers { get; set; }
+
         public int ViewCount { get; set; }
 
 
         public int VoteCount { get; set; }
 
         public int AnswerCount { get; set; }
+
+        public string? ProfilePictureUrl {  get; set; }
+
+
+        public string? DisplayName { get; set; }
+
+
+        public int? Reputation {  get; set; }
 
         private ILifetimeScope _scope;
 
@@ -59,13 +72,24 @@ namespace StackOverFlow.Web.Areas.User.Models
         internal async Task LoadAsync(Guid id)
         {
             var question = await _questionManagementService.GetQuestionAsync(id);
-            
+
+           
             if(question != null)
             {
                 Id = question.Id;
                 title = question.title;
                 Body = WebUtility.HtmlDecode(question.Body);
                 Tags = question.Tags.ToList();
+
+                if(question.Answers != null)
+                {
+                    Answers = question.Answers.ToList();
+                }
+                else
+                {
+                    Answers = new List<Answer>();
+                }
+                
                 CreationDateTime = question.CreationDateTime;
                 CreatorUserId = question.CreatorUserId;
                 ViewCount = question.ViewCount;
@@ -73,6 +97,7 @@ namespace StackOverFlow.Web.Areas.User.Models
                 AnswerCount = question.AnswerCount;
             }
         }
+
 
     }
 }

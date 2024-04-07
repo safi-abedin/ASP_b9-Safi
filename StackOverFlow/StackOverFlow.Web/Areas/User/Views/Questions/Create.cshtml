@@ -51,8 +51,8 @@
         <div class="form-group mb-3">
             <label class="s-label" asp-for="Details">What are the details of your problem?</label>
             <p class="s-description mtn2 mb0">Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
-            <textarea id="editor-content-1" asp-for="Details" class="d-none"></textarea>
             <div id="editor-example-1"></div>
+            <textarea id="editor-content-1" asp-for="Details" class="d-none"></textarea>
             <span asp-validation-for="Details" class="text-danger"></span>
         </div>
 
@@ -61,8 +61,8 @@
         <div class="form-group mb-3">
             <label class="s-label" asp-for="TriedApproach">What did you try and what were you expecting?</label>
             <p class="s-description mtn2 mb0">Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
-            <textarea id="editor-content-2" asp-for="TriedApproach" class="d-none"></textarea>
             <div id="editor-example-2"></div>
+            <textarea id="editor-content-2" asp-for="TriedApproach" class="d-none"></textarea>
             <span asp-validation-for="TriedApproach" class="text-danger"></span>
         </div>
 
@@ -106,7 +106,14 @@
         // Event listener for submitting the form
         document.querySelector("#questionForm").addEventListener("submit", function (event) {
 
+            // Get the element containing the user input for "Details"
+            var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
 
+            // Get the inner HTML of the user input element for "Details"
+            var userInputHTML1 = userInputDiv1.outerHTML;
+
+            // Set the content of "Details" hidden textarea
+            document.querySelector("#editor-content-1").value = userInputHTML1;
 
             // Get the element containing the user input for "TriedApproach"
             var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');

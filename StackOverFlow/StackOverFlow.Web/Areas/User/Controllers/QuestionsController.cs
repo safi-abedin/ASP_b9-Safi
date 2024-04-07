@@ -55,8 +55,28 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var model = _scope.Resolve<QuestionDetailsModel>();
-            model.Resolve(_scope);
-            await model.LoadAsync(id);
+
+            if (!id.Equals(null) || id != Guid.Empty)
+            {
+                try
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    if (user is not null)
+                    {
+                        model.Resolve(_scope);
+                        model.ProfilePictureUrl = user.ProfilePictureUrl;
+                        model.DisplayName = user.DisplayName;
+                        model.Reputation = user.Reputation;
+                        await model.LoadAsync(id);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogInformation(ex, "Something Went Wrong");
+
+                }
+            }
+           
             return View(model);
         }
 
@@ -83,14 +103,14 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuestionCreateModel model)
         {
-      
+
+            model.ResolveAsync(_scope);
             if (ModelState.IsValid)
             {
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
                     model.UserId = new Guid();
-                    model.ResolveAsync(_scope);
                     await model.CreateAsync();
 
                     TempData.Put("ResponseMessage", new ResponseModel
@@ -107,7 +127,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
                     TempData.Put("ResponseMessage", new ResponseModel
                     {
-                        Message = "There was a problem in creating course",
+                        Message = "There was a problem in creating Question",
                         Type = ResponseTypes.Danger
                     });
                 }
@@ -127,6 +147,49 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             return View(model);
         }
+
+
+        [HttpPost]
+        public async  Task Answer(Guid id,string Body)
+        {
+            var model = _scope.Resolve<AnswerCreateModel>();
+
+            model.Resolve(_scope);
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user is not null)
+            {
+                model.QuestionId = id;
+
+                model.AnswerBody = Body;
+
+                model.UserID = user.Id;
+            }
+
+            try
+            {
+               await  model.CreateAnswerAsync();
+
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Your Answer Added successfully",
+                    Type = ResponseTypes.Success
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex, "Something Went Wrong");
+
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "There was a problem in creating Answer",
+                    Type = ResponseTypes.Danger
+                });
+            }
+        }
+
+
 
 
     }

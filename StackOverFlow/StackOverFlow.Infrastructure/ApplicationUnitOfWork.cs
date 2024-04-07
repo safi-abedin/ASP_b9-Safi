@@ -14,15 +14,18 @@ namespace StackOverFlow.Infrastructure
 	public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
 	{
 
-        public IQuestionRepository QuestionRepository { get; set; }
+        public IQuestionRepository QuestionRepository { get; private set; }
 
-        public ITagRepository TagRepository { get; set; }
+        public ITagRepository TagRepository { get; private set; }
+
+        public IAnswerRepository AnswerRepository {  get; private set; }
 
         public ApplicationUnitOfWork(IQuestionRepository questionRepository,ITagRepository tagRepository
-            ,IApplicationDbContext dbContext):base((DbContext)dbContext)
+            ,IApplicationDbContext dbContext,IAnswerRepository answerRepository):base((DbContext)dbContext)
         {
             QuestionRepository = questionRepository;
             TagRepository = tagRepository;
+            AnswerRepository = answerRepository;
         }
 
 

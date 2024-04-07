@@ -19,6 +19,22 @@ namespace StackOverFlow.Application.Features.Questions
             _unitOfWork = unitOfWork;
         }
 
+        public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId)
+        {
+            var answer = new Answer
+            {
+                QuestionId = questionId,
+                AnswerTime = DateTime.Now,
+                //have to change later
+                AnsweredByUserId = Guid.NewGuid(),
+                Body = answerBody,
+            };
+            
+            await _unitOfWork.AnswerRepository.AddAsync(answer);
+
+            await _unitOfWork.SaveAsync(); 
+        }
+
         public async Task CreateQuestionAsync(string title, string body, List<string> tags,Guid UserId)
         {
             var allTags = _unitOfWork.TagRepository.GetAll();

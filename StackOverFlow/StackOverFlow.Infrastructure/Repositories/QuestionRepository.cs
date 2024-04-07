@@ -28,7 +28,7 @@ namespace StackOverFlow.Infrastructure.Repositories
 
             //var data = await GetDynamicAsync(expression,orderBy,include, pageIndex, pageSize, true);
 
-            var data2 = await _dbSet.Include(q => q.Tags).ToListAsync();
+            var data2 = await _dbSet.Include(q => q.Tags).Include(a=>a.Answers).ToListAsync();
 
             return (data2,data2.Count,12);
         }

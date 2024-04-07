@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/AdminLTE/css/adminlte.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="~/stackoverflow/stacks-editor/dist/styles.css" rel="stylesheet" />
+    <link href="~/ckeditor5-build-classic/sample/css/sample.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles",required : false);
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed ">
@@ -278,6 +279,8 @@
     <script src="~/stackoverflow/stacks-editor/dist/app.bundle.js"></script>
     <script src="~/stackoverflow/stacks-editor/dist/index.js"></script>
     <script src="~/stackoverflow/stacks-editor/dist/styles.bundle.js"></script>
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <a href="~/ckeditor5-build-classic/ckeditor.js.map">~/ckeditor5-build-classic/ckeditor.js.map</a>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
