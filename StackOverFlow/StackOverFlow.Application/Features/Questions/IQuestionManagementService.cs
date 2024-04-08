@@ -9,6 +9,7 @@ namespace StackOverFlow.Application.Features.Questions
 {
     public interface IQuestionManagementService
     {
+        Task CreateAnswerAsync(Guid questionId, string answerBody, Guid userID);
         Task CreateQuestionAsync(string title, string body, List<string> tags,Guid UserId);
         Task<IEnumerable<Tag>> GetAllTags();
         Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy);

@@ -43,7 +43,7 @@
 
         <div class="col-md-8">
             <div class="user-inputs ">
-                <pre class="s-code-block language-html">
+             <pre class="s-code-block  ">
                     @Html.Raw(Model.Body)
             </pre>
             </div>
@@ -65,16 +65,7 @@
                             <div class="s-user-card--info">
                                 <a href="…" class="s-user-card--link">Safi</a>
                                 <ul class="s-user-card--awards">
-                                    <li class="s-user-card--rep">2400</li>
-                                    @if (20 > 0)
-                                    {
-                                        <li class="s-award-bling s-award-bling__gold"></li>
-                                        <li class="s-award-bling s-award-bling__bronze"></li>
-                                    }
-                                    @if (0 > 20)
-                                    {
-                                        <li class="s-award-bling s-award-bling__silver">…</li>
-                                    }
+                                    <li class="s-user-card--rep">@Model.Reputation</li>
                                 </ul>
                             </div>
                         </div>
@@ -90,28 +81,36 @@
     <div class="answers">
         @if (Model.AnswerCount > 0)
         {
-            <div class="row">
-                <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
-                    <a>
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 25H34L18 9L2 25Z" fill="black" />
-                        </svg>
-                    </a>
-                    <br />
-                    <br />
-                    <a>
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 11H34L18 27L2 11Z" fill="black" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="answersShow">
-                    <div class="col-md-8">
-                        <div class="content">
+            foreach (var answer in Model.Answers)
+            {
+                <div class="row">
+                    <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
+                        <a>
+                            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 25H34L18 9L2 25Z" fill="black" />
+                            </svg>
+                        </a>
+                        <br />
+                        <br />
+                        <a>
+                            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 11H34L18 27L2 11Z" fill="black" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="answersShow">
+                        <div class="col-md-8">
+                            <div class="content">
+                                <div class="user-inputs ">
+                                    <pre class="s-code-block language-html">
+                                        @Html.Raw(answer.Body)
+                                     </pre>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 
@@ -125,8 +124,7 @@
             <div class="col-md-8">
                 <form id="answerForm">
                     <div class="form-group mb-3">
-                        <label class="s-label" asp-for="title">What did you try and what were you expecting?</label>
-                        <p class="s-description mtn2 mb0">Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
+                        <label class="s-label" asp-for="title">Your Answer </label>
                         <textarea id="editor-content-2" asp-for="title" class="d-none">
                         </textarea>
                         <div id="editor-example-2"></div>
@@ -134,7 +132,7 @@
                     </div>
                     <br />
 
-                    <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Question</button>
+                    <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Answer</button>
                     <br />
                 </form>
             </div>
@@ -142,42 +140,24 @@
         <div />
     </div>
 
-
-    <div class="postAnswer">
-        <div class="row">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-10">
-                <form id="answerForm">
-                    <div class="form-group mb-3">
-                        <label class="s-label" asp-for="title">What did you try and what were you expecting?</label>
-                        <p class="s-description mtn2 mb0">Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
-                        <div id="editor"></div>
-                        <textarea id="editor-content-2" asp-for="title" class="d-none"></textarea>
-                        <span asp-validation-for="title" class="text-danger"></span>
-                    </div>
-                    <br />
-
-                    <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Question</button>
-                    <br />
-                </form>
-            </div>
-        </div>
-        <div />
-    </div>
-
- 
-
- </div>
-  
+</div>
 
 
 
-    @section Scripts{
-        <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
-        <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
     <script>
+        // Get the element containing the user input for "TriedApproach"
+        var userInputDiv2 = document.querySelector('#editor-example-2 ');
+
+        // Get the inner HTML of the user input element for "TriedApproach"
+        var userInputHTML2 = userInputDiv2.outerHTML;
+
+        // Set the content of "TriedApproach" hidden textarea
+        document.querySelector("#editor-content-2").value = userInputHTML2;
+
+
         new window.stacksEditor.StacksEditor(
             document.querySelector("#editor-example-2"),
             document.querySelector("#editor-content-2").value,

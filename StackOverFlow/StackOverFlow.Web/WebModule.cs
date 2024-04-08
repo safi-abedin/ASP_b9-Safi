@@ -17,7 +17,11 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<QuestionDetailsModel>().AsSelf();
 
+<<<<<<< HEAD
             builder.RegisterType<QuestionListModel>().AsSelf();
+=======
+            builder.RegisterType<AnswerCreateModel>().AsSelf();
+>>>>>>> 28187c25e05d8928b3b3e7b7921377adbf241454
 
             base.Load(builder);
         }
