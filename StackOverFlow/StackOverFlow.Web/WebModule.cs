@@ -17,6 +17,8 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<QuestionDetailsModel>().AsSelf();
 
+            builder.RegisterType<QuestionListModel>().AsSelf();
+
             base.Load(builder);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,9 @@ namespace StackOverFlow.Domain.Entities
         public int VoteCount { get; set; }
 
         public int AnswerCount { get; set; }
+
+        [NotMapped]
+        public IList<string> TagName { get; set; }
 
 
 

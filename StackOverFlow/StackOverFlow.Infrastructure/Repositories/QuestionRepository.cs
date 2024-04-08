@@ -26,11 +26,11 @@ namespace StackOverFlow.Infrastructure.Repositories
             Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
                 query.Include(q => q.Tags);
 
-            //var data = await GetDynamicAsync(expression,orderBy,include, pageIndex, pageSize, true);
+            var data = await GetDynamicAsync(expression,null,include, pageIndex, pageSize, true);
 
             var data2 = await _dbSet.Include(q => q.Tags).ToListAsync();
 
-            return (data2,data2.Count,12);
+            return data;
         }
 
 

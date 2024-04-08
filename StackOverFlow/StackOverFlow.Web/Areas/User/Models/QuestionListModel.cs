@@ -33,24 +33,25 @@ namespace StackOverFlow.Web.Areas.User.Models
             var data = await _questionManagementService.GetPagedQuestionsAsync(
                 dataTablesUtility.PageIndex,
                 dataTablesUtility.PageSize,
-                dataTablesUtility.GetSortText(new string[] { "", "", "" }));
-
-            var transformedData = data.records.Select(record => new
-            {
-                Title = HttpUtility.HtmlEncode(record.title),
-                Body = HttpUtility.HtmlEncode(record.Body),
-                Tags = record.Tags.Select(tag => tag.Name).ToList(), // Transform tags directly here
-                Id = record.Id.ToString()
-            });
-
+                null);
             return new
             {
                 recordsTotal = data.total,
                 recordsFiltered = data.totalDisplay,
-                data = transformedData
+                data = (from record in data.records
+                       select new object[]{
+                                record.VoteCount.ToString(),
+                                HttpUtility.HtmlEncode(record.AnswerCount),
+                                record.ViewCount.ToString(),
+                                HttpUtility.HtmlEncode(record.title),
+                                (from tag in record.Tags select new string[] {
+                                    tag.Name
+                                }).ToArray(),
+                                record.Id.ToString()
+                       }
+                ).ToArray()
             };
         }
-
 
         /*internal async Task DeleteCourseAsync(Guid id)
         {

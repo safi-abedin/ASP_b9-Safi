@@ -1,8 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{
-    ViewData["Title"] = "Courses";
+﻿@{
+    ViewData["Title"] = "Quesions";
 }
 @section Styles
     {
@@ -25,7 +22,7 @@
         <div class="col-2">
 
         </div>
-        <div class="col-6 mb-3">
+        <div class="col-8 mb-3">
 
             <br />
             <h1>All Questions</h1>
@@ -40,9 +37,7 @@
                     <span class="s-btn--text" data-text="Hot">Hot</span>
                 </button>
             </div>
-            <table id="questions" class="table ">
-                <tbody>
-                </tbody>
+            <table id="questions" class="table">
             </table>
         </div>
     </div>
@@ -63,77 +58,5 @@
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
-
-    <script>
-        $(function () {
-            $("#questions").DataTable({
-                serverSide: true,
-                responsive: true,
-                lengthChange: false,
-                autoWidth: false,
-                searching: false,
-                ajax: {
-                    url: "/User/Questions/GetQuestions",
-                    type: "POST",
-                },
-                columns: [
-                    { data: "title", orderable: false },
-                    { data: "body", visible: false },
-                    { data: "tags", visible: false },
-                    { data: "id", visible: false }
-                ],
-                initComplete: function () {
-                    var dataTable = $('#questions').DataTable();
-                    dataTable.rows().every(function () {
-                        var data = this.data();
-                        var tagButtonsHtml = data.tags.map(tag => `<a class="s-tag">${tag}</a>`).join(' ');
-                        var cardHtml = `<div class="card">
-                                            <div class="card-body">
-                                                <h3 class="s-post-summary--content-title">
-                                            <a class="s-link" onclick="window.location.href='/user/questions/Details/${data.id}'" value='${data.id}'>${data.title}</a>
-                                                </h3>
-                                                <p class="card-text">${tagButtonsHtml}</p>
-                                            </div>
-                                        </div>`;
-
-                        $(this.node()).empty().append(cardHtml);
-                    });
-                },
-            }).buttons().container().appendTo('#questions_wrapper');
-        });
-
-
-
-        $(function () {
-            $("#btnThisWeek").click(function () {
-                reloadTableData("this_week"); 
-            });
-
-            $("#btnThisMonth").click(function () {
-                reloadTableData("this_month"); 
-            });
-
-            $("#btnHot").click(function () {
-                reloadTableData("hot"); 
-            });
-
-            function reloadTableData(filter) {
-                var dataTable = $('#questions').DataTable();
-                dataTable.clear().draw(); 
-
-                $.ajax({
-                    url: "/User/Questions/GetQuestions?filter=" + filter,
-                    type: "POST",
-                    success: function (response) {
-                        dataTable.rows.add(response.data).draw();
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error loading data:", error);
-                    }
-                });
-            }
-        });
-
-    </script>
+    <script src="~/js/quesionlist.js"></script>
 }
