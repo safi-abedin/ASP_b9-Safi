@@ -40,9 +40,5 @@ namespace StackOverFlow.Web.Areas.User.Models
             _questionManagementService = _scope.Resolve<IQuestionManagementService>();
         }
 
-        internal async Task CreateAnswerAsync()
-        {
-            await _questionManagementService.CreateAnswerAsync(QuestionId, AnswerBody,UserID);
-        }
     }
 }

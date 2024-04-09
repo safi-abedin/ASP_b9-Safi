@@ -124,16 +124,15 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-8">
-                <form id="answerForm">
-                    <input type="hidden" id="questionId" value="@Model.Id" />
+                <form id="answerForm" asp-action="Answer" asp-area="user" asp-controller="questions" asp-antiforgery="true" method="post" >
+                    <input type="hidden" id="questionId" value="@Model.Id"  asp-for="Id"/>
 
                     <div class="form-group mb-3">
                         <label class="s-label">Your Answer</label>
-                        <textarea id="editor-content-2" class="d-none"></textarea>
                         <div id="editor-example-2"></div>
+                        <textarea id="editor-content-2" asp-for="AnswerBody" class="d-none"></textarea>
                     </div>
                     <br />
-
                     <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Answer</button>
                     <br />
                 </form>
@@ -149,5 +148,39 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
-    <script src="~/js/answerpost.js"></script>
+    <script >
+
+        document.querySelector("#answerForm").addEventListener("submit", function (event) {
+
+            // Get the element containing the user input for "Details"
+            var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
+
+            // Get the inner HTML of the user input element for "Details"
+            var userInputHTML1 = userInputDiv1.innerHTML;
+
+            // Set the content of "Details" hidden textarea
+            document.querySelector("#editor-content-1").value = userInputHTML1;
+
+            // Get the element containing the user input for "TriedApproach"
+            var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
+
+            // Get the inner HTML of the user input element for "TriedApproach"
+            var userInputHTML2 = userInputDiv2.innerHTML;
+
+            // Set the content of "TriedApproach" hidden textarea
+            document.querySelector("#editor-content-2").value = userInputHTML2;
+
+        });
+
+
+        new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-example-2"),
+            document.querySelector("#editor-content-2").value,
+            {
+                parserFeatures: {
+                    tables: true,
+                },
+            }
+        );
+     </script>
  }

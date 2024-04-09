@@ -110,7 +110,7 @@
             var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
 
             // Get the inner HTML of the user input element for "Details"
-            var userInputHTML1 = userInputDiv1.outerHTML;
+            var userInputHTML1 = userInputDiv1.innerHTML;
 
             // Set the content of "Details" hidden textarea
             document.querySelector("#editor-content-1").value = userInputHTML1;
@@ -119,7 +119,7 @@
             var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
 
             // Get the inner HTML of the user input element for "TriedApproach"
-            var userInputHTML2 = userInputDiv2.outerHTML;
+            var userInputHTML2 = userInputDiv2.innerHTML;
 
             // Set the content of "TriedApproach" hidden textarea
             document.querySelector("#editor-content-2").value = userInputHTML2;

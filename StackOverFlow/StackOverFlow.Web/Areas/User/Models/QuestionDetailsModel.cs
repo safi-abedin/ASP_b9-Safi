@@ -11,6 +11,7 @@ namespace StackOverFlow.Web.Areas.User.Models
 {
     public class QuestionDetailsModel
     {
+        //properties to show details
         public Guid Id { get; set; }
 
         public string title { get; set; }
@@ -43,6 +44,14 @@ namespace StackOverFlow.Web.Areas.User.Models
 
 
         public int? Reputation {  get; set; }
+
+        //this  properties are  for create a answer
+        public Guid QuestionId { get; set; }
+
+        public string? AnswerBody { get; set; }
+
+
+        public Guid UserID { get; set; }
 
         private ILifetimeScope _scope;
 
@@ -80,7 +89,9 @@ namespace StackOverFlow.Web.Areas.User.Models
                 Id = question.Id;
                 title = question.title;
                 Body = WebUtility.HtmlDecode(question.Body);
+
                 Tags = question.Tags.ToList();
+
 
                 if(question.Answers != null)
                 {
@@ -99,6 +110,11 @@ namespace StackOverFlow.Web.Areas.User.Models
             }
         }
 
+
+        internal async Task CreateAnswerAsync()
+        {
+            await _questionManagementService.CreateAnswerAsync(QuestionId, AnswerBody, UserID);
+        }
 
     }
 }

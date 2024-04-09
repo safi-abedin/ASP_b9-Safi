@@ -148,10 +148,10 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpPost]
-        public async  Task<IActionResult> Answer()
+        //will do these feature Later
+        [HttpPost,ValidateAntiForgeryToken]
+        public async  Task<IActionResult> Answer(QuestionDetailsModel model)
         {
-            var model = _scope.Resolve<AnswerCreateModel>();
 
             model.Resolve(_scope);
 
@@ -187,7 +187,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 });
             }
 
-            return RedirectToAction("Details",id);
+            return RedirectToAction("Details",model.QuestionId);
         }
 
     }
