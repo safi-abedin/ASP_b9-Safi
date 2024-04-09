@@ -34,6 +34,7 @@ namespace StackOverFlow.Web.Areas.User.Models
                 dataTablesUtility.PageIndex,
                 dataTablesUtility.PageSize,
                 null);
+
             return new
             {
                 recordsTotal = data.total,

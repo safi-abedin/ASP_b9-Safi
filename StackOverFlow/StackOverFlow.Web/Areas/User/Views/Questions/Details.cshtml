@@ -51,9 +51,11 @@
             <div class="tags-askedby">
                 <div class="row justify-content-between">
                     <div class="col-md-4">
-                        @foreach (var tag in Model.Tags)
-                        {
-                            <a class="s-tag">@tag.Name</a>
+                        @if(Model.Tags is not null){
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <a class="s-tag">@tag.Name</a>
+                            }
                         }
                     </div>
                     <div class="col-md-5">
@@ -123,12 +125,12 @@
             </div>
             <div class="col-md-8">
                 <form id="answerForm">
+                    <input type="hidden" id="questionId" value="@Model.Id" />
+
                     <div class="form-group mb-3">
-                        <label class="s-label" asp-for="title">Your Answer </label>
-                        <textarea id="editor-content-2" asp-for="title" class="d-none">
-                        </textarea>
+                        <label class="s-label">Your Answer</label>
+                        <textarea id="editor-content-2" class="d-none"></textarea>
                         <div id="editor-example-2"></div>
-                        <span asp-validation-for="title" class="text-danger"></span>
                     </div>
                     <br />
 
@@ -137,8 +139,8 @@
                 </form>
             </div>
         </div>
-        <div />
     </div>
+
 
 </div>
 
@@ -147,33 +149,5 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
-    <script>
-        // Get the element containing the user input for "TriedApproach"
-        var userInputDiv2 = document.querySelector('#editor-example-2 ');
-
-        // Get the inner HTML of the user input element for "TriedApproach"
-        var userInputHTML2 = userInputDiv2.outerHTML;
-
-        // Set the content of "TriedApproach" hidden textarea
-        document.querySelector("#editor-content-2").value = userInputHTML2;
-
-
-        new window.stacksEditor.StacksEditor(
-            document.querySelector("#editor-example-2"),
-            document.querySelector("#editor-content-2").value,
-            {
-                parserFeatures: {
-                    tables: true,
-                },
-            }
-        );
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-    }
+    <script src="~/js/answerpost.js"></script>
+ }

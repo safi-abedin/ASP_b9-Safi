@@ -43,6 +43,8 @@ namespace StackOverFlow.Infrastructure
             builder.RegisterType<TagRepository>().As<ITagRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<AnswerRepository>().As<IAnswerRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<TokenService>().As<ITokenService>()
                .InstancePerLifetimeScope();

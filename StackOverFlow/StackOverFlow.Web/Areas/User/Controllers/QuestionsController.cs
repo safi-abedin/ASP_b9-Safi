@@ -52,23 +52,22 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             var model = _scope.Resolve<QuestionDetailsModel>();
+            model.Resolve(_scope);
 
             if (!id.Equals(null) || id != Guid.Empty)
             {
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    if (user is not null)
-                    {
-                        model.Resolve(_scope);
-                        model.ProfilePictureUrl = user.ProfilePictureUrl;
-                        model.DisplayName = user.DisplayName;
-                        model.Reputation = user.Reputation;
-                        await model.LoadAsync(id);
-                    }
+
+                    model.ProfilePictureUrl = "";
+                    model.DisplayName = "safi";
+                    model.Reputation = 20;
+                    await model.LoadAsync(id);
                 }
                 catch(Exception ex)
                 {
@@ -150,7 +149,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
         [HttpPost]
-        public async  Task Answer(Guid id,string Body)
+        public async  Task<IActionResult> Answer()
         {
             var model = _scope.Resolve<AnswerCreateModel>();
 
@@ -159,9 +158,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user is not null)
             {
-                model.QuestionId = id;
+                model.QuestionId = new Guid();
 
-                model.AnswerBody = Body;
+                model.AnswerBody = "";
 
                 model.UserID = user.Id;
             }
@@ -187,10 +186,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                     Type = ResponseTypes.Danger
                 });
             }
+
+            return RedirectToAction("Details",id);
         }
-
-
-
 
     }
 }

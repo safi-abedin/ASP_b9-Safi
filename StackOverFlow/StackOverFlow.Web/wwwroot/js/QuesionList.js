@@ -37,7 +37,7 @@
                 "targets": 3,
                 "render": function (data, type, row) {
                     return `<h3 class="s-post-summary--content-title">
-                        <a href="…" class="s-link">${data}</a>
+                        ${data}
                     </h3>`;
                 }
             },

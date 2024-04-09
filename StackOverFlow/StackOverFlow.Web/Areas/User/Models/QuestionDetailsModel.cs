@@ -38,6 +38,7 @@ namespace StackOverFlow.Web.Areas.User.Models
         public string? ProfilePictureUrl {  get; set; }
 
 
+
         public string? DisplayName { get; set; }
 
 

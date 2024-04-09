@@ -28,9 +28,6 @@ namespace StackOverFlow.Domain.Entities
 
         public int AnswerCount { get; set; }
 
-        [NotMapped]
-        public IList<string> TagName { get; set; }
-
 
 
         public ICollection<Answer> Answers { get; set; }
