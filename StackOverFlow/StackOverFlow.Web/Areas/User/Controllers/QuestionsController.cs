@@ -148,47 +148,5 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        //will do these feature Later
-        [HttpPost,ValidateAntiForgeryToken]
-        public async  Task<IActionResult> Answer(QuestionDetailsModel model)
-        {
-
-            model.Resolve(_scope);
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user is not null)
-            {
-                model.QuestionId = new Guid();
-
-                model.AnswerBody = "";
-
-                model.UserID = user.Id;
-            }
-
-            try
-            {
-               await  model.CreateAnswerAsync();
-
-                TempData.Put("ResponseMessage", new ResponseModel
-                {
-                    Message = "Your Answer Added successfully",
-                    Type = ResponseTypes.Success
-                });
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex, "Something Went Wrong");
-
-                TempData.Put("ResponseMessage", new ResponseModel
-                {
-                    Message = "There was a problem in creating Answer",
-                    Type = ResponseTypes.Danger
-                });
-            }
-
-            return RedirectToAction("Details",model.QuestionId);
-        }
-
     }
 }

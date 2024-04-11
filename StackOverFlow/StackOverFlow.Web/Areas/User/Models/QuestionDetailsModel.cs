@@ -45,13 +45,6 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public int? Reputation {  get; set; }
 
-        //this  properties are  for create a answer
-        public Guid QuestionId { get; set; }
-
-        public string? AnswerBody { get; set; }
-
-
-        public Guid UserID { get; set; }
 
         private ILifetimeScope _scope;
 
@@ -108,12 +101,6 @@ namespace StackOverFlow.Web.Areas.User.Models
                 VoteCount = question.VoteCount;
                 AnswerCount = question.AnswerCount;
             }
-        }
-
-
-        internal async Task CreateAnswerAsync()
-        {
-            await _questionManagementService.CreateAnswerAsync(QuestionId, AnswerBody, UserID);
         }
 
     }
