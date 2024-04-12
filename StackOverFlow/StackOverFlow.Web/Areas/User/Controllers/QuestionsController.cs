@@ -24,7 +24,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
         public QuestionsController(ILifetimeScope scope,
-            ILogger<QuestionsController> logger,UserManager<ApplicationUser> userManager)
+            ILogger<QuestionsController> logger, UserManager<ApplicationUser> userManager)
         {
             _scope = scope;
             _logger = logger;
@@ -69,13 +69,13 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                     model.Reputation = 20;
                     await model.LoadAsync(id);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogInformation(ex, "Something Went Wrong");
 
                 }
             }
-           
+
             return View(model);
         }
 
@@ -87,11 +87,11 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             model.ResolveAsync(_scope);
             var tagsList = await model.GetAvailableTags();
-           
+
             model.MultiTags = new List<SelectListItem>();
             foreach (var tag in tagsList)
             {
-                model.MultiTags.Add(new SelectListItem { Text = tag.Name ,Value=tag.Name });
+                model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
             }
 
             return View(model);
@@ -99,7 +99,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuestionCreateModel model)
         {
 
@@ -120,7 +120,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
                     return RedirectToAction("Index");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError(ex, "Server Error");
 
@@ -130,7 +130,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                         Type = ResponseTypes.Danger
                     });
                 }
-                
+
             }
 
             var tagsList = await model.GetAvailableTags();
@@ -140,7 +140,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
             }
 
-            model.Details =model.Details; 
+            model.Details = model.Details;
             model.TriedApproach = model.TriedApproach;
 
 
@@ -149,7 +149,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(QuestionDetailsModel model)
         {
             model.Resolve(_scope);
@@ -164,6 +164,69 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var model = _scope.Resolve<QuestionEditModel>();
+
+            await model.LoadAsync(id);
+
+            var tagsList = await model.GetAvailableTags();
+
+            model.MultiTags = new List<SelectListItem>();
+            foreach (var tag in tagsList)
+            {
+                model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
+            }
+
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(QuestionEditModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    await model.EditAsync();
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Your Question Edited successfully",
+                        Type = ResponseTypes.Success
+                    });
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Server Error");
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "There was a problem in Editing Question",
+                        Type = ResponseTypes.Danger
+                    });
+                }
+
+            }
+
+            var tagsList = await model.GetAvailableTags();
+
+            model.MultiTags = new List<SelectListItem>();
+            foreach (var tag in tagsList)
+            {
+                model.MultiTags.Add(new SelectListItem { Text = tag.Name, Value = tag.Name });
+            }
+
+            return View(model);
+        }
 
     }
 }

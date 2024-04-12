@@ -22,6 +22,8 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<AnswerCreateModel>().AsSelf();
 
+            builder.RegisterType<QuestionEditModel>().AsSelf();
+
 
             base.Load(builder);
         }

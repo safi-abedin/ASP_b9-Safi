@@ -43,8 +43,8 @@ try
         (m) => m.MigrationsAssembly(migrationAssembly)));
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-    //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-   // builder.Services.AddControllersWithViews();
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    builder.Services.AddControllersWithViews();
     builder.Services.AddIdentity();
     builder.Services.AddCookieAuthentication();
     builder.Services.Configure<Smtp>(builder.Configuration.GetSection("Smtp")); 

@@ -8,7 +8,9 @@ namespace StackOverFlow.Web
     {
         public WebProfile()
         {
-            CreateMap<Question, QuestionDetailsModel>().ReverseMap();
+            CreateMap<QuestionDetailsModel,Question>().ReverseMap();
+
+            CreateMap<QuestionEditModel, Question>().ReverseMap();
         }
     }
 }

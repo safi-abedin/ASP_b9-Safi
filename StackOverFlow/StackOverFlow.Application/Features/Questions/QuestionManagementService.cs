@@ -76,6 +76,38 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task EditAsync(Guid id,string title, string Body, List<string> tags)
+        {
+            var allTags = _unitOfWork.TagRepository.GetAll();
+            var selectedTags = new List<Tag>();
+
+            foreach (var tag in tags)
+            {
+                selectedTags.Add(new Tag { Id = Guid.NewGuid(), Name = tag });
+            }
+
+            var selectedAndInAllTags = new List<Tag>();
+
+            foreach (var tag in selectedTags)
+            {
+                if (allTags.Any(t => t.Name == tag.Name))
+                {
+                    selectedAndInAllTags.Add(allTags.FirstOrDefault(t => t.Name == tag.Name));
+                }
+            }
+
+            var question = await _unitOfWork.QuestionRepository.GetAsync(id);
+
+            if(question is  not null)
+            {
+                question.title = title;
+                question.Body = Body;
+                question.Tags = selectedAndInAllTags;
+            }
+
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task<IEnumerable<Tag>> GetAllTags()
         {
             return await _unitOfWork.TagRepository.GetAllAsync();

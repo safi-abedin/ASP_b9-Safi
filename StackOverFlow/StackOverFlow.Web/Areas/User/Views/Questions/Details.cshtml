@@ -21,7 +21,7 @@
             <h1 class="s-page-title--header">@Model.title</h1>
         </div>
         <div class="s-page-title--actions">
-            <button class="s-btn s-btn__filled mb-3" asp-action="create" asp-area="user" asp-controller="questions" type="submit">Ask Question</button>
+            <a class="s-btn s-btn__filled mb-3" asp-action="create" asp-area="user" asp-controller="questions" type="submit">Ask Question</a>
         </div>
     </div>
 
@@ -50,6 +50,10 @@
             <hr />
             <div class="tags-askedby">
                 <div class="row justify-content-between">
+                    <div class="col-md-4">
+                        <a href="/user/questions/edit?id=@Model.Id" class="s-link">Edit</a>
+                        <a href="/user/questions/delete?@Model.Id" class="s-link">Delete</a>
+                    </div>
                     <div class="col-md-4">
                         @if(Model.Tags is not null){
                             @foreach (var tag in Model.Tags)
