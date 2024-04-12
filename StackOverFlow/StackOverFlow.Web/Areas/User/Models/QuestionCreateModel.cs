@@ -50,10 +50,8 @@ namespace StackOverFlow.Web.Areas.User.Models
         }
 
         internal async Task CreateAsync()
-        {
-            var body = Details  + TriedApproach;
-            
-            await _questionManagementService.CreateQuestionAsync(Title, body, Tags,UserId);
+        {            
+            await _questionManagementService.CreateQuestionAsync(Title, Details,TriedApproach, Tags,UserId);
         }
 
         internal async Task<IEnumerable<Tag>> GetAvailableTags()

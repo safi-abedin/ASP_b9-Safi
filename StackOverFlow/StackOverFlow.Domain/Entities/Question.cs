@@ -16,6 +16,12 @@ namespace StackOverFlow.Domain.Entities
         public string  Body { get; set; }
 
 
+        public string Details { get; set; }
+
+
+        public string TriedApproach { get; set; }
+
+
         public Guid CreatorUserId { get; set; }
 
 

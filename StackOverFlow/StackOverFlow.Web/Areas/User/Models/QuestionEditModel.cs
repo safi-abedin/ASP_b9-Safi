@@ -68,7 +68,7 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         internal async Task EditAsync()
         {
-            await _questionManagementService.EditAsync(Id,title,Details+TriedApproach,Tags);
+            await _questionManagementService.EditAsync(Id,title,Details,TriedApproach,Tags);
         }
     }
 }

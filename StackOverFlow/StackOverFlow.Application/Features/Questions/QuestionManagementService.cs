@@ -42,7 +42,7 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.SaveAsync(); 
         }
 
-        public async Task CreateQuestionAsync(string title, string body, List<string> tags,Guid UserId)
+        public async Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId)
         {
             var allTags = _unitOfWork.TagRepository.GetAll();
             var selectedTags = new List<Tag>();
@@ -66,7 +66,9 @@ namespace StackOverFlow.Application.Features.Questions
             var question = new Question
             {
                 title = title,
-                Body = body,
+                Body = Details+TriedApproach,
+                Details = Details,
+                TriedApproach = TriedApproach,
                 Tags = selectedAndInAllTags,
                 CreatorUserId = UserId,
                 CreationDateTime = DateTime.Now
@@ -76,7 +78,7 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task EditAsync(Guid id,string title, string Body, List<string> tags)
+        public async Task EditAsync(Guid id,string title, string Details,string TriedApproach, List<string> tags)
         {
             var allTags = _unitOfWork.TagRepository.GetAll();
             var selectedTags = new List<Tag>();
@@ -101,7 +103,9 @@ namespace StackOverFlow.Application.Features.Questions
             if(question is  not null)
             {
                 question.title = title;
-                question.Body = Body;
+                question.Body = Details+TriedApproach;
+                question.Details = Details;
+                question.TriedApproach = TriedApproach;
                 question.Tags = selectedAndInAllTags;
             }
 

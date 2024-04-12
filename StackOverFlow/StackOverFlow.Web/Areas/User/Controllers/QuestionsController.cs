@@ -185,7 +185,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Edit(QuestionEditModel model)
         {
 
@@ -193,7 +193,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             {
                 try
                 {
-
+                    model.ResolveAsync(_scope);
                     await model.EditAsync();
 
                     TempData.Put("ResponseMessage", new ResponseModel
