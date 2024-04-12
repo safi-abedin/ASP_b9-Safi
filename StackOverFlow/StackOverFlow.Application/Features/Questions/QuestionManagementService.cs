@@ -78,6 +78,12 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task DeleteQuestionAsync(Guid id)
+        {
+            await _unitOfWork.QuestionRepository.RemoveAsync(id);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task EditAsync(Guid id,string title, string Details,string TriedApproach, List<string> tags)
         {
             var allTags = _unitOfWork.TagRepository.GetAll();

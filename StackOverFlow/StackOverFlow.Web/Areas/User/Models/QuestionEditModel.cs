@@ -70,5 +70,10 @@ namespace StackOverFlow.Web.Areas.User.Models
         {
             await _questionManagementService.EditAsync(Id,title,Details,TriedApproach,Tags);
         }
+
+        internal async Task DeleteQuestionAsync(Guid id)
+        {
+            await _questionManagementService.DeleteQuestionAsync(id);
+        }
     }
 }

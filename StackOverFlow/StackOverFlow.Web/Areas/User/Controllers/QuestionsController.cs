@@ -228,5 +228,35 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var model = _scope.Resolve<QuestionEditModel>();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await model.DeleteQuestionAsync(id);
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = $"Question Successfully Deleted .",
+                        Type = ResponseTypes.Success
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "failed to Delete Question");
+
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = $"There is a Problem Deleting Question .",
+                        Type = ResponseTypes.Danger
+                    });
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

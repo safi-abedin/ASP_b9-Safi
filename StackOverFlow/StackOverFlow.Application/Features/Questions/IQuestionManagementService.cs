@@ -11,6 +11,7 @@ namespace StackOverFlow.Application.Features.Questions
     {
         Task CreateAnswerAsync(Guid questionId, string answerBody, Guid userID);
         Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId);
+        Task DeleteQuestionAsync(Guid id);
         Task EditAsync(Guid id, string title, string Details,string TriedApproach, List<string> tags);
         Task<IEnumerable<Tag>> GetAllTags();
         Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy);
