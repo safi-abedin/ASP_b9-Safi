@@ -148,5 +148,22 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(QuestionDetailsModel model)
+        {
+            model.Resolve(_scope);
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var userId = new Guid();
+                await model.CreateAnswerAsync(userId);
+            }
+            return View(model);
+        }
+
+
+
     }
 }

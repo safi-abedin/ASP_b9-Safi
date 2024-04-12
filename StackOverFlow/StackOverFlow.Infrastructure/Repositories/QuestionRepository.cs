@@ -42,7 +42,7 @@ namespace StackOverFlow.Infrastructure.Repositories
         public async Task<Question> GetAsync(Guid id)
         {
             Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
-               query.Include(q => q.Tags);
+               query.Include(q => q.Tags).Include(a=>a.Answers);
             Expression<Func<Question, bool>> expression = null;
             if (!id.Equals(null))
             {

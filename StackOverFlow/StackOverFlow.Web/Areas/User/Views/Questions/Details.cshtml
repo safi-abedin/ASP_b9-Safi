@@ -118,5 +118,62 @@
 
     <hr />
     <br />
+    
+    <form id="questionForm" asp-action="Details" asp-controller="Questions" asp-area="User" asp-antiforgery="true" method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group mb-3">
+            <label class="s-label" asp-for="AnswerBody">Your Answer</label>
+            <div id="editor-example-2"></div>
+            <textarea id="editor-content-2" asp-for="AnswerBody" class="d-none"></textarea>
+            <span asp-validation-for="AnswerBody" class="text-danger"></span>
+        </div>
+        <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Answer</button>
+        <br />
+    </form>
+
 
 </div>
+
+
+@section Scripts{
+
+    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                event.preventDefault();
+            });
+        });
+
+
+        document.querySelector("#questionForm").addEventListener("submit", function (event) {
+
+
+            // Get the element containing the user input for "TriedApproach"
+            var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
+
+            // Get the inner HTML of the user input element for "TriedApproach"
+            var userInputHTML2 = userInputDiv2.innerHTML;
+
+            // Set the content of "TriedApproach" hidden textarea
+            document.querySelector("#editor-content-2").value = userInputHTML2;
+
+        });
+
+        new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-example-2"),
+            document.querySelector("#editor-content-2").value,
+            {
+                parserFeatures: {
+                    tables: true,
+                },
+
+            }
+        );
+
+
+    </script>
+}

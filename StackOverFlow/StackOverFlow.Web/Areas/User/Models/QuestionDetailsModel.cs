@@ -46,6 +46,10 @@ namespace StackOverFlow.Web.Areas.User.Models
         public int? Reputation {  get; set; }
 
 
+        public string AnswerBody { get; set; }     
+
+
+
         private ILifetimeScope _scope;
 
         public IQuestionManagementService _questionManagementService;
@@ -101,6 +105,11 @@ namespace StackOverFlow.Web.Areas.User.Models
                 VoteCount = question.VoteCount;
                 AnswerCount = question.AnswerCount;
             }
+        }
+
+        internal async Task CreateAnswerAsync(Guid userId)
+        {
+           await  _questionManagementService.CreateAnswerAsync(Id,AnswerBody, userId);
         }
 
     }

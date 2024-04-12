@@ -17,14 +17,5 @@ namespace StackOverFlow.Application
 
         IAnswerRepository AnswerRepository { get; }
 
-       /* ICourseRepository CourseRepository { get; }
-        Task<(IList<CourseEnrollmentDTO> records, int total, int totalDisplay)> GetCourseEnrollmentsAsync(
-            int pageIndex,
-            int pageSize,
-            string orderBy,
-            string courseName,
-            string studentName,
-            DateTime enrollmentDateFrom,
-            DateTime enrollmentDateTo);*/
     }
 }

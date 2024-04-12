@@ -29,8 +29,15 @@ namespace StackOverFlow.Application.Features.Questions
                 AnsweredByUserId = Guid.NewGuid(),
                 Body = answerBody,
             };
-            
-            await _unitOfWork.AnswerRepository.AddAsync(answer);
+
+            var question = await _unitOfWork.QuestionRepository.GetAsync(questionId);
+
+            if(question != null)
+            {
+
+                question.Answers.Add(answer);
+
+            }
 
             await _unitOfWork.SaveAsync(); 
         }
@@ -89,5 +96,6 @@ namespace StackOverFlow.Application.Features.Questions
             var data = await _unitOfWork.QuestionRepository.GetAllQuestionsAsync();
             return data;
         }
+
     }
 }
