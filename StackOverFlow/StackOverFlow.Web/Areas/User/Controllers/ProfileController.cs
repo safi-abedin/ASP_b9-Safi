@@ -28,9 +28,20 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = _scope.Resolve<ProfileViewModel>();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user is not null)
+            {
+                model.DisplayName = user.DisplayName;
+                model.AboutMe = user.AboutMe;
+                model.ImageURL = user.ProfilePictureUrl;
+            }
+
+            return View(model);
         }
 
 

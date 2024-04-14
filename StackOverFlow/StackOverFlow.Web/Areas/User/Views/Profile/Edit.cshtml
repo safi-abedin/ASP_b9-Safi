@@ -39,8 +39,6 @@
     <br />
     <form id="questionForm" asp-action="Edit" asp-controller="Profile" asp-area="User" asp-antiforgery="true" method="post">
 
-
-
         <div class="form-group mb-3">
             <label class="s-label" asp-for="DisplayName">DisplayName</label>
             <input class="s-input" asp-for="DisplayName" id="example-item1" type="text" placeholder="e.g. Write your Which you want to Display." />
@@ -51,9 +49,7 @@
         <div class="form-group mb-3">
             <label class="s-label" asp-for="AboutMe">About Me</label>
             <p class="s-description mtn2 mb0">Introduce YourSelf. Minimum 20 characters.</p>
-            <div id="editor-example-1"></div>
-            <textarea id="editor-content-1" asp-for="AboutMe" class="d-none"></textarea>
-            <span asp-validation-for="AboutMe" class="text-danger"></span>
+            <input type="text" class="s-input" asp-for="AboutMe" placeholder="e.g. Write Here....." />
         </div>
 
         <br />
@@ -67,70 +63,11 @@
 
         <br />
 
-        <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Question</button>
+        <button class="s-btn s-btn__filled mb-3" type="submit">Save</button>
         <br />
     </form>
 </div>
 
-
-
-
-
-
-@section Scripts{
-    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
-
-
-    <script>
-        // Event listener for submitting the form
-        document.querySelector("#questionForm").addEventListener("submit", function (event) {
-
-            // Get the element containing the user input for "Details"
-            var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
-
-            // Get the inner HTML of the user input element for "Details"
-            var userInputHTML1 = userInputDiv1.innerHTML;
-
-            // Set the content of "Details" hidden textarea
-            document.querySelector("#editor-content-1").value = userInputHTML1;
-
-            // Get the element containing the user input for "TriedApproach"
-            var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
-
-            // Get the inner HTML of the user input element for "TriedApproach"
-            var userInputHTML2 = userInputDiv2.innerHTML;
-
-            // Set the content of "TriedApproach" hidden textarea
-            document.querySelector("#editor-content-2").value = userInputHTML2;
-
-        });
-
-        // Initialize Stacks Editor for "TriedApproach"
-        new window.stacksEditor.StacksEditor(
-            document.querySelector("#editor-example-2"),
-            document.querySelector("#editor-content-2").value,
-            {
-                parserFeatures: {
-                    tables: true,
-                },
-
-            }
-        );
-
-        // Initialize Stacks Editor for "Details"
-        new window.stacksEditor.StacksEditor(
-            document.querySelector("#editor-example-1"),
-            document.querySelector("#editor-content-1").value,
-            {
-                parserFeatures: {
-                    tables: true,
-                },
-            }
-        );
-
-    </script>
-
-}
 
 
 
