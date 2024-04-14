@@ -1,23 +1,23 @@
 ﻿using Autofac;
 using StackOverFlow.Application.Features.Questions;
-using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure;
-using System.Linq;
 using System.Web;
 
 namespace StackOverFlow.Web.Areas.User.Models
 {
-    public class QuestionListModel
+    public class QuestionAskedListModel
     {
         private ILifetimeScope _scope;
         private IQuestionManagementService _questionManagementService;
 
+        public Guid UserId { get; set; }
 
-        public QuestionListModel()
+
+        public QuestionAskedListModel()
         {
         }
 
-        public QuestionListModel(IQuestionManagementService questionManagementService)
+        public QuestionAskedListModel(IQuestionManagementService questionManagementService)
         {
             _questionManagementService = questionManagementService;
         }
@@ -30,17 +30,16 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public async Task<object> GetPagedQuestionsAsync(DataTablesAjaxRequestUtility dataTablesUtility)
         {
-            var data = await _questionManagementService.GetPagedQuestionsAsync(
+            var data = await _questionManagementService.GetPagedQuestionsAskedAsync(
                 dataTablesUtility.PageIndex,
-                dataTablesUtility.PageSize,
-                null);
+                dataTablesUtility.PageSize,UserId);
 
             return new
             {
                 recordsTotal = data.total,
                 recordsFiltered = data.totalDisplay,
                 data = (from record in data.records
-                       select new object[]{
+                        select new object[]{
                                 record.VoteCount.ToString(),
                                 HttpUtility.HtmlEncode(record.AnswerCount),
                                 record.ViewCount.ToString(),
@@ -53,6 +52,5 @@ namespace StackOverFlow.Web.Areas.User.Models
                 ).ToArray()
             };
         }
-
     }
 }

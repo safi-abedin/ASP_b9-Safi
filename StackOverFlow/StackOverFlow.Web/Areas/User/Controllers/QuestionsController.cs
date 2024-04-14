@@ -109,7 +109,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    model.UserId = new Guid();
+                    model.UserId = user.Id;
                     await model.CreateAsync();
 
                     TempData.Put("ResponseMessage", new ResponseModel

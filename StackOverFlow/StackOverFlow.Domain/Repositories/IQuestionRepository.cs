@@ -13,5 +13,6 @@ namespace StackOverFlow.Domain.Repositories
 
         Task<IList<Question>> GetAllQuestionsAsync();
         Task<Question> GetAsync(Guid id);
+        Task<(IList<Question> records, int total, int totalDisplay)> GetQuestionsByUser(int pageIndex, int pageSize, Guid userId);
     }
 }

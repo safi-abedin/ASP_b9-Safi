@@ -26,7 +26,7 @@ namespace StackOverFlow.Application.Features.Questions
                 QuestionId = questionId,
                 AnswerTime = DateTime.Now,
                 //have to change later
-                AnsweredByUserId = Guid.NewGuid(),
+                AnsweredByUserId = UserId,
                 Body = answerBody,
             };
 
@@ -121,6 +121,11 @@ namespace StackOverFlow.Application.Features.Questions
         public async Task<IEnumerable<Tag>> GetAllTags()
         {
             return await _unitOfWork.TagRepository.GetAllAsync();
+        }
+
+        public async Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAskedAsync(int pageIndex, int pageSize, Guid UserId)
+        {
+            return await _unitOfWork.QuestionRepository.GetQuestionsByUser(pageIndex,pageSize, UserId);
         }
 
         public async Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy)

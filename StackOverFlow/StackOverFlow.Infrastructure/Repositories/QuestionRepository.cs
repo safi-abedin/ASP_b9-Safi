@@ -28,7 +28,6 @@ namespace StackOverFlow.Infrastructure.Repositories
 
             var data = await GetDynamicAsync(expression,null,include, pageIndex, pageSize, true);
 
-            var data2 = await _dbSet.Include(q => q.Tags).Include(a=>a.Answers).ToListAsync();
 
             return data;
         }
@@ -43,7 +42,9 @@ namespace StackOverFlow.Infrastructure.Repositories
         {
             Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
                query.Include(q => q.Tags).Include(a=>a.Answers);
+
             Expression<Func<Question, bool>> expression = null;
+
             if (!id.Equals(null))
             {
                 expression = x => x.Id == id;
@@ -51,6 +52,19 @@ namespace StackOverFlow.Infrastructure.Repositories
             var data = await GetAsync(expression,include);
 
             return data.First();
+        }
+
+        public async Task<(IList<Question> records, int total, int totalDisplay)> GetQuestionsByUser(int pageIndex, int pageSize, Guid userId)
+        {
+            Expression<Func<Question, bool>> expression = x=>x.CreatorUserId==userId;
+
+            Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
+                query.Include(q => q.Tags);
+
+            var data = await GetDynamicAsync(expression, null, include, pageIndex, pageSize, true);
+
+
+            return data;
         }
     }
 }
