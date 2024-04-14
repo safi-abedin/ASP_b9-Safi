@@ -76,6 +76,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 model.AboutMe = user.AboutMe;
                 model.DisplayName = user.DisplayName;
                 model.Location = user.Location;
+                model.UserId = user.Id;
+                model.ProfilePictureUrl = user.ProfilePictureUrl;
+                model.Photo = null;
             }
 
             return View(model);

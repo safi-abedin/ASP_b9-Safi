@@ -28,6 +28,8 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<ProfileEditModel>().AsSelf();
 
+            builder.RegisterType<ProfileViewModel>().AsSelf();
+
 
             base.Load(builder);
         }

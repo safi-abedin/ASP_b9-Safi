@@ -19,7 +19,7 @@
 <div class="container">
 <div class="row ">
     <div class="col-8">
-        if(@Model.ImageURL!=null){
+        @if(Model.ImageURL!=null){
             <img src="@Model.ImageURL" width="168" height="168" alt="alt_text" border="0" style="display: block;">
         }
         else{
@@ -28,7 +28,7 @@
     </div>
     <div class="col-6 ml-2">
         <div class="s-page-title">
-            if(@Model.DisplayName!=null){
+            @if(Model.DisplayName!=null){
                 <h1 class="s-page-title--header">@Model.DisplayName</h1>
             }
         </div>
@@ -61,7 +61,7 @@
                     <h1 class="s-page-title--header">About Me</h1>
                 </div>
             </div>
-            if(@Model.AboutMe!=null){
+            @if(Model.AboutMe!=null){
             <div class="s-empty-state wmx4 p48">
                 <p>@Model.AboutMe</p>
             </div>

@@ -17,5 +17,8 @@
         public int? Reputation { get; set; }
 
         public string? ProfilePictureUrl { get; set; }
+
+
+        public IFormFile Photo { get; set; }
     }
 }
