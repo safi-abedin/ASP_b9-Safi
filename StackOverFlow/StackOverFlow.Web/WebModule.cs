@@ -26,6 +26,8 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<QuestionAskedListModel>().AsSelf();
 
+            builder.RegisterType<ProfileEditModel>().AsSelf();
+
 
             base.Load(builder);
         }

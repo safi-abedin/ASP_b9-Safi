@@ -1,0 +1,140 @@
+﻿@model ProfileEditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+@section Styles{
+    <!-- Include the bundled styles -->
+    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <style>
+        .form-group {
+            background-color: #ffffff;
+            border: 1px solid #ced4da; /* Border color */
+            border-radius: 0.67rem; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow */
+            padding: 1rem; /* Padding around the content */
+            margin-bottom: 1rem; /* Space between form groups */
+        }
+
+            .form-group .s-label,
+            .form-group .s-description,
+            .form-group .s-input,
+            .form-group .select2 {
+                margin-bottom: 0.8rem; /* Adjust as needed */
+            }
+    </style>
+}
+
+
+
+<div class="col-md-10">
+    <br />
+    <h1>Edit Your Profile</h1>
+    <br />
+    <form id="questionForm" asp-action="Edit" asp-controller="Profile" asp-area="User" asp-antiforgery="true" method="post">
+
+
+
+        <div class="form-group mb-3">
+            <label class="s-label" asp-for="DisplayName">DisplayName</label>
+            <input class="s-input" asp-for="DisplayName" id="example-item1" type="text" placeholder="e.g. Write your Which you want to Display." />
+        </div>
+
+        <br />
+
+        <div class="form-group mb-3">
+            <label class="s-label" asp-for="AboutMe">About Me</label>
+            <p class="s-description mtn2 mb0">Introduce YourSelf. Minimum 20 characters.</p>
+            <div id="editor-example-1"></div>
+            <textarea id="editor-content-1" asp-for="AboutMe" class="d-none"></textarea>
+            <span asp-validation-for="AboutMe" class="text-danger"></span>
+        </div>
+
+        <br />
+
+   
+
+        <div class="form-group">
+            <label class="s-label" asp-for="Location">Location</label>
+            <input class="s-input" asp-for="Location" id="example-item1" type="text" placeholder="e.g. Write About Your location." />
+        </div>
+
+        <br />
+
+        <button class="s-btn s-btn__filled mb-3" type="submit">Post Your Question</button>
+        <br />
+    </form>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/app.bundle.js"></script>
+
+
+    <script>
+        // Event listener for submitting the form
+        document.querySelector("#questionForm").addEventListener("submit", function (event) {
+
+            // Get the element containing the user input for "Details"
+            var userInputDiv1 = document.querySelector('#editor-example-1 .s-prose');
+
+            // Get the inner HTML of the user input element for "Details"
+            var userInputHTML1 = userInputDiv1.innerHTML;
+
+            // Set the content of "Details" hidden textarea
+            document.querySelector("#editor-content-1").value = userInputHTML1;
+
+            // Get the element containing the user input for "TriedApproach"
+            var userInputDiv2 = document.querySelector('#editor-example-2 .s-prose');
+
+            // Get the inner HTML of the user input element for "TriedApproach"
+            var userInputHTML2 = userInputDiv2.innerHTML;
+
+            // Set the content of "TriedApproach" hidden textarea
+            document.querySelector("#editor-content-2").value = userInputHTML2;
+
+        });
+
+        // Initialize Stacks Editor for "TriedApproach"
+        new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-example-2"),
+            document.querySelector("#editor-content-2").value,
+            {
+                parserFeatures: {
+                    tables: true,
+                },
+
+            }
+        );
+
+        // Initialize Stacks Editor for "Details"
+        new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-example-1"),
+            document.querySelector("#editor-content-1").value,
+            {
+                parserFeatures: {
+                    tables: true,
+                },
+            }
+        );
+
+    </script>
+
+}
+
+
+
+
+
+
+
