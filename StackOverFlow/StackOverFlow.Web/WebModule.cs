@@ -20,6 +20,9 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<QuestionListModel>().AsSelf();
 
+            builder.RegisterType<TagListModel>().AsSelf();
+
+
             builder.RegisterType<AnswerCreateModel>().AsSelf();
 
             builder.RegisterType<QuestionEditModel>().AsSelf();

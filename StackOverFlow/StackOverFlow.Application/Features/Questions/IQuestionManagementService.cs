@@ -16,6 +16,7 @@ namespace StackOverFlow.Application.Features.Questions
         Task<IEnumerable<Tag>> GetAllTags();
         Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAskedAsync(int pageIndex, int pageSize,Guid UserId);
         Task<(IList<Question> records, int total, int totalDisplay)> GetPagedQuestionsAsync(int pageIndex, int pageSize, string orderBy);
+        Task<(IList<Tag> records, int total, int totalDisplay)> GetPagedTagsAsync(int pageIndex, int pageSize, string orderBy);
         Task<Question> GetQuestionAsync(Guid id);
         Task<IEnumerable<Question>> GetQuestionsAsync();
     }
