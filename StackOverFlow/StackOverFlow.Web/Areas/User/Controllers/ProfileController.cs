@@ -34,11 +34,17 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            if(user is not null)
+            var response = await model.GetPhotoAsync(user.ProfilePictureUrl);
+
+            if(response is not null)
+            {
+                var image = response;
+            }
+
+            if (user is not null)
             {
                 model.DisplayName = user.DisplayName;
                 model.AboutMe = user.AboutMe;
-                model.ImageURL = user.ProfilePictureUrl;
             }
 
             return View(model);
@@ -89,14 +95,26 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+            model.ResolveAsync(_scope);
+
+
+            if(model.Photo!= null)
+            {
+               var response = await model.UploadFile(model.Photo);
+
+                if(response.HttpStatusCode!=System.Net.HttpStatusCode.OK) 
+                {
+                    return View(model);
+                }
+            }
 
             if (user is not null)
             {
                 user.DisplayName = model.DisplayName;
                 user.Location = model.Location;
                 user.AboutMe = model.AboutMe;
-
-
+                user.ProfilePictureUrl = model.Photo.FileName;
+                    
                 var result = await _userManager.UpdateAsync(user);
 
 

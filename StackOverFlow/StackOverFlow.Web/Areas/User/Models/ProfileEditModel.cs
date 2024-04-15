@@ -1,7 +1,18 @@
-﻿namespace StackOverFlow.Web.Areas.User.Models
+﻿using Amazon.S3.Model;
+using Autofac;
+using AutoMapper;
+using StackOverFlow.Application.Features.Photos;
+using StackOverFlow.Application.Features.Questions;
+
+namespace StackOverFlow.Web.Areas.User.Models
 {
     public class ProfileEditModel
     {
+
+        public ILifetimeScope _scope;
+
+
+        public IPhotoService _photoService;
 
         public Guid UserId {  get; set; }
 
@@ -20,5 +31,27 @@
 
 
         public IFormFile Photo { get; set; }
+
+
+        public ProfileEditModel()
+        {
+            
+        }
+
+        public ProfileEditModel(IPhotoService photoService)
+        {
+            _photoService = photoService;
+        }
+
+        internal void ResolveAsync(ILifetimeScope scope)
+        {
+            _scope = scope;
+            _photoService = _scope.Resolve<IPhotoService>();
+        }
+
+        internal async Task<PutObjectResponse> UploadFile(IFormFile photo)
+        {
+           return await _photoService.UploadFile(photo);
+        }
     }
 }

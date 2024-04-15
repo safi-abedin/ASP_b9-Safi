@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverFlow.Application.Features.Photos;
 using StackOverFlow.Application.Features.Questions;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace StackOverFlow.Application
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<QuestionManagementService>().As<IQuestionManagementService>().InstancePerLifetimeScope();
+            builder.RegisterType<PhotoService>().As<IPhotoService>().InstancePerLifetimeScope();
+
             base.Load(builder);
         }
     }
