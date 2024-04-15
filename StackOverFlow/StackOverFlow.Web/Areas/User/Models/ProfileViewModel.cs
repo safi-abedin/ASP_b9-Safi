@@ -35,7 +35,7 @@ namespace StackOverFlow.Web.Areas.User.Models
             _photoService = _scope.Resolve<IPhotoService>();
         }
 
-        internal async Task<Stream> GetPhotoAsync(string? key)
+        internal async Task<string> GetPhotoAsync(string? key)
         {
             return await _photoService.GetPhotoAsync(key);
         }

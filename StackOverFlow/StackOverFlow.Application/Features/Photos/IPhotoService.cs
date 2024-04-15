@@ -10,7 +10,7 @@ namespace StackOverFlow.Application.Features.Photos
 {
     public interface IPhotoService
     {
-        Task<Stream> GetPhotoAsync(string? key);
+        Task<string> GetPhotoAsync(string? key);
         Task<PutObjectResponse> UploadFile(IFormFile photo);
     }
 }

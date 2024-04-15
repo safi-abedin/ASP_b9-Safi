@@ -34,17 +34,12 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            var response = await model.GetPhotoAsync(user.ProfilePictureUrl);
-
-            if(response is not null)
-            {
-                var image = response;
-            }
-
             if (user is not null)
             {
                 model.DisplayName = user.DisplayName;
                 model.AboutMe = user.AboutMe;
+                var response = await model.GetPhotoAsync(user.ProfilePictureUrl);
+                model.ImageURL = response;
             }
 
             return View(model);

@@ -38,13 +38,17 @@ namespace StackOverFlow.Application.Features.Photos
             return response;
         }
 
-        public async Task<Stream> GetPhotoAsync(string? key)
+        public async Task<string> GetPhotoAsync(string? key)
         {
-            var s3Object = await _s3Client.GetObjectAsync("safi-bucket", key);
 
-            var file = s3Object.ResponseStream;
+            var url = await _s3Client.GetPreSignedURLAsync(new GetPreSignedUrlRequest
+            {
+                BucketName= "safi-bucket",
+                Key=key,
+                Expires = DateTime.UtcNow.AddMinutes(2)
+            });
 
-            return file;
+            return url;
         }
 
     }
