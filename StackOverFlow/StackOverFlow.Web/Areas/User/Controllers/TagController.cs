@@ -45,5 +45,19 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             return Json(data);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> TaggedQuestions(Guid id)
+        {
+            var model = _scope.Resolve<TagQuestionModel>();
+
+            if(ModelState.IsValid)
+            {
+                 await model.GetTagedQuestonsAsync(id);
+            }
+
+            return View(model);
+        }
     }
 }

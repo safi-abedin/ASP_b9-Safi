@@ -33,6 +33,8 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<ProfileViewModel>().AsSelf();
 
+            builder.RegisterType<TagQuestionModel>().AsSelf();
+
 
             base.Load(builder);
         }

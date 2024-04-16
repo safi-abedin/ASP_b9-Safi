@@ -148,5 +148,9 @@ namespace StackOverFlow.Application.Features.Questions
             return data;
         }
 
+        public Task<IList<Question>> GetTagedQuestionsAsync(Guid id)
+        {
+            return _unitOfWork.QuestionRepository.GetTagedQuestions(id);
+        }
     }
 }

@@ -1,0 +1,83 @@
+﻿@model TagQuestionModel
+
+@{
+    ViewData["Title"] = "TaggedQuestions";
+}
+
+@section Styles
+    {
+    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" src="~/stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@stackoverflow/stacks-editor/dist/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            @if (Model.TotalCount > 0)
+            {
+                <h1>@Model.TotalCount Questions</h1>
+                @foreach (var question in Model.Questions)
+                {
+
+                    <div class="s-post-summary">
+                        <div class="s-post-summary--stats">
+                            <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized">
+                                <span class="s-post-summary--stats-item-number">
+                                    @question.VoteCount
+                                </span>
+                                <span class="s-post-summary--stats-item-unit">
+                                    votes
+                                </span>
+                            </div>
+                            <div class="s-post-summary--stats-item has-answers has-accepted-answer">
+                                <span class="s-post-summary--stats-item-number">
+                                    @question.AnswerCount
+                                </span>
+                                <span class="s-post-summary--stats-item-unit">
+                                    answers
+                                </span>
+                            </div>
+                            <div class="s-post-summary--stats-item is-supernova">
+                                <span class="s-post-summary--stats-item-number">
+                                  @question.ViewCount
+                                </span>
+                                <span class="s-post-summary--stats-item-unit">
+                                    views
+                                </span>
+                            </div>
+                        </div>
+                        <div class="s-post-summary--content">
+                            <div class="s-post-summary--content-type">
+                            </div>
+                            <h3 class="s-post-summary--content-title">
+                                <a href="…" class="s-link">@question.title</a>
+                            </h3>
+                            <p class="s-post-summary--content-excerpt">…</p>
+                            <div class="s-post-summary--meta">
+                                @foreach (var tag in question.Tags)
+                                {
+                                    <div class="s-post-summary--meta-tags">
+                                        <a class="s-tag" href="…">@tag.Name</a>
+                                    </div>
+                                }
+ 
+                                <div class="s-user-card s-user-card__minimal">
+                                    <a href="…" class="s-avatar s-user-card--avatar">
+                                        <img class="s-avatar--image" src="…" />
+                                        <span class="v-visible-sr">…</span>
+                                    </a>
+                                    <time class="s-user-card--time">@question.CreationDateTime</time>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+        </div>
+    </div>
+</div>

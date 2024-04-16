@@ -66,5 +66,17 @@ namespace StackOverFlow.Infrastructure.Repositories
 
             return data;
         }
+
+        public  async Task<IList<Question>> GetTagedQuestions(Guid TagId)
+        {
+            Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
+              query.Include(q => q.Tags);
+
+            Expression<Func<Question, bool>> expression = q => q.Tags.Any(t => t.Id == TagId);
+
+            var data = await GetAsync(expression, include);
+
+            return data;
+        }
     }
 }
