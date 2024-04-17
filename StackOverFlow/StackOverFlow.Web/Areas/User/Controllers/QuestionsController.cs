@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Ocsp;
+using StackOverFlow.Application.Utilities;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure;
 using StackOverFlow.Infrastructure.Membership;
@@ -11,6 +12,7 @@ using StackOverFlow.Web.Areas.Admin.Models;
 using StackOverFlow.Web.Areas.User.Models;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Web;
 
 namespace StackOverFlow.Web.Areas.User.Controllers
@@ -21,14 +23,17 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         private readonly ILifetimeScope _scope;
         private readonly ILogger<QuestionsController> _logger;
         private UserManager<ApplicationUser> _userManager;
+        private readonly IEmailService _emailService;
+
 
 
         public QuestionsController(ILifetimeScope scope,
-            ILogger<QuestionsController> logger, UserManager<ApplicationUser> userManager)
+            ILogger<QuestionsController> logger, UserManager<ApplicationUser> userManager,IEmailService emailService)
         {
             _scope = scope;
             _logger = logger;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
 
@@ -160,8 +165,11 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 var userId = user.Id;
                 var userEmail = user.Email;
                 await model.CreateAnswerAsync(userId,userEmail);
+                var callbackUrl = Url.Action("Details", "Questions", new { area = "user", id = model.Id }, protocol: HttpContext.Request.Scheme);
+               _emailService.SendSingleEmail($"hello {model.DisplayName}", model.CreatorEmail, $"New Answer In your Post",
+                $"{model.AnswredByDisplayName} answered in your question click here to see the Answer  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return Redirect($"/User/Questions/Details/{model.Id}");
+            return Redirect($"/User/Questions/Details/{model.Id}");
         }
 
 
