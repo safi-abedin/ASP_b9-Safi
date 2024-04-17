@@ -9,6 +9,7 @@ namespace StackOverFlow.Application.Features.Questions
 {
     public interface IQuestionManagementService
     {
+        Task<bool> CheckVote(Guid questionId, Guid userId);
         Task CreateAnswerAsync(Guid questionId, string answerBody, Guid userID,string userEmail);
         Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId, string userEmail);
         Task DeleteQuestionAsync(Guid id);
@@ -21,6 +22,7 @@ namespace StackOverFlow.Application.Features.Questions
         Task<IEnumerable<Question>> GetQuestionsAsync();
         Task<Tag> GetTag(Guid id);
         Task<IList<Question>> GetTagedQuestionsAsync(Guid id);
+        Task GiveDownVote(Guid questionId, Guid userId);
         Task IncreaseView(Guid id);
     }
 }

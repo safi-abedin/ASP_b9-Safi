@@ -65,7 +65,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     user.Reputation = user.Reputation + 2;
                     await _userManager.UpdateAsync(user);
-
                     await model.LoadAsync(id);
 
 
@@ -265,6 +264,64 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+
+        public async Task<IActionResult> QuestionUpVote(Guid id)
+        {
+
+            var model = _scope.Resolve<QuestionVoteModel>();
+
+            model.Resolve(_scope);
+
+            var user = await _userManager.GetUserAsync(User);
+
+            await model.CheckVoteAsync(id, user.Id);
+
+
+            return Redirect($"/User/Questions/Details/{id}");
+        }
+
+        public async Task<IActionResult> QuestionDownVote(Guid id)
+        {
+
+
+            var model = _scope.Resolve<QuestionVoteModel>();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            await model.GiveDownVoteAsync(id, user.Id);
+
+            return Redirect($"/User/Questions/Details/{id}");
+        }
+
+
+        public async Task<IActionResult> AnswerUpVote(Guid id)
+        {
+
+            var model = _scope.Resolve<QuestionVoteModel>();
+
+            model.Resolve(_scope);
+
+            var user = await _userManager.GetUserAsync(User);
+
+            await model.CheckVoteAsync(id, user.Id);
+
+
+            return Redirect($"/User/Questions/Details/{id}");
+        }
+
+        public async Task<IActionResult> AnswerDownVote(Guid id)
+        {
+
+
+            var model = _scope.Resolve<QuestionVoteModel>();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            await model.GiveDownVoteAsync(id, user.Id);
+
+            return Redirect($"/User/Questions/Details/{id}");
         }
 
     }

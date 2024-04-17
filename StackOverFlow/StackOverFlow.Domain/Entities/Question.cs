@@ -38,6 +38,9 @@ namespace StackOverFlow.Domain.Entities
         public int AnswerCount { get; set; }
 
 
+       
+        public ICollection<QuestionVotes> Votes { get; set; }
+
 
         public ICollection<Answer> Answers { get; set; }
 

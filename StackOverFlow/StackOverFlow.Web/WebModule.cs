@@ -35,6 +35,10 @@ namespace StackOverFlow.Web
 
             builder.RegisterType<TagQuestionModel>().AsSelf();
 
+            builder.RegisterType<QuestionVoteModel>().AsSelf();
+
+            
+
 
             base.Load(builder);
         }

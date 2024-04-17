@@ -27,14 +27,13 @@
 
     <div class="row">
         <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
-            <a>
+            <a asp-action="QuestionUpVote" asp-area="User" asp-controller="Questions" asp-route-id="@Model.Id">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 25H34L18 9L2 25Z" fill="black" />
                 </svg>
             </a>
-            <br />
-            <br />
-            <a>
+            <h1 class="">@Model.VoteCount</h1>
+            <a asp-action="QuestionDownVote" asp-area="User" asp-controller="Questions" asp-route-id="@Model.Id">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 11H34L18 27L2 11Z" fill="black" />
                 </svg>
@@ -49,7 +48,7 @@
             </div>
             <hr />
             <div class="tags-askedby">
-                <div class="row justify-content-between">
+                <div class="row justify-content-end">
                     <div class="col-md-4">
                         <a href="/user/questions/edit?id=@Model.Id" class="s-link">Edit</a>
                         <a href="/user/questions/delete?id=@Model.Id" class="s-link">Delete</a>
@@ -98,8 +97,7 @@
                                 <path d="M2 25H34L18 9L2 25Z" fill="black" />
                             </svg>
                         </a>
-                        <br />
-                        <br />
+                        <h1>@answer.VoteCount</h1>
                         <a>
                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2 11H34L18 27L2 11Z" fill="black" />
@@ -116,7 +114,7 @@
                         <hr />
                         @{
                         <div class="tags-askedby">
-                            <div class="row justify-content-between">
+                            <div class="row justify-content-end">
                                 <div class="col-md-5">
                                     <div class="s-user-card s-user-card__highlighted">
                                         <time class="s-user-card--time">Answered on @answer.AnswerTime</time>

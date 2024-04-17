@@ -1,4 +1,5 @@
-﻿using MailKit.Search;
+﻿using Amazon.S3.Model;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using StackOverFlow.Domain.Entities;
@@ -41,7 +42,7 @@ namespace StackOverFlow.Infrastructure.Repositories
         public async Task<Question> GetAsync(Guid id)
         {
             Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
-               query.Include(q => q.Tags).Include(a=>a.Answers);
+               query.Include(q => q.Tags).Include(a=>a.Answers).Include(v=>v.Votes);
 
             Expression<Func<Question, bool>> expression = null;
 
@@ -78,5 +79,16 @@ namespace StackOverFlow.Infrastructure.Repositories
 
             return data;
         }
+
+        public async Task<IList<Question>> GetVoteAsync(Guid questionId, Guid userId)
+        {
+            Func<IQueryable<Question>, IIncludableQueryable<Question, object>> include = query =>
+              query.Include(q => q.Votes);
+
+            Expression<Func<Question, bool>> expression = q => q.Votes.Any(v => v.QuestionId == questionId && v.VotedBYId == userId);
+
+            return await GetAsync(expression, include);
+        }
+
     }
 }

@@ -13,13 +13,75 @@ namespace StackOverFlow.Application.Features.Questions
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
 
-       
+
         public QuestionManagementService(IApplicationUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId,string userEmail)
+        public async Task<bool> CheckVote(Guid questionId, Guid userId)
+        {
+            await GiveVote(questionId, userId, true);
+            return true;
+        }
+
+        public async Task GiveDownVote(Guid questionId, Guid userId)
+        {
+            await GiveVote(questionId, userId, false);
+        }
+
+        private async Task GiveVote(Guid questionId, Guid userId, bool isUpVote)
+        {
+            var result = await _unitOfWork.QuestionRepository.GetVoteAsync(questionId, userId);
+
+            if (result == null || result.Count == 0)
+            {
+                var question = await _unitOfWork.QuestionRepository.GetAsync(questionId);
+
+                if (question == null)
+                {
+                    throw new InvalidOperationException("Question not found.");
+                }
+
+                var vote = new QuestionVotes
+                {
+                    QuestionId = questionId,
+                    VotedBYId = userId,
+                    Up = isUpVote,
+                    Down = !isUpVote,
+                    VoterEmail = "", 
+                    Question = question
+                };
+
+                question.VoteCount += isUpVote ? 1 : -1;
+
+                question.Votes.Add(vote);
+            }
+            else
+            {
+                var existingVote = result.FirstOrDefault().Votes.FirstOrDefault();
+
+                if (existingVote.Up && !isUpVote)
+                {
+                    existingVote.Up = false;
+                    existingVote.Down = true;
+
+                    existingVote.Question.VoteCount -= 2;
+                }
+                else if (existingVote.Down && isUpVote)
+                {
+                    existingVote.Up = true;
+                    existingVote.Down = false;
+
+                    existingVote.Question.VoteCount += 2;
+                }
+            }
+
+            await _unitOfWork.SaveAsync();
+        }
+    
+
+    public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId,string userEmail)
         {
             var answer = new Answer
             {
@@ -161,6 +223,8 @@ namespace StackOverFlow.Application.Features.Questions
         {
             return _unitOfWork.QuestionRepository.GetTagedQuestions(id);
         }
+
+        
 
         public async Task IncreaseView(Guid id)
         {

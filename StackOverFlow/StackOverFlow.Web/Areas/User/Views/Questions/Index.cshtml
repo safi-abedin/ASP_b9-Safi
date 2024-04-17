@@ -18,19 +18,14 @@
 
         </div>
         <div class="col-8 mb-3">
-
             <br />
-            <h1>All Questions</h1>
-            <div class="s-btn-group jc-end">
-                <button class="s-btn s-btn__muted flex-item jc-end " type="button" id="btnThisWeek">
-                    <span class="s-btn--text" data-text="Newest">Newest</span>
-                </button>
-                <button class="s-btn s-btn__muted" type="button" id="btnThisMonth">
-                    <span class="s-btn--text" data-text="Frequent">Frequent</span>
-                </button>
-                <button class="s-btn s-btn__muted is-selected" type="button" aria-current="true" id="btnHot">
-                    <span class="s-btn--text" data-text="Hot">Hot</span>
-                </button>
+            <div class="s-page-title">
+                <div class="s-page-title--text">
+                    <h1 class="s-page-title--header">All Questions</h1>
+                </div>
+                <div class="s-page-title--actions">
+                    <a class="s-btn s-btn__filled mb-3" asp-action="create" asp-area="user" asp-controller="questions" type="submit">Ask Question</a>
+                </div>
             </div>
             <table id="questions" class="table">
             </table>

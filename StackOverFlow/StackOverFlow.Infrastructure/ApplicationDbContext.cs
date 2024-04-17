@@ -7,6 +7,7 @@ using StackOverFlow.Infrastructure.Membership;
 using StackOverFlow.Domain.Entities;
 using System.Reflection.Emit;
 using StackOverFlow.Infrastructure.Data;
+using StackOverFlow.Domain;
 
 namespace StackOverFlow.Infrastructure
 {
@@ -49,9 +50,20 @@ namespace StackOverFlow.Infrastructure
                 .WithMany(q => q.Answers)
                 .HasForeignKey(a => a.QuestionId);
 
+            builder.Entity<QuestionVotes>()
+              .HasOne(a => a.Question)
+              .WithMany(q => q.Votes)
+              .HasForeignKey(a => a.QuestionId);
+
             builder.Entity<Reply>()
                 .HasOne(c => c.Answer)
                 .WithMany(a => a.Replies)
+                .HasForeignKey(c => c.AnswerId);
+
+
+            builder.Entity<AnswerVotes>()
+                .HasOne(c => c.Answer)
+                .WithMany(a => a.AnswerVotes)
                 .HasForeignKey(c => c.AnswerId);
 
             builder.Entity<Tag>().HasData(new TagsSeed().Tags);
@@ -65,6 +77,11 @@ namespace StackOverFlow.Infrastructure
 
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Reply> Replies { get; set; }
+
+
+        public DbSet<AnswerVotes> AnswerVotes { get; set; }
+
+        public DbSet<QuestionVotes> QuestionVotes { get; set; }
 
     }
 }

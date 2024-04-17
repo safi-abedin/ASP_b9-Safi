@@ -28,6 +28,7 @@ namespace StackOverFlow.Domain.Entities
         public Guid QuestionId { get; set; }
 
 
+        public ICollection<AnswerVotes> AnswerVotes { get; set; }
 
         public Question Question { get; set; }
 

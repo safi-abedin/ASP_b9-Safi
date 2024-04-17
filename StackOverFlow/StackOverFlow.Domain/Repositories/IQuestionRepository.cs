@@ -15,5 +15,6 @@ namespace StackOverFlow.Domain.Repositories
         Task<Question> GetAsync(Guid id);
         Task<(IList<Question> records, int total, int totalDisplay)> GetQuestionsByUser(int pageIndex, int pageSize, Guid userId);
         Task<IList<Question>> GetTagedQuestions(Guid TagId);
+        Task<IList<Question>> GetVoteAsync(Guid questionId, Guid userId);
     }
 }
