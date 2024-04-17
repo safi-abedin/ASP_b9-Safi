@@ -52,6 +52,16 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         {
             var model = _scope.Resolve<TagQuestionModel>();
 
+            var user = await _userManager.GetUserAsync(User);
+
+
+            if(user is not null)
+            {
+                model.DisplayName = user.DisplayName;
+                var response = await model.GetPhotoAsync(user.ProfilePictureUrl);
+                model.ImageURL = response;
+            }
+
             if(ModelState.IsValid)
             {
                  await model.GetTagedQuestonsAsync(id);

@@ -148,6 +148,12 @@ namespace StackOverFlow.Application.Features.Questions
             return data;
         }
 
+        public async Task<Tag> GetTag(Guid id)
+        {
+            return await _unitOfWork.TagRepository.GetByIdAsync(id);
+           
+        }
+
         public Task<IList<Question>> GetTagedQuestionsAsync(Guid id)
         {
             return _unitOfWork.QuestionRepository.GetTagedQuestions(id);

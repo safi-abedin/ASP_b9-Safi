@@ -40,13 +40,13 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> GetQuestions(TagListModel model)
+        public async Task<JsonResult> GetQuestions(QuestionListModel model)
         {
             var dataTableModel = new DataTablesAjaxRequestUtility(Request);
 
             model.Resolve(_scope);
 
-            var data = await model.GetPagedTagsAsync(dataTableModel);
+            var data = await model.GetPagedQuestionsAsync(dataTableModel);
 
             return Json(data);
         }
