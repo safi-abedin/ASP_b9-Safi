@@ -31,9 +31,10 @@ namespace StackOverFlow.Application.Features.Questions
 
             var question = await _unitOfWork.QuestionRepository.GetAsync(questionId);
 
+
             if(question != null)
             {
-
+                question.AnswerCount++;
                 question.Answers.Add(answer);
 
             }
@@ -157,6 +158,18 @@ namespace StackOverFlow.Application.Features.Questions
         public Task<IList<Question>> GetTagedQuestionsAsync(Guid id)
         {
             return _unitOfWork.QuestionRepository.GetTagedQuestions(id);
+        }
+
+        public async Task IncreaseView(Guid id)
+        {
+            var question = await _unitOfWork.QuestionRepository.GetAsync(id);
+
+            if (question is not null)
+            {
+                question.ViewCount = question.ViewCount + 1;
+            }
+
+            await _unitOfWork.SaveAsync();
         }
     }
 }

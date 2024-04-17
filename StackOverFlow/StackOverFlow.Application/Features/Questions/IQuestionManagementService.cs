@@ -21,5 +21,6 @@ namespace StackOverFlow.Application.Features.Questions
         Task<IEnumerable<Question>> GetQuestionsAsync();
         Task<Tag> GetTag(Guid id);
         Task<IList<Question>> GetTagedQuestionsAsync(Guid id);
+        Task IncreaseView(Guid id);
     }
 }

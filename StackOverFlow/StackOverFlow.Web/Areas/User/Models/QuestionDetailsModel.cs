@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using StackOverFlow.Application.Features.Photos;
 using StackOverFlow.Application.Features.Questions;
 using StackOverFlow.Domain.Entities;
 using StackOverFlow.Infrastructure.Membership;
@@ -46,13 +47,23 @@ namespace StackOverFlow.Web.Areas.User.Models
         public int? Reputation {  get; set; }
 
 
-        public string AnswerBody { get; set; }     
+        public string ImageURL { get; set; }
+
+
+        //properties for Create
+
+
+
+        public string TriedApproach { get; set; }
 
 
 
         private ILifetimeScope _scope;
 
         public IQuestionManagementService _questionManagementService;
+
+
+        public IPhotoService _photoService;
 
 
         private IMapper _mapper;
@@ -63,10 +74,11 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         }
 
-        public QuestionDetailsModel(IQuestionManagementService questionManagementService, IMapper mapper)
+        public QuestionDetailsModel(IQuestionManagementService questionManagementService, IMapper mapper,IPhotoService photoService)
         {
             _questionManagementService = questionManagementService;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
 
@@ -74,14 +86,17 @@ namespace StackOverFlow.Web.Areas.User.Models
         {
             _scope = scope;
             _questionManagementService = _scope.Resolve<IQuestionManagementService>();
+            _photoService = _scope.Resolve<IPhotoService>();
         }
 
         internal async Task LoadAsync(Guid id)
         {
             var question = await _questionManagementService.GetQuestionAsync(id);
 
-           
-            if(question != null)
+            await _questionManagementService.IncreaseView(id);
+
+
+            if (question != null)
             {
                 Id = question.Id;
                 title = question.title;
@@ -109,8 +124,11 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         internal async Task CreateAnswerAsync(Guid userId)
         {
-           await  _questionManagementService.CreateAnswerAsync(Id,AnswerBody, userId);
+           await  _questionManagementService.CreateAnswerAsync(Id,TriedApproach, userId);
         }
-
+        internal async Task<string> GetPhotoAsync(string? key)
+        {
+            return await _photoService.GetPhotoAsync(key);
+        }
     }
 }

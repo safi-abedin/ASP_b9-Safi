@@ -64,10 +64,16 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
 
-                    model.ProfilePictureUrl = "";
-                    model.DisplayName = "safi";
-                    model.Reputation = 20;
+                    model.ImageURL = await model.GetPhotoAsync(user.ProfilePictureUrl);
+                    model.DisplayName = user.DisplayName;
+                    model.Reputation = user.Reputation;
+
+                    user.Reputation = user.Reputation + 2;
+                    await _userManager.UpdateAsync(user);
+
                     await model.LoadAsync(id);
+
+
                 }
                 catch (Exception ex)
                 {
@@ -111,6 +117,8 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     model.UserId = user.Id;
                     await model.CreateAsync();
+                    user.Reputation = user.Reputation + 5;
+                    await _userManager.UpdateAsync(user);
 
                     TempData.Put("ResponseMessage", new ResponseModel
                     {
@@ -152,15 +160,12 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(QuestionDetailsModel model)
         {
-            model.Resolve(_scope);
-
-            if (ModelState.IsValid)
-            {
+                model.Resolve(_scope);
                 var user = await _userManager.GetUserAsync(User);
-                var userId = new Guid();
+                var userId = user.Id;
                 await model.CreateAnswerAsync(userId);
-            }
-            return View(model);
+
+                return Redirect($"/User/Questions/Details/{model.Id}");
         }
 
 
@@ -195,6 +200,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 {
                     model.ResolveAsync(_scope);
                     await model.EditAsync();
+                    var user = await _userManager.GetUserAsync(User);
+                    user.Reputation = user.Reputation + 10;
+                    await _userManager.UpdateAsync(user);
 
                     TempData.Put("ResponseMessage", new ResponseModel
                     {
@@ -236,6 +244,10 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             {
                 try
                 {
+                    var user = await _userManager.GetUserAsync(User);
+                    user.Reputation = user.Reputation + 5;
+                    await _userManager.UpdateAsync(user);
+
                     await model.DeleteQuestionAsync(id);
 
                     TempData.Put("ResponseMessage", new ResponseModel
