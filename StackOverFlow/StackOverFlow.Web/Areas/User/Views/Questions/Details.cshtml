@@ -48,7 +48,7 @@
             </div>
             <hr />
             <div class="tags-askedby">
-                <div class="row justify-content-end">
+                <div class="row justify-content-between">
                     <div class="col-md-4">
                         <a href="/user/questions/edit?id=@Model.Id" class="s-link">Edit</a>
                         <a href="/user/questions/delete?id=@Model.Id" class="s-link">Delete</a>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-5">
                         <div class="s-user-card s-user-card__highlighted">
-                            <time class="s-user-card--time">Created on @Model.CreationDateTime  ago </time>
+                            <time class="s-user-card--time">Created on @Model.CreationDateTime</time>
                             <a href="…" class="s-avatar s-avatar__32 s-user-card--avatar">
                                 <img class="s-avatar--image" src="@Model.QuestionedByUserImageUrl" />
                             </a>
@@ -92,13 +92,13 @@
             {
                 <div class="row">
                     <div class="col-md-1 d-flex flex-column justify-content-center align-items-center">
-                        <a>
+                        <a asp-action="AnswerUpVote" asp-area="User" asp-controller="Questions" asp-route-questionId="@Model.Id" asp-route-answerId="@answer.Id">
                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2 25H34L18 9L2 25Z" fill="black" />
                             </svg>
                         </a>
                         <h1>@answer.VoteCount</h1>
-                        <a>
+                        <a asp-action="AnswerDownVote" asp-area="User" asp-controller="Questions" asp-route-questionId="@Model.Id" asp-route-answerId="@answer.Id">
                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2 11H34L18 27L2 11Z" fill="black" />
                             </svg>

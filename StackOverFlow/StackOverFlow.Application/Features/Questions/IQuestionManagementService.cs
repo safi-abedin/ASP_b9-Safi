@@ -22,6 +22,8 @@ namespace StackOverFlow.Application.Features.Questions
         Task<IEnumerable<Question>> GetQuestionsAsync();
         Task<Tag> GetTag(Guid id);
         Task<IList<Question>> GetTagedQuestionsAsync(Guid id);
+        Task GiveAnswerDownVoteAsync(Guid questionId, Guid userId, Guid answerId);
+        Task GiveAnswerUpVoteAsync(Guid questionId, Guid userId, Guid answerId);
         Task GiveDownVote(Guid questionId, Guid userId);
         Task IncreaseView(Guid id);
     }

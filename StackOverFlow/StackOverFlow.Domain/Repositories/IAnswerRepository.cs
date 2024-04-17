@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace StackOverFlow.Domain.Repositories
 {
-    public  interface IAnswerRepository : IRepositoryBase<Answer, Guid>
+    public interface IAnswerRepository : IRepositoryBase<Answer, Guid>
     {
+        Task<Answer> GetAsync(Guid answerId);
+        Task<IList<Answer>> GetVoteAsync(Guid answerId, Guid userId);
     }
 }

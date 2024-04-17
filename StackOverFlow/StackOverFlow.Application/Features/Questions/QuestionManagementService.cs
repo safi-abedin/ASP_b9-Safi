@@ -19,6 +19,68 @@ namespace StackOverFlow.Application.Features.Questions
             _unitOfWork = unitOfWork;
         }
 
+        public async Task ChangeAnswerVoteAsync(Guid userId, Guid answerId, bool isUpVote,Guid questionId)
+        {
+            var answer = await _unitOfWork.AnswerRepository.GetAsync(answerId);
+
+            if (answer == null)
+            {
+                throw new InvalidOperationException("Answer not found.");
+            }
+
+            var answerFiltered = await _unitOfWork.AnswerRepository.GetVoteAsync(answerId, userId);
+
+            var existingVote = answerFiltered.FirstOrDefault().AnswerVotes;
+
+            if (existingVote == null || existingVote.Count == 0)
+            {
+                var newVote = new AnswerVotes
+                {
+                    AnswerId = answerId,
+                    VotedBYId = userId,
+                    VoterEmail = "", 
+                    Up = isUpVote,
+                    Down = !isUpVote,
+                    QuestionId = questionId,
+                    Question = await _unitOfWork.QuestionRepository.GetAsync(questionId)
+            };
+
+                answer.AnswerVotes.Add(newVote);
+
+                answer.VoteCount += isUpVote ? 1 : -1;
+
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                var vote = existingVote.FirstOrDefault();
+
+                if ((isUpVote && vote.Up) || (!isUpVote && vote.Down))
+                {
+                    return;
+                }
+
+                vote.Up = isUpVote;
+                vote.Down = !isUpVote;
+
+                answer.VoteCount += isUpVote ? +2 : -2;
+
+                await _unitOfWork.SaveAsync();
+            }
+        }
+
+
+        public async Task GiveAnswerDownVoteAsync(Guid questionId, Guid userId, Guid answerId)
+        {
+            await ChangeAnswerVoteAsync(userId, answerId, false,questionId);
+        }
+
+        public async Task GiveAnswerUpVoteAsync(Guid questionId, Guid userId, Guid answerId)
+        {
+            await ChangeAnswerVoteAsync(userId, answerId, true,questionId);
+        }
+
+
         public async Task<bool> CheckVote(Guid questionId, Guid userId)
         {
             await GiveVote(questionId, userId, true);
@@ -81,7 +143,7 @@ namespace StackOverFlow.Application.Features.Questions
         }
     
 
-    public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId,string userEmail)
+        public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId,string userEmail)
         {
             var answer = new Answer
             {
@@ -237,5 +299,7 @@ namespace StackOverFlow.Application.Features.Questions
 
             await _unitOfWork.SaveAsync();
         }
+
+    
     }
 }

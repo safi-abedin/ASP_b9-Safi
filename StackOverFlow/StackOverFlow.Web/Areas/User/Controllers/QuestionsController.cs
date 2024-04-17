@@ -296,7 +296,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        public async Task<IActionResult> AnswerUpVote(Guid id)
+        public async Task<IActionResult> AnswerUpVote(Guid questionId, Guid answerId)
         {
 
             var model = _scope.Resolve<QuestionVoteModel>();
@@ -305,13 +305,13 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            await model.CheckVoteAsync(id, user.Id);
+            await model.GiveAnswerUpVoteAsync(questionId, user.Id, answerId);
 
 
-            return Redirect($"/User/Questions/Details/{id}");
+            return Redirect($"/User/Questions/Details/{questionId}");
         }
 
-        public async Task<IActionResult> AnswerDownVote(Guid id)
+        public async Task<IActionResult> AnswerDownVote(Guid questionId, Guid answerId)
         {
 
 
@@ -319,9 +319,9 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            await model.GiveDownVoteAsync(id, user.Id);
+            await model.GiveAnswerDownVoteAsync(questionId, user.Id, answerId);
 
-            return Redirect($"/User/Questions/Details/{id}");
+            return Redirect($"/User/Questions/Details/{questionId}");
         }
 
     }

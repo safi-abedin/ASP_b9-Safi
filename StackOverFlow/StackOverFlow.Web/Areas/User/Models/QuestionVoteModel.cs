@@ -29,6 +29,16 @@ namespace StackOverFlow.Web.Areas.User.Models
            return await _questionManagementService.CheckVote(QuestionId, userId);
         }
 
+        internal async Task GiveAnswerDownVoteAsync(Guid QuestionId, Guid userId, Guid answerId)
+        {
+            await _questionManagementService.GiveAnswerDownVoteAsync(QuestionId, userId, answerId);
+        }
+
+        internal async Task GiveAnswerUpVoteAsync(Guid QuestionId, Guid userId, Guid answerId)
+        {
+            await _questionManagementService.GiveAnswerUpVoteAsync(QuestionId, userId, answerId);
+        }
+
         internal async Task GiveDownVoteAsync(Guid QuestionId, Guid userId)
         {
              await _questionManagementService.GiveDownVote(QuestionId, userId);
