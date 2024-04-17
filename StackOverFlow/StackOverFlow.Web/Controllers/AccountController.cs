@@ -9,8 +9,7 @@ using Autofac;
 using StackOverFlow.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using StackOverFlow.Application.Utilities;
-
-
+using StackOverFlow.Application.Features.Photos;
 
 namespace StackOverFlow.Web.Controllers
 {
@@ -28,10 +27,12 @@ namespace StackOverFlow.Web.Controllers
 
         private readonly IEmailService _emailService;
 
+        private readonly IPhotoService _photoService;
 
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager
-                                , RoleManager<ApplicationRole> roleManager, ILifetimeScope scope,ILogger<AccountController> logger,IEmailService emailService)
+                                , RoleManager<ApplicationRole> roleManager, ILifetimeScope scope,
+            ILogger<AccountController> logger,IEmailService emailService,IPhotoService photoService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +40,7 @@ namespace StackOverFlow.Web.Controllers
             _scope = scope;
             _logger = logger;
             _emailService = emailService;
+            _photoService = photoService;
         }
 
         
@@ -162,13 +164,6 @@ namespace StackOverFlow.Web.Controllers
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
                     var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
-                    /* var token = await _tokenService.GetJwtToken(claims,
-                             _configuration["Jwt:Key"],
-                             _configuration["Jwt:Issuer"],
-                             _configuration["Jwt:Audience"]
-                         );*/
-                    // HttpContext.Session.SetString("token", token);
-
                     return RedirectToAction("Index", "Home");
                 }
                 else
