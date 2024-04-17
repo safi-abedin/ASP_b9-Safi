@@ -63,11 +63,6 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-
-                    model.ImageURL = await model.GetPhotoAsync(user.ProfilePictureUrl);
-                    model.DisplayName = user.DisplayName;
-                    model.Reputation = user.Reputation;
-
                     user.Reputation = user.Reputation + 2;
                     await _userManager.UpdateAsync(user);
 
@@ -78,10 +73,10 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogInformation(ex, "Something Went Wrong");
+                    return RedirectToAction("Index");
 
                 }
             }
-
             return View(model);
         }
 
@@ -116,6 +111,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     model.UserId = user.Id;
+                    model.UserEmail = user.Email;
                     await model.CreateAsync();
                     user.Reputation = user.Reputation + 5;
                     await _userManager.UpdateAsync(user);
@@ -163,7 +159,8 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 model.Resolve(_scope);
                 var user = await _userManager.GetUserAsync(User);
                 var userId = user.Id;
-                await model.CreateAnswerAsync(userId);
+                var userEmail = user.Email;
+                await model.CreateAnswerAsync(userId,userEmail);
 
                 return Redirect($"/User/Questions/Details/{model.Id}");
         }

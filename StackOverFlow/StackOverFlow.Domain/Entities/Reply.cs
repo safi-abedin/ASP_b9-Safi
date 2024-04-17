@@ -13,7 +13,10 @@ namespace StackOverFlow.Domain.Entities
         public string Body { get; set; }
 
         public Guid RepliedByUserId {  get; set; }
-        
+
+        public string ReplyByEmail { get; set; }
+
+
         public DateTime ReplyTime { get; set; }
 
         public Guid AnswerId { get; set; }

@@ -32,6 +32,9 @@ namespace StackOverFlow.Domain.Entities
 
         public int VoteCount { get; set; }
 
+
+        public string CreatorEmail { get; set; }
+
         public int AnswerCount { get; set; }
 
 

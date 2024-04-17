@@ -15,7 +15,7 @@
                 "orderable": false,
                 "targets": 1,
                 "render": function (data, type, row) {
-                    if (data > 4) {
+                    if (data >= 4) {
                         return `<span class="s-badge s-badge__important">${data}+ Answers</span>`;
                     }
                     else if (data < 4) {

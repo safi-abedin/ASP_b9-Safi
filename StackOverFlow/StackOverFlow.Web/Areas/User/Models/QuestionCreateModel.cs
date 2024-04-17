@@ -26,6 +26,8 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         public Guid UserId { get; set; }
 
+        public string? UserEmail { get; set; }
+
         [Required]
         public List<string> Tags { get; set; }
 
@@ -51,7 +53,7 @@ namespace StackOverFlow.Web.Areas.User.Models
 
         internal async Task CreateAsync()
         {            
-            await _questionManagementService.CreateQuestionAsync(Title, Details,TriedApproach, Tags,UserId);
+            await _questionManagementService.CreateQuestionAsync(Title, Details,TriedApproach, Tags,UserId,UserEmail);
         }
 
         internal async Task<IEnumerable<Tag>> GetAvailableTags()

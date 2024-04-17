@@ -66,7 +66,7 @@
                         <div class="s-user-card s-user-card__highlighted">
                             <time class="s-user-card--time">Created on @Model.CreationDateTime  ago </time>
                             <a href="…" class="s-avatar s-avatar__32 s-user-card--avatar">
-                                <img class="s-avatar--image" src="@Model.ImageURL" />
+                                <img class="s-avatar--image" src="@Model.QuestionedByUserImageUrl" />
                             </a>
                             <div class="s-user-card--info">
                                 <a href="…" class="s-user-card--link">@Model.DisplayName</a>
@@ -82,6 +82,8 @@
     </div>
 
     <hr />
+
+    <h1>@Model.AnswerCount Answers</h1>
 
     <br />
     <div class="answers">
@@ -104,18 +106,44 @@
                             </svg>
                         </a>
                     </div>
-                    <div class="answersShow">
-                        <div class="col-md-8">
-                            <div class="content">
-                                <div class="user-inputs ">
-                                    <pre class="s-code-block language-html">
-                                        @Html.Raw(answer.Body)
-                                     </pre>
+
+                    <div class="col-md-8">
+                        <div class="user-inputs ">
+                            <pre class="s-code-block  ">
+                                @Html.Raw(answer.Body)
+                    </pre>
+                        </div>
+                        <hr />
+                        @{
+                        <div class="tags-askedby">
+                            <div class="row justify-content-between">
+                                <div class="col-md-5">
+                                    <div class="s-user-card s-user-card__highlighted">
+                                        <time class="s-user-card--time">Answered on @answer.AnswerTime</time>
+                                        <a href="…" class="s-avatar s-avatar__32 s-user-card--avatar">
+                                                @{ var imageUrl = Model.AnswerdByUserDetails[answer.AnsweredByCreatorEmail].AnswerdByUserImageUrl;}
+                                                <img class="s-avatar--image" src="@imageUrl" />
+                                        </a>
+                                        <div class="s-user-card--info">
+                                                @{
+                                                    var DisplayName = Model.AnswerdByUserDetails[answer.AnsweredByCreatorEmail].AnswredByDisplayName;
+                                                }
+                                                <a href="…" class="s-user-card--link">@DisplayName</a>
+                                            <ul class="s-user-card--awards">
+                                                    @{
+                                                        var Reputation = Model.AnswerdByUserDetails[answer.AnsweredByCreatorEmail].AnswerdByUserReputation;
+                                                    }
+                                                <li class="s-user-card--rep">@Reputation</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        }
                     </div>
                 </div>
+                <hr />
             }
         }
     </div>

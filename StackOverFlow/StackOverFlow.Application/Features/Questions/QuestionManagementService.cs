@@ -19,13 +19,14 @@ namespace StackOverFlow.Application.Features.Questions
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId)
+        public async Task CreateAnswerAsync(Guid questionId, string answerBody,Guid UserId,string userEmail)
         {
             var answer = new Answer
             {
                 QuestionId = questionId,
                 AnswerTime = DateTime.Now,
                 AnsweredByUserId = UserId,
+                AnsweredByCreatorEmail=userEmail,
                 Body = answerBody,
             };
 
@@ -42,7 +43,7 @@ namespace StackOverFlow.Application.Features.Questions
             await _unitOfWork.SaveAsync(); 
         }
 
-        public async Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId)
+        public async Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId,string UserEmail)
         {
             var allTags = _unitOfWork.TagRepository.GetAll();
             var selectedTags = new List<Tag>();
@@ -71,6 +72,7 @@ namespace StackOverFlow.Application.Features.Questions
                 TriedApproach = TriedApproach,
                 Tags = selectedAndInAllTags,
                 CreatorUserId = UserId,
+                CreatorEmail = UserEmail,
                 CreationDateTime = DateTime.Now
             };
 

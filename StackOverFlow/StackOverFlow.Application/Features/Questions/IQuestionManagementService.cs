@@ -9,8 +9,8 @@ namespace StackOverFlow.Application.Features.Questions
 {
     public interface IQuestionManagementService
     {
-        Task CreateAnswerAsync(Guid questionId, string answerBody, Guid userID);
-        Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId);
+        Task CreateAnswerAsync(Guid questionId, string answerBody, Guid userID,string userEmail);
+        Task CreateQuestionAsync(string title, string Details,string TriedApproach, List<string> tags,Guid UserId, string userEmail);
         Task DeleteQuestionAsync(Guid id);
         Task EditAsync(Guid id, string title, string Details,string TriedApproach, List<string> tags);
         Task<IEnumerable<Tag>> GetAllTags();

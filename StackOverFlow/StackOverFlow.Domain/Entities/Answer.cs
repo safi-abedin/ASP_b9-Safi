@@ -15,8 +15,14 @@ namespace StackOverFlow.Domain.Entities
 
         public Guid AnsweredByUserId { get; set; }
 
+        public string AnsweredByCreatorEmail { get; set; }
+
+
 
         public DateTime AnswerTime { get; set; }
+
+
+        public int VoteCount { get; set; }
 
 
         public Guid QuestionId { get; set; }
