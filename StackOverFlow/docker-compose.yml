@@ -1,0 +1,18 @@
+version: "3"
+services:
+    web:
+        build: 
+            context: .
+            dockerfile: StackOverFlow.Web/Dockerfile
+        image: devskill/StackOverFlow.web
+        env_file: 
+            - StackOverFlow.Web/web.env
+        volumes:
+            - StackOverFlowWeb-data:/app/Logs
+        ports:
+            - "8000:80"
+        entrypoint: ["dotnet", "StackOverFlow.Web.dll"]
+volumes:
+    firstdemoweb-data:
+      external: true
+     

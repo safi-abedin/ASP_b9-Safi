@@ -13,9 +13,9 @@ Functional requirements
 7.Users can upload profile pictures.
 8.notifications for reply questions.
 9.tags in question through which users can view questions.
-10point /reputation for rewarding members.
+10.point /reputation for rewarding members.
 11.Users can view their own questions.
-12Users can view and edit their profile information.
+12.Users can view and edit their profile information.
 
 Non functional requirements
 
@@ -27,7 +27,8 @@ Non functional requirements
 5.Used entity framework, repository and unit of work pattern to make the project robust. 
 6.Used bootstrap and datatables if needed to make the application user friendly.
 7.All migrations  added including seed data to make the project maintainable. 
-8.All menu links have to be correct. Users should be able to use and navigate all features. 
+8.All menu links are correct. Users should be able to use and navigate all features. 
 9.Use claim based authentication and authorization to control user access to the features. 
 10.Made the project testable, write unit tests for service .
+11.Write DockerFile .
 11.All completed functional, non function and bonus requirements should be mentioned in the readme file. 
