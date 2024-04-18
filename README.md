@@ -29,4 +29,5 @@ Non functional requirements
 7.All migrations  added including seed data to make the project maintainable. 
 8.All menu links have to be correct. Users should be able to use and navigate all features. 
 9.Use claim based authentication and authorization to control user access to the features. 
-10.All completed functional, non function and bonus requirements should be mentioned in the readme file. 
+10.Made the project testable, write unit tests for service .
+11.All completed functional, non function and bonus requirements should be mentioned in the readme file. 
