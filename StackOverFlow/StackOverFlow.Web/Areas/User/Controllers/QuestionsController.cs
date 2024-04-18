@@ -196,7 +196,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 await model.LoadAsync(model.Id);
                 var callbackUrl = Url.Action("Details", "Questions", new { area = "user", id = model.Id }, protocol: HttpContext.Request.Scheme);
                _emailService.SendSingleEmail($"hello {model.DisplayName}", model.CreatorEmail, $"New Answer In your Post",
-                $"{model.AnswredByDisplayName} answered in your question click here to see the Answer  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"{model.AnswredByDisplayName} answered in your question , to see the Answer  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             return Redirect($"/User/Questions/Details/{model.Id}");
         }
