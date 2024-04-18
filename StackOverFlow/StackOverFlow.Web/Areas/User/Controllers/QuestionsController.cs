@@ -75,6 +75,22 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                         user.Reputation = 0;
                     }
                     user.Reputation += 2;
+                    if (user.Reputation >= 10)
+                    {
+                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateAnswer", "true"));
+                    }
+                    if (user.Reputation >= 20)
+                    {
+                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateQuestion", "true"));
+                    }
+                    if (user.Reputation >= 30)
+                    {
+                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("EditQuestion", "true"));
+                    }
+                    if (user.Reputation >= 40)
+                    {
+                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DeleteQuestion", "true"));
+                    }
                     await _userManager.UpdateAsync(user);
                     await model.LoadAsync(id);
 
