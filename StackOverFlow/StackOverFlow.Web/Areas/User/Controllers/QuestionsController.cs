@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -68,10 +69,14 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    user.Reputation = user.Reputation + 2;
+                    
+                    if(user.Reputation == null)
+                    {
+                        user.Reputation = 0;
+                    }
+                    user.Reputation += 2;
                     await _userManager.UpdateAsync(user);
                     await model.LoadAsync(id);
-
 
                 }
                 catch (Exception ex)
@@ -85,7 +90,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet,Authorize(Policy = "CreateQuestionPolicy")]
         public async Task<IActionResult> Create()
         {
             var model = _scope.Resolve<QuestionCreateModel>();
@@ -104,7 +109,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Policy = "CreateQuestionPolicy")]
         public async Task<IActionResult> Create(QuestionCreateModel model)
         {
 
@@ -157,7 +162,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken,Authorize(Policy = "CreateAnswerPolicy")]
         public async Task<IActionResult> Details(QuestionDetailsModel model)
         {
                 model.Resolve(_scope);
@@ -175,7 +180,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet,Authorize(Policy = "EditQuestionPolicy")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var model = _scope.Resolve<QuestionEditModel>();
@@ -194,7 +199,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken, Authorize(Policy = "EditQuestionPolicy")]
         public async Task<IActionResult> Edit(QuestionEditModel model)
         {
 
@@ -240,7 +245,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet,Authorize(Policy = "DeleteQuestionPolicy")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var model = _scope.Resolve<QuestionEditModel>();
@@ -274,7 +279,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize]
         public async Task<IActionResult> QuestionUpVote(Guid id)
         {
 
@@ -284,12 +289,18 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
+
             await model.CheckVoteAsync(id, user.Id);
+
+
+            user.Reputation += 3;
+            await _userManager.UpdateAsync(user);
 
 
             return Redirect($"/User/Questions/Details/{id}");
         }
 
+        [Authorize]
         public async Task<IActionResult> QuestionDownVote(Guid id)
         {
 
@@ -300,10 +311,14 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             await model.GiveDownVoteAsync(id, user.Id);
 
+            user.Reputation += 3;
+            await _userManager.UpdateAsync(user);
+
             return Redirect($"/User/Questions/Details/{id}");
         }
 
 
+        [Authorize]
         public async Task<IActionResult> AnswerUpVote(Guid questionId, Guid answerId)
         {
 
@@ -315,10 +330,14 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             await model.GiveAnswerUpVoteAsync(questionId, user.Id, answerId);
 
+            user.Reputation += 3;
+            await _userManager.UpdateAsync(user);
+
 
             return Redirect($"/User/Questions/Details/{questionId}");
         }
 
+        [Authorize]
         public async Task<IActionResult> AnswerDownVote(Guid questionId, Guid answerId)
         {
 
@@ -327,7 +346,11 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
+
             await model.GiveAnswerDownVoteAsync(questionId, user.Id, answerId);
+
+            user.Reputation += 3;
+            await _userManager.UpdateAsync(user);
 
             return Redirect($"/User/Questions/Details/{questionId}");
         }

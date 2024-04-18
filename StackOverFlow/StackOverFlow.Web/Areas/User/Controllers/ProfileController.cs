@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StackOverFlow.Infrastructure;
@@ -27,7 +28,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var model = _scope.Resolve<ProfileViewModel>();
@@ -46,7 +47,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost,Authorize]
         public async Task<JsonResult> GetQuestions(QuestionAskedListModel model)
         {
             var dataTableModel = new DataTablesAjaxRequestUtility(Request);
@@ -85,7 +86,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return View(model);
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost,ValidateAntiForgeryToken,Authorize]
         public async Task<IActionResult> Edit(ProfileEditModel model)
         {
             var user = await _userManager.GetUserAsync(User);

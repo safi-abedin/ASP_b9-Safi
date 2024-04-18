@@ -47,6 +47,39 @@ try
     builder.Services.AddControllersWithViews();
     builder.Services.AddIdentity();
     builder.Services.AddCookieAuthentication();
+
+    builder.Services.AddAuthorization(options =>
+    {
+
+        options.AddPolicy("CreateQuestionPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim("CreateQuestion", "true");
+        });
+
+        options.AddPolicy("CreateAnswerPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim("CreateAnswer", "true");
+        });
+
+
+        options.AddPolicy("EditQuestionPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim("EditQuestion", "true");
+        });
+
+
+        options.AddPolicy("DeleteQuestionPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim("DeleteQuestion", "true");
+        });
+
+    });
+
+
     builder.Services.Configure<Smtp>(builder.Configuration.GetSection("Smtp")); 
 
     builder.Services.AddSession(options =>

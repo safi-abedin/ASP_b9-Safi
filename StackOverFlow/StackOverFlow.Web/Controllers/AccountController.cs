@@ -10,6 +10,7 @@ using StackOverFlow.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using StackOverFlow.Application.Utilities;
 using StackOverFlow.Application.Features.Photos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StackOverFlow.Web.Controllers
 {
@@ -121,6 +122,7 @@ namespace StackOverFlow.Web.Controllers
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
+
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -189,6 +191,13 @@ namespace StackOverFlow.Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
     }
