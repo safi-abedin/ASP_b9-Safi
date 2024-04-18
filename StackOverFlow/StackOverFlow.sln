@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverFlow.Domain", "Sta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverFlow.API", "StackOverFlow.API\StackOverFlow.API.csproj", "{233C11C0-6976-4258-B0EC-E4EC938AA2A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverFlow.WorkerService", "StackOverFlow.WorkerService\StackOverFlow.WorkerService.csproj", "{DF71E11F-9797-453B-85BE-43D25986BC6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverFlow.WorkerService", "StackOverFlow.WorkerService\StackOverFlow.WorkerService.csproj", "{DF71E11F-9797-453B-85BE-43D25986BC6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{19AA2535-ACE6-4DD2-B0F3-547A54B3492F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverFlow.Appplication.Tests", "Tests\StackOverFlow.Appplication.Tests\StackOverFlow.Appplication.Tests.csproj", "{FA1F3A74-9660-4673-9EA8-F3B8710A5666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,16 @@ Global
 		{DF71E11F-9797-453B-85BE-43D25986BC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF71E11F-9797-453B-85BE-43D25986BC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF71E11F-9797-453B-85BE-43D25986BC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA1F3A74-9660-4673-9EA8-F3B8710A5666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA1F3A74-9660-4673-9EA8-F3B8710A5666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA1F3A74-9660-4673-9EA8-F3B8710A5666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA1F3A74-9660-4673-9EA8-F3B8710A5666}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA1F3A74-9660-4673-9EA8-F3B8710A5666} = {19AA2535-ACE6-4DD2-B0F3-547A54B3492F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3155A51-3277-49FF-99E5-170876BFC267}
