@@ -50,7 +50,7 @@ namespace StackOverFlow.Appplication.Tests
         }
 
         [Test]
-        public async Task CreateAnswerAsync_AnswerIncrease_CreateNewAnswer()
+        public async Task CreateAnswerAsync_CreateNewAnswer()
         {
             // Arrange
             var questionId = Guid.NewGuid();
@@ -121,6 +121,70 @@ namespace StackOverFlow.Appplication.Tests
             // Assert
             _unitOfWorkMock.VerifyAll();
             _questionRepositoryMock.VerifyAll();
+        }
+
+
+        [Test]
+        public async Task EditAsync_UpdatesQuestionInRepository()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var title = "Edited Title";
+            var details = "Edited details for the question.";
+            var triedApproach = "Edited approach for solving the problem.";
+            var tags = new List<string> { "tag1", "tag2", "tag3" };
+
+            var allTags = new List<Tag>
+             {
+                 new Tag { Id = Guid.NewGuid(), Name = "tag1", Description = "ss" },
+                 new Tag { Id = Guid.NewGuid(), Name = "tag2", Description = "sdadsdsad" },
+                 new Tag { Id = Guid.NewGuid(), Name = "tag3", Description = "sdsadsaqewqewqe" },
+                 new Tag { Id = Guid.NewGuid(), Name = "tag4", Description = "qeweweqweqwe" }
+             };
+
+            _unitOfWorkMock.Setup(u => u.TagRepository.GetAll()).Returns(allTags).Verifiable();
+
+            var originalQuestion = new Question
+            {
+                Id = id,
+                title = "Original Title",
+                Body = "Original details and approach.",
+                Details = "Original details.",
+                TriedApproach = "Original approach.",
+                Tags = new List<Tag>()
+            };
+
+            _unitOfWorkMock.SetupGet(x => x.QuestionRepository).Returns(_questionRepositoryMock.Object).Verifiable();
+
+
+            _questionRepositoryMock.Setup(r => r.GetAsync(id)).ReturnsAsync(originalQuestion).Verifiable();
+
+            _unitOfWorkMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            // Act
+            await _questionManagementService.EditAsync(id, title, details, triedApproach, tags);
+
+            // Assert
+            _questionRepositoryMock.VerifyAll();
+            _unitOfWorkMock.VerifyAll();
+        }
+
+
+
+        [Test]
+        public async Task DeleteQuestionAsync_RemovesQuestionFromRepository()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            _unitOfWorkMock.Setup(u => u.QuestionRepository.RemoveAsync(id)).Returns(Task.CompletedTask).Verifiable();
+            _unitOfWorkMock.Setup(u => u.SaveAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            // Act
+            await _questionManagementService.DeleteQuestionAsync(id);
+
+            // Assert
+            _unitOfWorkMock.VerifyAll();
         }
 
 
