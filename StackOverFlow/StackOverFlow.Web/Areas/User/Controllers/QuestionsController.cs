@@ -38,7 +38,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -57,7 +57,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return Json(data);
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -69,29 +69,36 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    
-                    if(user.Reputation == null)
+
+
+                    if (user != null)
                     {
-                        user.Reputation = 0;
+                        var claims = await _userManager.GetClaimsAsync(user);
+                        if (user.Reputation == null)
+                        {
+                            user.Reputation = 0;
+                        }
+                        user.Reputation += 2;
+                        if (claims.Count==0 && user.Reputation >= 10)
+                        {
+                            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateAnswer", "true"));
+                        }
+                        if (claims.Count <= 1 && user.Reputation >= 20)
+                        {
+                            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateQuestion", "true"));
+                        }
+                        if (claims.Count <= 2 && user.Reputation >= 30)
+                        {
+                            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("EditQuestion", "true"));
+                        }
+                        if (claims.Count <= 3 &&  user.Reputation >= 40)
+                        {
+                            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DeleteQuestion", "true"));
+                        }
+                        await _userManager.UpdateAsync(user);
                     }
-                    user.Reputation += 2;
-                    if (user.Reputation >= 10)
-                    {
-                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateAnswer", "true"));
-                    }
-                    if (user.Reputation >= 20)
-                    {
-                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("CreateQuestion", "true"));
-                    }
-                    if (user.Reputation >= 30)
-                    {
-                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("EditQuestion", "true"));
-                    }
-                    if (user.Reputation >= 40)
-                    {
-                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("DeleteQuestion", "true"));
-                    }
-                    await _userManager.UpdateAsync(user);
+
+
                     await model.LoadAsync(id);
 
                 }
@@ -106,7 +113,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpGet,Authorize(Policy = "CreateQuestionPolicy")]
+        [HttpGet,Authorize(Policy = "CreateQuestion")]
         public async Task<IActionResult> Create()
         {
             var model = _scope.Resolve<QuestionCreateModel>();
@@ -125,7 +132,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost, ValidateAntiForgeryToken, Authorize(Policy = "CreateQuestionPolicy")]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Policy = "CreateQuestion")]
         public async Task<IActionResult> Create(QuestionCreateModel model)
         {
 
@@ -178,7 +185,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpPost, ValidateAntiForgeryToken,Authorize(Policy = "CreateAnswerPolicy")]
+        [HttpPost, ValidateAntiForgeryToken,Authorize(Policy = "CreateAnswer")]
         public async Task<IActionResult> Details(QuestionDetailsModel model)
         {
                 model.Resolve(_scope);
@@ -186,6 +193,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
                 var userId = user.Id;
                 var userEmail = user.Email;
                 await model.CreateAnswerAsync(userId,userEmail);
+                await model.LoadAsync(model.Id);
                 var callbackUrl = Url.Action("Details", "Questions", new { area = "user", id = model.Id }, protocol: HttpContext.Request.Scheme);
                _emailService.SendSingleEmail($"hello {model.DisplayName}", model.CreatorEmail, $"New Answer In your Post",
                 $"{model.AnswredByDisplayName} answered in your question click here to see the Answer  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -196,7 +204,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
 
 
 
-        [HttpGet,Authorize(Policy = "EditQuestionPolicy")]
+        [HttpGet,Authorize(Policy = "EditQuestion")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var model = _scope.Resolve<QuestionEditModel>();
@@ -215,7 +223,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
         }
 
 
-        [HttpPost,ValidateAntiForgeryToken, Authorize(Policy = "EditQuestionPolicy")]
+        [HttpPost,ValidateAntiForgeryToken, Authorize(Policy = "EditQuestion")]
         public async Task<IActionResult> Edit(QuestionEditModel model)
         {
 
@@ -261,7 +269,7 @@ namespace StackOverFlow.Web.Areas.User.Controllers
             return View(model);
         }
 
-        [HttpGet,Authorize(Policy = "DeleteQuestionPolicy")]
+        [HttpGet,Authorize(Policy = "DeleteQuestion")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var model = _scope.Resolve<QuestionEditModel>();

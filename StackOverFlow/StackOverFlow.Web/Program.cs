@@ -51,27 +51,27 @@ try
     builder.Services.AddAuthorization(options =>
     {
 
-        options.AddPolicy("CreateQuestionPolicy", policy =>
+        options.AddPolicy("CreateQuestion", policy =>
         {
             policy.RequireAuthenticatedUser();
             policy.RequireClaim("CreateQuestion", "true");
         });
 
-        options.AddPolicy("CreateAnswerPolicy", policy =>
+        options.AddPolicy("CreateAnswer", policy =>
         {
             policy.RequireAuthenticatedUser();
             policy.RequireClaim("CreateAnswer", "true");
         });
 
 
-        options.AddPolicy("EditQuestionPolicy", policy =>
+        options.AddPolicy("EditQuestion", policy =>
         {
             policy.RequireAuthenticatedUser();
             policy.RequireClaim("EditQuestion", "true");
         });
 
 
-        options.AddPolicy("DeleteQuestionPolicy", policy =>
+        options.AddPolicy("DeleteQuestion", policy =>
         {
             policy.RequireAuthenticatedUser();
             policy.RequireClaim("DeleteQuestion", "true");

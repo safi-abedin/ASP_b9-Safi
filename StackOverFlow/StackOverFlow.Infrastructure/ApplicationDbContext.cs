@@ -1,6 +1,4 @@
-﻿//using FirstDemo.Domain.Entities;
-using StackOverFlow.Infrastructure;
-//using FirstDemo.Infrastructure.Membership;
+﻿using StackOverFlow.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StackOverFlow.Infrastructure.Membership;
@@ -67,6 +65,9 @@ namespace StackOverFlow.Infrastructure
                 .HasForeignKey(c => c.AnswerId);
 
             builder.Entity<Tag>().HasData(new TagsSeed().Tags);
+
+
+            builder.Entity<ApplicationUser>().HasData(new UserSeed().users);
 
 
             base.OnModelCreating(builder);

@@ -164,7 +164,7 @@ namespace StackOverFlow.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var user = await _userManager.FindByEmailAsync(model.Email);     
                     var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
                     return RedirectToAction("Index", "Home");
                 }
